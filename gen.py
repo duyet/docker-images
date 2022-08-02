@@ -71,7 +71,8 @@ jobs:
               - '.github/workflows/ci.yaml'
 
       - name: Log in to the Container registry
-        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        if: steps.changes.outputs.src == 'true'
+        uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
@@ -83,6 +84,7 @@ jobs:
         uses: docker/setup-buildx-action@v1
 
       - name: Extract metadata (tags, labels) for Docker
+        if: steps.changes.outputs.src == 'true'
         id: meta
         uses: docker/metadata-action@v4
         with:
