@@ -1,6 +1,6 @@
 # ghcr.io/duyet/i 
 
-See all images here: <https://github.com/duyet/image/pkgs/container/i/versions>
+See all images here: <https://github.com/duyet/image/pkgs/container/image/versions>
 
 Pull image from the command line:
 
