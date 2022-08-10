@@ -20,6 +20,7 @@ jobs:
       matrix:
         tags:
           - typos
+          - athena
     env:
       IMAGE_NAME: rust
       IMAGE_TAG: '${{ matrix.tags }}'
