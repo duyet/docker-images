@@ -1,4 +1,4 @@
-# ghcr.io/duyet/i 
+# `ghcr.io/duyet/image`
 
 See all images here: <https://github.com/duyet/image/pkgs/container/image/versions>
 
