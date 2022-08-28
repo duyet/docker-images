@@ -1,10 +1,22 @@
 #!/bin/bash
 
-mydir=/tmp/certs
-truststore=${mydir}/rds-truststore.jks
-storepassword=truststorePassword
+if [ "$JAVA_HOME" ]; then
+    javahome=${JAVA_HOME}
+elif [[ "$OSTYPE" == "linux-gnu" ]]; then # Linux
+    javahome=$(readlink -f $(which java) | sed "s:bin/java::")
+elif [[ "$OSTYPE" == "darwin"* ]]; then # Mac OS X
+    javahome="$(/usr/libexec/java_home)/jre"
+fi
 
+mydir=$javahome/lib/security/cacerts
+mydir=/tmp/cacerts
 mkdir $mydir
+
+truststore=${mydir}/rds-truststore.jks
+truststore=$javahome/lib/security/cacerts
+
+storepassword=changeit
+
 curl -sS "https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem" > ${mydir}/rds-combined-ca-bundle.pem
 awk 'split_after == 1 {n++;split_after=0} /-----END CERTIFICATE-----/ {split_after=1}{print > "rds-ca-" n ".pem"}' < ${mydir}/rds-combined-ca-bundle.pem
 

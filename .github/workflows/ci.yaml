@@ -79,7 +79,7 @@ jobs:
     strategy:
       matrix:
         tags:
-          - 1.9.5.Final
+          - debezium_1.9.5.Final
     env:
       IMAGE_NAME: debezium
       IMAGE_TAG: '${{ matrix.tags }}'
