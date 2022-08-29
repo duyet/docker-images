@@ -39,7 +39,4 @@ done
 
 # Install connector for MongoDB
 wget -O plugin.zip https://repo1.maven.org/maven2/io/debezium/debezium-connector-mongodb/1.9.5.Final/debezium-connector-mongodb-1.9.5.Final-plugin.zip
-unzip plugin.zip -d /tmp
-mkdir /usr/share/plugins
-cp /tmp/debezium-connector-mongodb/* /usr/share/plugins
-cp /tmp/debezium-connector-mongodb/* /usr/share/java
+unzip plugin.zip -d /usr/share/plugins

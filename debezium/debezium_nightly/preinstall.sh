@@ -39,3 +39,4 @@ done
 
 wget -O plugin.zip https://repo1.maven.org/maven2/io/debezium/debezium-connector-mongodb/2.0.0.Beta1/debezium-connector-mongodb-2.0.0.Beta1-plugin.zip
 unzip plugin.zip -d /usr/share/plugins
+# cp /usr/share/plugins/debezium-connector-mongodb/* /usr/share/java
