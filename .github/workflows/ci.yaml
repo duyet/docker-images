@@ -79,6 +79,7 @@ jobs:
     strategy:
       matrix:
         tags:
+          - debezium_2.0.0.Beta2
           - debezium_2.0.0.Beta1
           - debezium_1.9.5.Final
           - debezium_nightly
