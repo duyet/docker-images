@@ -20,6 +20,7 @@ jobs:
       matrix:
         tags:
           - typos
+          - python
           - cargo-audit
           - athena
     env:
