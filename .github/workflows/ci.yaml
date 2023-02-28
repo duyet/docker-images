@@ -20,8 +20,11 @@ jobs:
       matrix:
         tags:
           - typos
+          - sccache
           - python
+          - sccache-server
           - cargo-audit
+          - sccache-scheduler
           - athena
     env:
       IMAGE_NAME: rust

@@ -1,6 +1,8 @@
 # `ghcr.io/duyet/image`
 
-See all images here: <https://github.com/duyet/image/pkgs/container/image/versions>
+[![Build and Push](https://github.com/duyet/image/actions/workflows/ci.yaml/badge.svg)](https://github.com/duyet/image/actions/workflows/ci.yaml)
+
+**See all images here: <https://github.com/duyet/image/pkgs/container/image/versions>**
 
 Pull image from the command line:
 
