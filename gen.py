@@ -39,6 +39,11 @@ on:
   push:
     branches:
       - master
+
+  pull_request:
+    branches:
+      - master
+
 {% raw %}
 env:
   REGISTRY: ghcr.io
@@ -103,7 +108,8 @@ jobs:
           file: ./${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          push: true
+          # only push if the branch is master
+          push: ${{ github.ref == 'refs/heads/master' }}
 
       - name: Image digest
         if: steps.changes.outputs.src == 'true'

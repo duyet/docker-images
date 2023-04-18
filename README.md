@@ -49,6 +49,8 @@ python3 gen.py
     - [`ghcr.io/duyet/image:cargo-audit`](#rustcargo-audit)
     - [`ghcr.io/duyet/image:sccache-scheduler`](#rustsccache-scheduler)
     - [`ghcr.io/duyet/image:athena`](#rustathena)
+- [`kubeconform`](#kubeconform)
+    - [`ghcr.io/duyet/image:kubeconform_latest`](#kubeconformkubeconform_latest)
 - [`debezium`](#debezium)
     - [`ghcr.io/duyet/image:debezium_2.0.0.Beta2`](#debeziumdebezium_200beta2)
     - [`ghcr.io/duyet/image:debezium_2.0.0.Beta1`](#debeziumdebezium_200beta1)
@@ -160,6 +162,23 @@ Use as base image in Dockerfile:
 
 ```Dockerfile
 FROM ghcr.io/duyet/image:athena
+```
+
+
+## `kubeconform`
+
+### [`kubeconform/kubeconform_latest`](kubeconform/kubeconform_latest/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/image:kubeconform_latest
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/image:kubeconform_latest
 ```
 
 
