@@ -6,6 +6,7 @@ ENV SCHEDULER_URL="http://127.0.0.1:10600"
 ENV SERVER_PUBLIC_ADDR="0.0.0.0:10501"
 ENV CLIENT_AUTH_TOKEN="duet"
 ENV SERVER_AUTH_TOKEN="duet"
+ENV SCHEDULER_AUTH_TOKEN="duet"
 
 RUN apt update && apt install -y bubblewrap && \
   cargo install sccache --features="dist-client,dist-server,s3,redis" && \
