@@ -41,6 +41,8 @@ python3 gen.py
 # Image lists
 
 <!-- BEGIN IMAGE LIST -->
+- [`upptime`](#upptime)
+    - [`ghcr.io/duyet/image:upptime_monitor`](#upptimeupptime_monitor)
 - [`rust`](#rust)
     - [`ghcr.io/duyet/image:typos`](#rusttypos)
     - [`ghcr.io/duyet/image:sccache`](#rustsccache)
@@ -56,6 +58,23 @@ python3 gen.py
     - [`ghcr.io/duyet/image:debezium_2.0.0.Beta1`](#debeziumdebezium_200beta1)
     - [`ghcr.io/duyet/image:debezium_1.9.5.Final`](#debeziumdebezium_195final)
     - [`ghcr.io/duyet/image:debezium_nightly`](#debeziumdebezium_nightly)
+
+
+## `upptime`
+
+### [`upptime/upptime_monitor`](upptime/upptime_monitor/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/image:upptime_monitor
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/image:upptime_monitor
+```
 
 
 ## `rust`
