@@ -129,7 +129,7 @@ def get_template_readme():
 {%- for image_name, image_tags in images.items() %}
 - [`{{ image_name }}`](#{{ image_name }})
 {%- for image_tag in image_tags %}
-    - [`ghcr.io/duyet/image:{{ image_tag }}`](#{{ (image_name + image_tag).lower().replace(" ", "").replace(".", "") }})
+    - [`ghcr.io/duyet/docker-images:{{ image_tag }}`](#{{ (image_name + image_tag).lower().replace(" ", "").replace(".", "") }})
 {%- endfor %}
 {%- endfor %}
 
@@ -143,13 +143,13 @@ def get_template_readme():
 Install from the command line
 
 ```bash
-docker pull ghcr.io/duyet/image:{{ image_tag }}
+docker pull ghcr.io/duyet/docker-images:{{ image_tag }}
 ```
 
 Use as base image in Dockerfile:
 
 ```Dockerfile
-FROM ghcr.io/duyet/image:{{ image_tag }}
+FROM ghcr.io/duyet/docker-images:{{ image_tag }}
 ```
 {% endfor %}
 {% endfor -%}
