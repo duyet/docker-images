@@ -1,26 +1,26 @@
-# `ghcr.io/duyet/image`
+# `ghcr.io/duyet/docker-images`
 
-[![Build and Push](https://github.com/duyet/image/actions/workflows/ci.yaml/badge.svg)](https://github.com/duyet/image/actions/workflows/ci.yaml)
+[![Build and Push](https://github.com/duyet/docker-images/actions/workflows/ci.yaml/badge.svg)](https://github.com/duyet/docker-images/actions/workflows/ci.yaml)
 
-**See all images here: <https://github.com/duyet/image/pkgs/container/image/versions>**
+**See all images here: <https://github.com/duyet/docker-images/pkgs/container/docker-images/versions>**
 
 Pull image from the command line:
 
 ```bash
-$ docker pull ghcr.io/duyet/image:<tag>
+$ docker pull ghcr.io/duyet/docker-images:<tag>
 ```
 
 Use as base image in Dockerfile:
 
 
 ```Dockerfile
-FROM ghcr.io/duyet/image:<tag>
+FROM ghcr.io/duyet/docker-images:<tag>
 ```
 
 # Adding images
 
 
-Github Workflows will build and publish images to `ghrc.io/duyet/image/<tag>`.
+Github Workflows will build and publish images to `ghrc.io/duyet/docker-images/<tag>`.
 
 Need to generate the `.github/workflows/ci.yaml` whenever adding new image tags folders. 
 
@@ -42,24 +42,24 @@ python3 gen.py
 
 <!-- BEGIN IMAGE LIST -->
 - [`gcloud`](#gcloud)
-    - [`ghcr.io/duyet/image:gcloud_python3.11`](#gcloudgcloud_python311)
+    - [`ghcr.io/duyet/docker-images:gcloud_python3.11`](#gcloudgcloud_python311)
 - [`upptime`](#upptime)
-    - [`ghcr.io/duyet/image:upptime_monitor`](#upptimeupptime_monitor)
+    - [`ghcr.io/duyet/docker-images:upptime_monitor`](#upptimeupptime_monitor)
 - [`rust`](#rust)
-    - [`ghcr.io/duyet/image:typos`](#rusttypos)
-    - [`ghcr.io/duyet/image:sccache`](#rustsccache)
-    - [`ghcr.io/duyet/image:python`](#rustpython)
-    - [`ghcr.io/duyet/image:sccache-server`](#rustsccache-server)
-    - [`ghcr.io/duyet/image:cargo-audit`](#rustcargo-audit)
-    - [`ghcr.io/duyet/image:sccache-scheduler`](#rustsccache-scheduler)
-    - [`ghcr.io/duyet/image:athena`](#rustathena)
+    - [`ghcr.io/duyet/docker-images:typos`](#rusttypos)
+    - [`ghcr.io/duyet/docker-images:sccache`](#rustsccache)
+    - [`ghcr.io/duyet/docker-images:python`](#rustpython)
+    - [`ghcr.io/duyet/docker-images:sccache-server`](#rustsccache-server)
+    - [`ghcr.io/duyet/docker-images:cargo-audit`](#rustcargo-audit)
+    - [`ghcr.io/duyet/docker-images:sccache-scheduler`](#rustsccache-scheduler)
+    - [`ghcr.io/duyet/docker-images:athena`](#rustathena)
 - [`kubeconform`](#kubeconform)
-    - [`ghcr.io/duyet/image:kubeconform_latest`](#kubeconformkubeconform_latest)
+    - [`ghcr.io/duyet/docker-images:kubeconform_latest`](#kubeconformkubeconform_latest)
 - [`debezium`](#debezium)
-    - [`ghcr.io/duyet/image:debezium_2.0.0.Beta2`](#debeziumdebezium_200beta2)
-    - [`ghcr.io/duyet/image:debezium_2.0.0.Beta1`](#debeziumdebezium_200beta1)
-    - [`ghcr.io/duyet/image:debezium_1.9.5.Final`](#debeziumdebezium_195final)
-    - [`ghcr.io/duyet/image:debezium_nightly`](#debeziumdebezium_nightly)
+    - [`ghcr.io/duyet/docker-images:debezium_2.0.0.Beta2`](#debeziumdebezium_200beta2)
+    - [`ghcr.io/duyet/docker-images:debezium_2.0.0.Beta1`](#debeziumdebezium_200beta1)
+    - [`ghcr.io/duyet/docker-images:debezium_1.9.5.Final`](#debeziumdebezium_195final)
+    - [`ghcr.io/duyet/docker-images:debezium_nightly`](#debeziumdebezium_nightly)
 
 
 ## `gcloud`
@@ -69,13 +69,13 @@ python3 gen.py
 Install from the command line
 
 ```bash
-docker pull ghcr.io/duyet/image:gcloud_python3.11
+docker pull ghcr.io/duyet/docker-images:gcloud_python3.11
 ```
 
 Use as base image in Dockerfile:
 
 ```Dockerfile
-FROM ghcr.io/duyet/image:gcloud_python3.11
+FROM ghcr.io/duyet/docker-images:gcloud_python3.11
 ```
 
 
@@ -86,13 +86,13 @@ FROM ghcr.io/duyet/image:gcloud_python3.11
 Install from the command line
 
 ```bash
-docker pull ghcr.io/duyet/image:upptime_monitor
+docker pull ghcr.io/duyet/docker-images:upptime_monitor
 ```
 
 Use as base image in Dockerfile:
 
 ```Dockerfile
-FROM ghcr.io/duyet/image:upptime_monitor
+FROM ghcr.io/duyet/docker-images:upptime_monitor
 ```
 
 
@@ -103,13 +103,13 @@ FROM ghcr.io/duyet/image:upptime_monitor
 Install from the command line
 
 ```bash
-docker pull ghcr.io/duyet/image:typos
+docker pull ghcr.io/duyet/docker-images:typos
 ```
 
 Use as base image in Dockerfile:
 
 ```Dockerfile
-FROM ghcr.io/duyet/image:typos
+FROM ghcr.io/duyet/docker-images:typos
 ```
 
 
@@ -118,13 +118,13 @@ FROM ghcr.io/duyet/image:typos
 Install from the command line
 
 ```bash
-docker pull ghcr.io/duyet/image:sccache
+docker pull ghcr.io/duyet/docker-images:sccache
 ```
 
 Use as base image in Dockerfile:
 
 ```Dockerfile
-FROM ghcr.io/duyet/image:sccache
+FROM ghcr.io/duyet/docker-images:sccache
 ```
 
 
@@ -133,13 +133,13 @@ FROM ghcr.io/duyet/image:sccache
 Install from the command line
 
 ```bash
-docker pull ghcr.io/duyet/image:python
+docker pull ghcr.io/duyet/docker-images:python
 ```
 
 Use as base image in Dockerfile:
 
 ```Dockerfile
-FROM ghcr.io/duyet/image:python
+FROM ghcr.io/duyet/docker-images:python
 ```
 
 
@@ -148,13 +148,13 @@ FROM ghcr.io/duyet/image:python
 Install from the command line
 
 ```bash
-docker pull ghcr.io/duyet/image:sccache-server
+docker pull ghcr.io/duyet/docker-images:sccache-server
 ```
 
 Use as base image in Dockerfile:
 
 ```Dockerfile
-FROM ghcr.io/duyet/image:sccache-server
+FROM ghcr.io/duyet/docker-images:sccache-server
 ```
 
 
@@ -163,13 +163,13 @@ FROM ghcr.io/duyet/image:sccache-server
 Install from the command line
 
 ```bash
-docker pull ghcr.io/duyet/image:cargo-audit
+docker pull ghcr.io/duyet/docker-images:cargo-audit
 ```
 
 Use as base image in Dockerfile:
 
 ```Dockerfile
-FROM ghcr.io/duyet/image:cargo-audit
+FROM ghcr.io/duyet/docker-images:cargo-audit
 ```
 
 
@@ -178,13 +178,13 @@ FROM ghcr.io/duyet/image:cargo-audit
 Install from the command line
 
 ```bash
-docker pull ghcr.io/duyet/image:sccache-scheduler
+docker pull ghcr.io/duyet/docker-images:sccache-scheduler
 ```
 
 Use as base image in Dockerfile:
 
 ```Dockerfile
-FROM ghcr.io/duyet/image:sccache-scheduler
+FROM ghcr.io/duyet/docker-images:sccache-scheduler
 ```
 
 
@@ -193,13 +193,13 @@ FROM ghcr.io/duyet/image:sccache-scheduler
 Install from the command line
 
 ```bash
-docker pull ghcr.io/duyet/image:athena
+docker pull ghcr.io/duyet/docker-images:athena
 ```
 
 Use as base image in Dockerfile:
 
 ```Dockerfile
-FROM ghcr.io/duyet/image:athena
+FROM ghcr.io/duyet/docker-images:athena
 ```
 
 
@@ -210,13 +210,13 @@ FROM ghcr.io/duyet/image:athena
 Install from the command line
 
 ```bash
-docker pull ghcr.io/duyet/image:kubeconform_latest
+docker pull ghcr.io/duyet/docker-images:kubeconform_latest
 ```
 
 Use as base image in Dockerfile:
 
 ```Dockerfile
-FROM ghcr.io/duyet/image:kubeconform_latest
+FROM ghcr.io/duyet/docker-images:kubeconform_latest
 ```
 
 
@@ -227,13 +227,13 @@ FROM ghcr.io/duyet/image:kubeconform_latest
 Install from the command line
 
 ```bash
-docker pull ghcr.io/duyet/image:debezium_2.0.0.Beta2
+docker pull ghcr.io/duyet/docker-images:debezium_2.0.0.Beta2
 ```
 
 Use as base image in Dockerfile:
 
 ```Dockerfile
-FROM ghcr.io/duyet/image:debezium_2.0.0.Beta2
+FROM ghcr.io/duyet/docker-images:debezium_2.0.0.Beta2
 ```
 
 
@@ -242,13 +242,13 @@ FROM ghcr.io/duyet/image:debezium_2.0.0.Beta2
 Install from the command line
 
 ```bash
-docker pull ghcr.io/duyet/image:debezium_2.0.0.Beta1
+docker pull ghcr.io/duyet/docker-images:debezium_2.0.0.Beta1
 ```
 
 Use as base image in Dockerfile:
 
 ```Dockerfile
-FROM ghcr.io/duyet/image:debezium_2.0.0.Beta1
+FROM ghcr.io/duyet/docker-images:debezium_2.0.0.Beta1
 ```
 
 
@@ -257,13 +257,13 @@ FROM ghcr.io/duyet/image:debezium_2.0.0.Beta1
 Install from the command line
 
 ```bash
-docker pull ghcr.io/duyet/image:debezium_1.9.5.Final
+docker pull ghcr.io/duyet/docker-images:debezium_1.9.5.Final
 ```
 
 Use as base image in Dockerfile:
 
 ```Dockerfile
-FROM ghcr.io/duyet/image:debezium_1.9.5.Final
+FROM ghcr.io/duyet/docker-images:debezium_1.9.5.Final
 ```
 
 
@@ -272,13 +272,13 @@ FROM ghcr.io/duyet/image:debezium_1.9.5.Final
 Install from the command line
 
 ```bash
-docker pull ghcr.io/duyet/image:debezium_nightly
+docker pull ghcr.io/duyet/docker-images:debezium_nightly
 ```
 
 Use as base image in Dockerfile:
 
 ```Dockerfile
-FROM ghcr.io/duyet/image:debezium_nightly
+FROM ghcr.io/duyet/docker-images:debezium_nightly
 ```
 
 <!-- END IMAGE LIST -->
