@@ -18,6 +18,66 @@ env:
 
 
 jobs:
+  gcloud:
+    name: Build gcloud
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        tags:
+          - gcloud_python3.11
+    env:
+      IMAGE_NAME: gcloud
+      IMAGE_TAG: '${{ matrix.tags }}'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+             src:
+              - '${{ env.IMAGE_NAME }}/${{ matrix.tags }}/**'
+              - '.github/workflows/ci.yaml'
+
+      - name: Log in to the Container registry
+        if: steps.changes.outputs.src == 'true'
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        if: steps.changes.outputs.src == 'true'
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Extract metadata (tags, labels) for Docker
+        if: steps.changes.outputs.src == 'true'
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.REPO }}
+          tags: |
+            type=raw,value=${{ matrix.tags }}
+
+      - name: Build and push
+        if: steps.changes.outputs.src == 'true'
+        id: docker_build
+        uses: docker/build-push-action@v3
+        with:
+          context: ${{ github.workspace }}
+          file: ./${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          # only push if the branch is master
+          push: ${{ github.ref == 'refs/heads/master' }}
+
+      - name: Image digest
+        if: steps.changes.outputs.src == 'true'
+        run: echo ${{ steps.docker_build.outputs.digest }}
+
   upptime:
     name: Build upptime
     runs-on: ubuntu-latest
