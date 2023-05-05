@@ -7,6 +7,8 @@ RUN apk --update add \
   py3-setuptools \
   jq \
   python3-dev \
+  git \
+  openssh-client \
   zlib-dev \
   libc-dev \
   libffi-dev \
@@ -15,4 +17,5 @@ RUN apk --update add \
   curl \
   make \
   cmake \
-  binutils
+  binutils \
+  && pip install pipenv

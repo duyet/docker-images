@@ -98,18 +98,19 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.REPO }}
           tags: |
             type=raw,value=${{ matrix.tags }}
+            type=raw,value=${{ matrix.tags }}-{{date 'YYYYMMDD'}}
+            type=sha,format=short
 
       - name: Build and push
         if: steps.changes.outputs.src == 'true'
         id: docker_build
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: ${{ github.workspace }}
           file: ./${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          # only push if the branch is master
-          push: ${{ github.ref == 'refs/heads/master' }}
+          push: ${{ github.event_name != 'pull_request' }}
 
       - name: Image digest
         if: steps.changes.outputs.src == 'true'

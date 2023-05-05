@@ -42,7 +42,8 @@ python3 gen.py
 
 <!-- BEGIN IMAGE LIST -->
 - [`gcloud`](#gcloud)
-    - [`ghcr.io/duyet/docker-images:gcloud_python3.11`](#gcloudgcloud_python311)
+    - [`ghcr.io/duyet/docker-images:gcloud_alpine_python3`](#gcloudgcloud_alpine_python3)
+    - [`ghcr.io/duyet/docker-images:gcloud_debian_python3`](#gcloudgcloud_debian_python3)
 - [`upptime`](#upptime)
     - [`ghcr.io/duyet/docker-images:upptime_monitor`](#upptimeupptime_monitor)
 - [`rust`](#rust)
@@ -64,18 +65,33 @@ python3 gen.py
 
 ## `gcloud`
 
-### [`gcloud/gcloud_python3.11`](gcloud/gcloud_python3.11/Dockerfile)
+### [`gcloud/gcloud_alpine_python3`](gcloud/gcloud_alpine_python3/Dockerfile)
 
 Install from the command line
 
 ```bash
-docker pull ghcr.io/duyet/docker-images:gcloud_python3.11
+docker pull ghcr.io/duyet/docker-images:gcloud_alpine_python3
 ```
 
 Use as base image in Dockerfile:
 
 ```Dockerfile
-FROM ghcr.io/duyet/docker-images:gcloud_python3.11
+FROM ghcr.io/duyet/docker-images:gcloud_alpine_python3
+```
+
+
+### [`gcloud/gcloud_debian_python3`](gcloud/gcloud_debian_python3/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:gcloud_debian_python3
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:gcloud_debian_python3
 ```
 
 
