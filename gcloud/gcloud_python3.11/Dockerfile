@@ -1,3 +1,18 @@
 FROM google/cloud-sdk:alpine
 
-RUN apk --update add python3 py3-pip jq
+RUN apk --update add \
+  python3 \
+  py3-pip \
+  py3-wheel \
+  py3-setuptools \
+  jq \
+  python3-dev \
+  zlib-dev \
+  libc-dev \
+  libffi-dev \
+  openssl-dev \
+  gcc \
+  curl \
+  make \
+  cmake \
+  binutils
