@@ -24,7 +24,8 @@ jobs:
     strategy:
       matrix:
         tags:
-          - gcloud_python3.11
+          - gcloud_alpine_python3
+          - gcloud_debian_python3
     env:
       IMAGE_NAME: gcloud
       IMAGE_TAG: '${{ matrix.tags }}'
