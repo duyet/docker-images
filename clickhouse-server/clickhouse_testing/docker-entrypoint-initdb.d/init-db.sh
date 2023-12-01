@@ -12,5 +12,8 @@ clickhouse client -n <<-EOSQL
     ORDER BY event_time;
 
     INSERT INTO data_lake.events (event_name, event_value)
-    SELECT * FROM generateRandom('event_name LowCardinality(String), event_value String') LIMIT 1000;
+    SELECT * FROM generateRandom('event_name LowCardinality(String), event_value String') LIMIT 100;
+
+    INSERT INTO data_lake.events (event_name, event_value)
+    SELECT * FROM generateRandom('event_name LowCardinality(String), event_value String') LIMIT 100;
 EOSQL
