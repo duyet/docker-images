@@ -6,9 +6,11 @@ clickhouse client -n <<-EOSQL
 
     CREATE TABLE data_lake.events (
       event_name LowCardinality(String),
-      event_value String
-    ) ENGINE = Log;
+      event_value String,
+      event_time DateTime DEFAULT now()
+    ) ENGINE = MergeTree
+    ORDER BY event_time;
 
-    INSERT INTO data_lake.events
-    SELECT * FROM generateRandom('event_name LowCardinality(String), event_value String') LIMIT 30;
+    INSERT INTO data_lake.events (event_name, event_value)
+    SELECT * FROM generateRandom('event_name LowCardinality(String), event_value String') LIMIT 1000;
 EOSQL
