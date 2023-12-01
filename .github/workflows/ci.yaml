@@ -214,7 +214,7 @@ jobs:
     strategy:
       matrix:
         tags:
-          - testing
+          - clickhouse_testing
     env:
       IMAGE_NAME: clickhouse-server
       IMAGE_TAG: '${{ matrix.tags }}'
