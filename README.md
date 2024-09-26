@@ -55,7 +55,10 @@ python3 gen.py
     - [`ghcr.io/duyet/docker-images:sccache-scheduler`](#rustsccache-scheduler)
     - [`ghcr.io/duyet/docker-images:athena`](#rustathena)
 - [`clickhouse-server`](#clickhouse-server)
+    - [`ghcr.io/duyet/docker-images:clickhouse_24.9`](#clickhouse-serverclickhouse_249)
+    - [`ghcr.io/duyet/docker-images:clickhouse_24.7`](#clickhouse-serverclickhouse_247)
     - [`ghcr.io/duyet/docker-images:clickhouse_24.6`](#clickhouse-serverclickhouse_246)
+    - [`ghcr.io/duyet/docker-images:clickhouse_24.8`](#clickhouse-serverclickhouse_248)
     - [`ghcr.io/duyet/docker-images:clickhouse_24.3`](#clickhouse-serverclickhouse_243)
     - [`ghcr.io/duyet/docker-images:clickhouse_24.5`](#clickhouse-serverclickhouse_245)
 - [`kubeconform`](#kubeconform)
@@ -225,6 +228,36 @@ FROM ghcr.io/duyet/docker-images:athena
 
 ## `clickhouse-server`
 
+### [`clickhouse-server/clickhouse_24.9`](clickhouse-server/clickhouse_24.9/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:clickhouse_24.9
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:clickhouse_24.9
+```
+
+
+### [`clickhouse-server/clickhouse_24.7`](clickhouse-server/clickhouse_24.7/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:clickhouse_24.7
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:clickhouse_24.7
+```
+
+
 ### [`clickhouse-server/clickhouse_24.6`](clickhouse-server/clickhouse_24.6/Dockerfile)
 
 Install from the command line
@@ -237,6 +270,21 @@ Use as base image in Dockerfile:
 
 ```Dockerfile
 FROM ghcr.io/duyet/docker-images:clickhouse_24.6
+```
+
+
+### [`clickhouse-server/clickhouse_24.8`](clickhouse-server/clickhouse_24.8/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:clickhouse_24.8
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:clickhouse_24.8
 ```
 
 
