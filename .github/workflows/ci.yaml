@@ -214,7 +214,10 @@ jobs:
     strategy:
       matrix:
         tags:
+          - clickhouse_24.9
+          - clickhouse_24.7
           - clickhouse_24.6
+          - clickhouse_24.8
           - clickhouse_24.3
           - clickhouse_24.5
     env:
