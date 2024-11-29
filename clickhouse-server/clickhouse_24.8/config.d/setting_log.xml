@@ -11,17 +11,17 @@
     <max_size_rows>1048576</max_size_rows>
     <reserved_size_rows>8192</reserved_size_rows>
     <buffer_size_rows_flush_threshold>524288</buffer_size_rows_flush_threshold>
-    <flush_on_crash>false</flush_on_crash>
+    <flush_on_crash>true</flush_on_crash>
   </part_log>
 
   <error_log>
     <database>system</database>
     <table>error_log</table>
-    <flush_interval_milliseconds>7500</flush_interval_milliseconds>
-    <collect_interval_milliseconds>1000</collect_interval_milliseconds>
+    <flush_interval_milliseconds>100</flush_interval_milliseconds>
+    <collect_interval_milliseconds>100</collect_interval_milliseconds>
     <max_size_rows>1048576</max_size_rows>
     <reserved_size_rows>8192</reserved_size_rows>
-    <buffer_size_rows_flush_threshold>524288</buffer_size_rows_flush_threshold>
-    <flush_on_crash>false</flush_on_crash>
+    <buffer_size_rows_flush_threshold>100</buffer_size_rows_flush_threshold>
+    <flush_on_crash>true</flush_on_crash>
   </error_log>
 </clickhouse>
