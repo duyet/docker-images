@@ -1,4 +1,11 @@
 <clickhouse>
+	<zookeeper>
+		<node>
+			<host>localhost</host>
+			<port>9181</port>
+		</node>
+	</zookeeper>
+
     <keeper_server>
         <tcp_port>2181</tcp_port>
         <server_id>1</server_id>

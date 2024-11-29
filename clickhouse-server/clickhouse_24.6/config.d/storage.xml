@@ -1,0 +1,15 @@
+<clickhouse>
+    <storage_configuration>
+        <disks>
+            <backups>
+                <type>local</type>
+                <path>/tmp/backups/</path>
+            </backups>
+        </disks>
+    </storage_configuration>
+
+    <backups>
+        <allowed_disk>backups</allowed_disk>
+        <allowed_path>/tmp/backups/</allowed_path>
+    </backups>
+</clickhouse>
