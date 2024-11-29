@@ -1,4 +1,4 @@
-FROM clickhouse/clickhouse-server:head
+FROM clickhouse/clickhouse-server:24.10
 
 COPY --chmod=755 clickhouse-server/clickhouse_24.10/config.d/ /etc/clickhouse-server/config.d/
 COPY --chmod=755 clickhouse-server/clickhouse_24.10/docker-entrypoint-initdb.d/ /docker-entrypoint-initdb.d/
