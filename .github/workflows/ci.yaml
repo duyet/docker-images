@@ -215,15 +215,15 @@ jobs:
       matrix:
         tags:
           - clickhouse_24.11
+          - clickhouse_25.3
           - clickhouse_24.10
-          - clickhouse_25.02
+          - clickhouse_25.2
           - clickhouse_24.9
           - clickhouse_24.7
           - clickhouse_24.6
           - clickhouse_24.8
-          - clickhouse_25.03
           - clickhouse_24.12
-          - clickhouse_25.01
+          - clickhouse_25.1
           - clickhouse_24.3
           - clickhouse_24.5
     env:

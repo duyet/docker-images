@@ -51,9 +51,9 @@ python3 gen.py
     - [`ghcr.io/duyet/docker-images:clickhouse_24.7`](#clickhouse-serverclickhouse_247)
     - [`ghcr.io/duyet/docker-images:clickhouse_24.8`](#clickhouse-serverclickhouse_248)
     - [`ghcr.io/duyet/docker-images:clickhouse_24.9`](#clickhouse-serverclickhouse_249)
-    - [`ghcr.io/duyet/docker-images:clickhouse_25.01`](#clickhouse-serverclickhouse_2501)
-    - [`ghcr.io/duyet/docker-images:clickhouse_25.02`](#clickhouse-serverclickhouse_2502)
-    - [`ghcr.io/duyet/docker-images:clickhouse_25.03`](#clickhouse-serverclickhouse_2503)
+    - [`ghcr.io/duyet/docker-images:clickhouse_25.1`](#clickhouse-serverclickhouse_251)
+    - [`ghcr.io/duyet/docker-images:clickhouse_25.2`](#clickhouse-serverclickhouse_252)
+    - [`ghcr.io/duyet/docker-images:clickhouse_25.3`](#clickhouse-serverclickhouse_253)
 - [`debezium`](#debezium)
     - [`ghcr.io/duyet/docker-images:debezium_1.9.5.Final`](#debeziumdebezium_195final)
     - [`ghcr.io/duyet/docker-images:debezium_2.0.0.Beta1`](#debeziumdebezium_200beta1)
@@ -249,6 +249,21 @@ FROM ghcr.io/duyet/docker-images:clickhouse_24.11
 ```
 
 
+### [`clickhouse-server/clickhouse_25.3`](clickhouse-server/clickhouse_25.3/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:clickhouse_25.3
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:clickhouse_25.3
+```
+
+
 ### [`clickhouse-server/clickhouse_24.10`](clickhouse-server/clickhouse_24.10/Dockerfile)
 
 Install from the command line
@@ -264,18 +279,18 @@ FROM ghcr.io/duyet/docker-images:clickhouse_24.10
 ```
 
 
-### [`clickhouse-server/clickhouse_25.02`](clickhouse-server/clickhouse_25.02/Dockerfile)
+### [`clickhouse-server/clickhouse_25.2`](clickhouse-server/clickhouse_25.2/Dockerfile)
 
 Install from the command line
 
 ```bash
-docker pull ghcr.io/duyet/docker-images:clickhouse_25.02
+docker pull ghcr.io/duyet/docker-images:clickhouse_25.2
 ```
 
 Use as base image in Dockerfile:
 
 ```Dockerfile
-FROM ghcr.io/duyet/docker-images:clickhouse_25.02
+FROM ghcr.io/duyet/docker-images:clickhouse_25.2
 ```
 
 
@@ -339,21 +354,6 @@ FROM ghcr.io/duyet/docker-images:clickhouse_24.8
 ```
 
 
-### [`clickhouse-server/clickhouse_25.03`](clickhouse-server/clickhouse_25.03/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:clickhouse_25.03
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:clickhouse_25.03
-```
-
-
 ### [`clickhouse-server/clickhouse_24.12`](clickhouse-server/clickhouse_24.12/Dockerfile)
 
 Install from the command line
@@ -369,18 +369,18 @@ FROM ghcr.io/duyet/docker-images:clickhouse_24.12
 ```
 
 
-### [`clickhouse-server/clickhouse_25.01`](clickhouse-server/clickhouse_25.01/Dockerfile)
+### [`clickhouse-server/clickhouse_25.1`](clickhouse-server/clickhouse_25.1/Dockerfile)
 
 Install from the command line
 
 ```bash
-docker pull ghcr.io/duyet/docker-images:clickhouse_25.01
+docker pull ghcr.io/duyet/docker-images:clickhouse_25.1
 ```
 
 Use as base image in Dockerfile:
 
 ```Dockerfile
-FROM ghcr.io/duyet/docker-images:clickhouse_25.01
+FROM ghcr.io/duyet/docker-images:clickhouse_25.1
 ```
 
 
