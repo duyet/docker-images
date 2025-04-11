@@ -41,35 +41,39 @@ python3 gen.py
 # Image lists
 
 <!-- BEGIN IMAGE LIST -->
-- [`gcloud`](#gcloud)
-    - [`ghcr.io/duyet/docker-images:gcloud_debian_python3`](#gcloudgcloud_debian_python3)
-    - [`ghcr.io/duyet/docker-images:gcloud_alpine_python39`](#gcloudgcloud_alpine_python39)
-- [`upptime`](#upptime)
-    - [`ghcr.io/duyet/docker-images:upptime_monitor`](#upptimeupptime_monitor)
-- [`rust`](#rust)
-    - [`ghcr.io/duyet/docker-images:typos`](#rusttypos)
-    - [`ghcr.io/duyet/docker-images:sccache`](#rustsccache)
-    - [`ghcr.io/duyet/docker-images:python`](#rustpython)
-    - [`ghcr.io/duyet/docker-images:sccache-server`](#rustsccache-server)
-    - [`ghcr.io/duyet/docker-images:cargo-audit`](#rustcargo-audit)
-    - [`ghcr.io/duyet/docker-images:sccache-scheduler`](#rustsccache-scheduler)
-    - [`ghcr.io/duyet/docker-images:athena`](#rustathena)
 - [`clickhouse-server`](#clickhouse-server)
-    - [`ghcr.io/duyet/docker-images:clickhouse_24.11`](#clickhouse-serverclickhouse_2411)
     - [`ghcr.io/duyet/docker-images:clickhouse_24.10`](#clickhouse-serverclickhouse_2410)
-    - [`ghcr.io/duyet/docker-images:clickhouse_24.9`](#clickhouse-serverclickhouse_249)
-    - [`ghcr.io/duyet/docker-images:clickhouse_24.7`](#clickhouse-serverclickhouse_247)
-    - [`ghcr.io/duyet/docker-images:clickhouse_24.6`](#clickhouse-serverclickhouse_246)
-    - [`ghcr.io/duyet/docker-images:clickhouse_24.8`](#clickhouse-serverclickhouse_248)
+    - [`ghcr.io/duyet/docker-images:clickhouse_24.11`](#clickhouse-serverclickhouse_2411)
+    - [`ghcr.io/duyet/docker-images:clickhouse_24.12`](#clickhouse-serverclickhouse_2412)
     - [`ghcr.io/duyet/docker-images:clickhouse_24.3`](#clickhouse-serverclickhouse_243)
     - [`ghcr.io/duyet/docker-images:clickhouse_24.5`](#clickhouse-serverclickhouse_245)
+    - [`ghcr.io/duyet/docker-images:clickhouse_24.6`](#clickhouse-serverclickhouse_246)
+    - [`ghcr.io/duyet/docker-images:clickhouse_24.7`](#clickhouse-serverclickhouse_247)
+    - [`ghcr.io/duyet/docker-images:clickhouse_24.8`](#clickhouse-serverclickhouse_248)
+    - [`ghcr.io/duyet/docker-images:clickhouse_24.9`](#clickhouse-serverclickhouse_249)
+    - [`ghcr.io/duyet/docker-images:clickhouse_25.1`](#clickhouse-serverclickhouse_251)
+    - [`ghcr.io/duyet/docker-images:clickhouse_25.2`](#clickhouse-serverclickhouse_252)
+    - [`ghcr.io/duyet/docker-images:clickhouse_25.3`](#clickhouse-serverclickhouse_253)
+- [`debezium`](#debezium)
+    - [`ghcr.io/duyet/docker-images:debezium_1.9.5.Final`](#debeziumdebezium_195final)
+    - [`ghcr.io/duyet/docker-images:debezium_2.0.0.Beta1`](#debeziumdebezium_200beta1)
+    - [`ghcr.io/duyet/docker-images:debezium_2.0.0.Beta2`](#debeziumdebezium_200beta2)
+    - [`ghcr.io/duyet/docker-images:debezium_nightly`](#debeziumdebezium_nightly)
+- [`gcloud`](#gcloud)
+    - [`ghcr.io/duyet/docker-images:gcloud_alpine_python39`](#gcloudgcloud_alpine_python39)
+    - [`ghcr.io/duyet/docker-images:gcloud_debian_python3`](#gcloudgcloud_debian_python3)
 - [`kubeconform`](#kubeconform)
     - [`ghcr.io/duyet/docker-images:kubeconform_latest`](#kubeconformkubeconform_latest)
-- [`debezium`](#debezium)
-    - [`ghcr.io/duyet/docker-images:debezium_2.0.0.Beta2`](#debeziumdebezium_200beta2)
-    - [`ghcr.io/duyet/docker-images:debezium_2.0.0.Beta1`](#debeziumdebezium_200beta1)
-    - [`ghcr.io/duyet/docker-images:debezium_1.9.5.Final`](#debeziumdebezium_195final)
-    - [`ghcr.io/duyet/docker-images:debezium_nightly`](#debeziumdebezium_nightly)
+- [`rust`](#rust)
+    - [`ghcr.io/duyet/docker-images:athena`](#rustathena)
+    - [`ghcr.io/duyet/docker-images:cargo-audit`](#rustcargo-audit)
+    - [`ghcr.io/duyet/docker-images:python`](#rustpython)
+    - [`ghcr.io/duyet/docker-images:sccache`](#rustsccache)
+    - [`ghcr.io/duyet/docker-images:sccache-scheduler`](#rustsccache-scheduler)
+    - [`ghcr.io/duyet/docker-images:sccache-server`](#rustsccache-server)
+    - [`ghcr.io/duyet/docker-images:typos`](#rusttypos)
+- [`upptime`](#upptime)
+    - [`ghcr.io/duyet/docker-images:upptime_monitor`](#upptimeupptime_monitor)
 
 
 ## `gcloud`
@@ -245,6 +249,21 @@ FROM ghcr.io/duyet/docker-images:clickhouse_24.11
 ```
 
 
+### [`clickhouse-server/clickhouse_25.3`](clickhouse-server/clickhouse_25.3/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:clickhouse_25.3
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:clickhouse_25.3
+```
+
+
 ### [`clickhouse-server/clickhouse_24.10`](clickhouse-server/clickhouse_24.10/Dockerfile)
 
 Install from the command line
@@ -257,6 +276,21 @@ Use as base image in Dockerfile:
 
 ```Dockerfile
 FROM ghcr.io/duyet/docker-images:clickhouse_24.10
+```
+
+
+### [`clickhouse-server/clickhouse_25.2`](clickhouse-server/clickhouse_25.2/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:clickhouse_25.2
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:clickhouse_25.2
 ```
 
 
@@ -317,6 +351,36 @@ Use as base image in Dockerfile:
 
 ```Dockerfile
 FROM ghcr.io/duyet/docker-images:clickhouse_24.8
+```
+
+
+### [`clickhouse-server/clickhouse_24.12`](clickhouse-server/clickhouse_24.12/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:clickhouse_24.12
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:clickhouse_24.12
+```
+
+
+### [`clickhouse-server/clickhouse_25.1`](clickhouse-server/clickhouse_25.1/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:clickhouse_25.1
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:clickhouse_25.1
 ```
 
 
