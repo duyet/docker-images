@@ -127,9 +127,9 @@ def get_template_readme():
 
     template = """
 
-{%- for image_name, image_tags in images.items() %}
+{%- for image_name, image_tags in images.items() | sort %}
 - [`{{ image_name }}`](#{{ image_name }})
-{%- for image_tag in image_tags %}
+{%- for image_tag in image_tags | sort %}
     - [`ghcr.io/duyet/docker-images:{{ image_tag }}`](#{{ (image_name + image_tag).lower().replace(" ", "").replace(".", "") }})
 {%- endfor %}
 {%- endfor %}
