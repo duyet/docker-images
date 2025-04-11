@@ -348,9 +348,9 @@ jobs:
       matrix:
         tags:
           - debezium_2.0.0.Beta2
+          - debezium_3.0.0.Final
           - debezium_2.0.0.Beta1
           - debezium_1.9.5.Final
-          - debezium_nightly
     env:
       IMAGE_NAME: debezium
       IMAGE_TAG: '${{ matrix.tags }}'
