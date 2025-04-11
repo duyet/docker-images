@@ -58,7 +58,7 @@ python3 gen.py
     - [`ghcr.io/duyet/docker-images:debezium_1.9.5.Final`](#debeziumdebezium_195final)
     - [`ghcr.io/duyet/docker-images:debezium_2.0.0.Beta1`](#debeziumdebezium_200beta1)
     - [`ghcr.io/duyet/docker-images:debezium_2.0.0.Beta2`](#debeziumdebezium_200beta2)
-    - [`ghcr.io/duyet/docker-images:debezium_nightly`](#debeziumdebezium_nightly)
+    - [`ghcr.io/duyet/docker-images:debezium_3.0.0.Final`](#debeziumdebezium_300final)
 - [`gcloud`](#gcloud)
     - [`ghcr.io/duyet/docker-images:gcloud_alpine_python39`](#gcloudgcloud_alpine_python39)
     - [`ghcr.io/duyet/docker-images:gcloud_debian_python3`](#gcloudgcloud_debian_python3)
@@ -448,6 +448,21 @@ FROM ghcr.io/duyet/docker-images:debezium_2.0.0.Beta2
 ```
 
 
+### [`debezium/debezium_3.0.0.Final`](debezium/debezium_3.0.0.Final/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:debezium_3.0.0.Final
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:debezium_3.0.0.Final
+```
+
+
 ### [`debezium/debezium_2.0.0.Beta1`](debezium/debezium_2.0.0.Beta1/Dockerfile)
 
 Install from the command line
@@ -475,21 +490,6 @@ Use as base image in Dockerfile:
 
 ```Dockerfile
 FROM ghcr.io/duyet/docker-images:debezium_1.9.5.Final
-```
-
-
-### [`debezium/debezium_nightly`](debezium/debezium_nightly/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:debezium_nightly
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:debezium_nightly
 ```
 
 <!-- END IMAGE LIST -->
