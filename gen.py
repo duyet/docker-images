@@ -106,6 +106,7 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v4
         with:
+          platforms: linux/amd64,linux/arm64
           context: ${{ github.workspace }}
           file: ./${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
