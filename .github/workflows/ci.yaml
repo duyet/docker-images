@@ -219,6 +219,8 @@ jobs:
         tags:
           - clickhouse_24.11
           - clickhouse_25.3
+          - clickhouse_25.4
+          - clickhouse_25.5
           - clickhouse_24.10
           - clickhouse_25.2
           - clickhouse_24.9
@@ -227,6 +229,7 @@ jobs:
           - clickhouse_24.8
           - clickhouse_24.12
           - clickhouse_25.1
+          - clickhouse_25.6
           - clickhouse_24.3
           - clickhouse_24.5
     env:
