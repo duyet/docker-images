@@ -67,6 +67,9 @@ python3 gen.py
     - [`ghcr.io/duyet/docker-images:gcloud_debian_python3`](#gcloudgcloud_debian_python3)
 - [`kubeconform`](#kubeconform)
     - [`ghcr.io/duyet/docker-images:kubeconform_latest`](#kubeconformkubeconform_latest)
+- [`node`](#node)
+    - [`ghcr.io/duyet/docker-images:node_22`](#nodenode_22)
+    - [`ghcr.io/duyet/docker-images:node_24`](#nodenode_24)
 - [`rust`](#rust)
     - [`ghcr.io/duyet/docker-images:athena`](#rustathena)
     - [`ghcr.io/duyet/docker-images:cargo-audit`](#rustcargo-audit)
@@ -476,6 +479,38 @@ Use as base image in Dockerfile:
 
 ```Dockerfile
 FROM ghcr.io/duyet/docker-images:kubeconform_latest
+```
+
+
+## `node`
+
+### [`node/node_24`](node/node_24/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:node_24
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:node_24
+```
+
+
+### [`node/node_22`](node/node_22/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:node_22
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:node_22
 ```
 
 
