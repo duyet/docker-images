@@ -70,6 +70,12 @@ python3 gen.py
 - [`node`](#node)
     - [`ghcr.io/duyet/docker-images:node_22`](#nodenode_22)
     - [`ghcr.io/duyet/docker-images:node_24`](#nodenode_24)
+- [`postgres`](#postgres)
+    - [`ghcr.io/duyet/docker-images:postgres_14`](#postgrespostgres_14)
+    - [`ghcr.io/duyet/docker-images:postgres_15`](#postgrespostgres_15)
+    - [`ghcr.io/duyet/docker-images:postgres_16`](#postgrespostgres_16)
+    - [`ghcr.io/duyet/docker-images:postgres_17`](#postgrespostgres_17)
+    - [`ghcr.io/duyet/docker-images:postgres_latest`](#postgrespostgres_latest)
 - [`redis`](#redis)
     - [`ghcr.io/duyet/docker-images:redis_7`](#redisredis_7)
     - [`ghcr.io/duyet/docker-images:redis_8`](#redisredis_8)
@@ -270,6 +276,83 @@ Use as base image in Dockerfile:
 
 ```Dockerfile
 FROM ghcr.io/duyet/docker-images:athena
+```
+
+
+## `postgres`
+
+### [`postgres/postgres_latest`](postgres/postgres_latest/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:postgres_latest
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:postgres_latest
+```
+
+
+### [`postgres/postgres_17`](postgres/postgres_17/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:postgres_17
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:postgres_17
+```
+
+
+### [`postgres/postgres_16`](postgres/postgres_16/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:postgres_16
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:postgres_16
+```
+
+
+### [`postgres/postgres_14`](postgres/postgres_14/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:postgres_14
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:postgres_14
+```
+
+
+### [`postgres/postgres_15`](postgres/postgres_15/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:postgres_15
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:postgres_15
 ```
 
 
