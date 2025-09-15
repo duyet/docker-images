@@ -70,6 +70,9 @@ python3 gen.py
 - [`node`](#node)
     - [`ghcr.io/duyet/docker-images:node_22`](#nodenode_22)
     - [`ghcr.io/duyet/docker-images:node_24`](#nodenode_24)
+- [`redis`](#redis)
+    - [`ghcr.io/duyet/docker-images:redis_7`](#redisredis_7)
+    - [`ghcr.io/duyet/docker-images:redis_8`](#redisredis_8)
 - [`rust`](#rust)
     - [`ghcr.io/duyet/docker-images:athena`](#rustathena)
     - [`ghcr.io/duyet/docker-images:cargo-audit`](#rustcargo-audit)
@@ -111,6 +114,38 @@ Use as base image in Dockerfile:
 
 ```Dockerfile
 FROM ghcr.io/duyet/docker-images:gcloud_alpine_python39
+```
+
+
+## `redis`
+
+### [`redis/redis_7`](redis/redis_7/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:redis_7
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:redis_7
+```
+
+
+### [`redis/redis_8`](redis/redis_8/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:redis_8
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:redis_8
 ```
 
 

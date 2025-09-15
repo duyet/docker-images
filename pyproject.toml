@@ -1,0 +1,12 @@
+[project]
+name = "docker-images"
+version = "0.1.0"
+description = "Docker images build system"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "jinja2",
+]
+
+[tool.uv]
+dev-dependencies = []
