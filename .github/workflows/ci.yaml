@@ -88,6 +88,7 @@ jobs:
       matrix:
         tags:
           - redis_7
+          - redis_8
     env:
       IMAGE_NAME: redis
       IMAGE_TAG: '${{ matrix.tags }}'
