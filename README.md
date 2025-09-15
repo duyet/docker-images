@@ -76,6 +76,9 @@ python3 gen.py
     - [`ghcr.io/duyet/docker-images:postgres_16`](#postgrespostgres_16)
     - [`ghcr.io/duyet/docker-images:postgres_17`](#postgrespostgres_17)
     - [`ghcr.io/duyet/docker-images:postgres_latest`](#postgrespostgres_latest)
+- [`python`](#python)
+    - [`ghcr.io/duyet/docker-images:python_3.12_slim_bookworm`](#pythonpython_312_slim_bookworm)
+    - [`ghcr.io/duyet/docker-images:python_3.14_slim_bookworm`](#pythonpython_314_slim_bookworm)
 - [`redis`](#redis)
     - [`ghcr.io/duyet/docker-images:redis_7`](#redisredis_7)
     - [`ghcr.io/duyet/docker-images:redis_8`](#redisredis_8)
@@ -120,6 +123,38 @@ Use as base image in Dockerfile:
 
 ```Dockerfile
 FROM ghcr.io/duyet/docker-images:gcloud_alpine_python39
+```
+
+
+## `python`
+
+### [`python/python_3.12_slim_bookworm`](python/python_3.12_slim_bookworm/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:python_3.12_slim_bookworm
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:python_3.12_slim_bookworm
+```
+
+
+### [`python/python_3.14_slim_bookworm`](python/python_3.14_slim_bookworm/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:python_3.14_slim_bookworm
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:python_3.14_slim_bookworm
 ```
 
 
