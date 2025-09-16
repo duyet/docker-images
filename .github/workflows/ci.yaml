@@ -409,6 +409,7 @@ jobs:
     strategy:
       matrix:
         tags:
+          - clickhouse_25.26
           - clickhouse_24.11
           - clickhouse_25.3
           - clickhouse_25.4
@@ -419,7 +420,9 @@ jobs:
           - clickhouse_24.7
           - clickhouse_24.6
           - clickhouse_24.8
+          - clickhouse_25.7
           - clickhouse_24.12
+          - clickhouse_25.8
           - clickhouse_25.1
           - clickhouse_25.6
           - clickhouse_24.3
