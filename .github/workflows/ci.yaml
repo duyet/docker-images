@@ -419,7 +419,9 @@ jobs:
           - clickhouse_24.7
           - clickhouse_24.6
           - clickhouse_24.8
+          - clickhouse_25.7
           - clickhouse_24.12
+          - clickhouse_25.8
           - clickhouse_25.1
           - clickhouse_25.6
           - clickhouse_24.3
