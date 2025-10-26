@@ -2,7 +2,7 @@
 FROM golang:1.24-alpine AS builder
 
 # Install build dependencies
-RUN apk add --no-cache git make
+RUN apk add --no-cache git make bash gcc musl-dev
 
 # Set working directory
 WORKDIR /go/src/github.com/minio/minio
@@ -36,10 +36,6 @@ EXPOSE 9000 9001
 
 # Set user
 USER minio
-
-# Set environment variables
-ENV MINIO_ROOT_USER=minioadmin \
-    MINIO_ROOT_PASSWORD=minioadmin
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
