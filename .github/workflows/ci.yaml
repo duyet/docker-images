@@ -549,8 +549,12 @@ jobs:
     strategy:
       matrix:
         tags:
+          - node_20
+          - node_22-slim
+          - node_24-slim
           - node_24
           - node_22
+          - node_20-slim
     env:
       IMAGE_NAME: node
       IMAGE_TAG: '${{ matrix.tags }}'

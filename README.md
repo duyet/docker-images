@@ -70,8 +70,12 @@ python3 gen.py
 - [`kubeconform`](#kubeconform)
     - [`ghcr.io/duyet/docker-images:kubeconform_latest`](#kubeconformkubeconform_latest)
 - [`node`](#node)
+    - [`ghcr.io/duyet/docker-images:node_20`](#nodenode_20)
+    - [`ghcr.io/duyet/docker-images:node_20-slim`](#nodenode_20-slim)
     - [`ghcr.io/duyet/docker-images:node_22`](#nodenode_22)
+    - [`ghcr.io/duyet/docker-images:node_22-slim`](#nodenode_22-slim)
     - [`ghcr.io/duyet/docker-images:node_24`](#nodenode_24)
+    - [`ghcr.io/duyet/docker-images:node_24-slim`](#nodenode_24-slim)
 - [`postgres`](#postgres)
     - [`ghcr.io/duyet/docker-images:postgres_14`](#postgrespostgres_14)
     - [`ghcr.io/duyet/docker-images:postgres_15`](#postgrespostgres_15)
@@ -669,6 +673,51 @@ FROM ghcr.io/duyet/docker-images:kubeconform_latest
 
 ## `node`
 
+### [`node/node_20`](node/node_20/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:node_20
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:node_20
+```
+
+
+### [`node/node_22-slim`](node/node_22-slim/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:node_22-slim
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:node_22-slim
+```
+
+
+### [`node/node_24-slim`](node/node_24-slim/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:node_24-slim
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:node_24-slim
+```
+
+
 ### [`node/node_24`](node/node_24/Dockerfile)
 
 Install from the command line
@@ -696,6 +745,21 @@ Use as base image in Dockerfile:
 
 ```Dockerfile
 FROM ghcr.io/duyet/docker-images:node_22
+```
+
+
+### [`node/node_20-slim`](node/node_20-slim/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:node_20-slim
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:node_20-slim
 ```
 
 
