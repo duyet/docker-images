@@ -69,6 +69,8 @@ python3 gen.py
     - [`ghcr.io/duyet/docker-images:gcloud_debian_python3`](#gcloudgcloud_debian_python3)
 - [`kubeconform`](#kubeconform)
     - [`ghcr.io/duyet/docker-images:kubeconform_latest`](#kubeconformkubeconform_latest)
+- [`minio`](#minio)
+    - [`ghcr.io/duyet/docker-images:minio_latest`](#miniominio_latest)
 - [`node`](#node)
     - [`ghcr.io/duyet/docker-images:node_20`](#nodenode_20)
     - [`ghcr.io/duyet/docker-images:node_20-slim`](#nodenode_20-slim)
@@ -317,6 +319,23 @@ Use as base image in Dockerfile:
 
 ```Dockerfile
 FROM ghcr.io/duyet/docker-images:athena
+```
+
+
+## `minio`
+
+### [`minio/minio_latest`](minio/minio_latest/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:minio_latest
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:minio_latest
 ```
 
 

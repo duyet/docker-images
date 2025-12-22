@@ -45,6 +45,10 @@ on:
       - master
 
 {% raw %}
+permissions:
+  contents: read
+  packages: write
+
 env:
   REGISTRY: ghcr.io
   REPO: ${{ github.repository }}
