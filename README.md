@@ -41,6 +41,10 @@ python3 gen.py
 # Image lists
 
 <!-- BEGIN IMAGE LIST -->
+- [`bun`](#bun)
+    - [`ghcr.io/duyet/docker-images:bun_1`](#bunbun_1)
+    - [`ghcr.io/duyet/docker-images:bun_1.3`](#bunbun_13)
+    - [`ghcr.io/duyet/docker-images:bun_latest`](#bunbun_latest)
 - [`clickhouse-server`](#clickhouse-server)
     - [`ghcr.io/duyet/docker-images:clickhouse_24.10`](#clickhouse-serverclickhouse_2410)
     - [`ghcr.io/duyet/docker-images:clickhouse_24.11`](#clickhouse-serverclickhouse_2411)
@@ -317,6 +321,53 @@ Use as base image in Dockerfile:
 
 ```Dockerfile
 FROM ghcr.io/duyet/docker-images:athena
+```
+
+
+## `bun`
+
+### [`bun/bun_latest`](bun/bun_latest/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:bun_latest
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:bun_latest
+```
+
+
+### [`bun/bun_1.3`](bun/bun_1.3/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:bun_1.3
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:bun_1.3
+```
+
+
+### [`bun/bun_1`](bun/bun_1/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:bun_1
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:bun_1
 ```
 
 
