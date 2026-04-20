@@ -182,7 +182,11 @@ def build_workflows(images):
     """Build the workflows yaml for the images."""
 
     # Get the jinja2 template
-    template = jinja2.Template(get_template_workflows())
+    template = jinja2.Template(
+        get_template_workflows(),
+        trim_blocks=True,
+        lstrip_blocks=True
+    )
 
     # Get fallback image
     fallback_name, fallback_tag = get_fallback_image(images)
@@ -201,6 +205,10 @@ def build_workflows(images):
     workflows = workflows.replace('{{ "}}" }}', "}}")
     workflows = workflows.replace('{{ "{{" }} {{ "}}" }}', "{{")
     workflows = workflows.replace('{{ "}}" }}', "}}")
+
+    # Remove excessive blank lines (more than 2 consecutive)
+    import re
+    workflows = re.sub(r'\n{3,}', '\n\n', workflows)
 
     return workflows
 

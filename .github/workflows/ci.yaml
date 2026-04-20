@@ -29,184 +29,108 @@ jobs:
         id: changes
         with:
           filters: |
-
-
             gcloud_gcloud_debian_python3:
               - 'gcloud/gcloud_debian_python3/**'
-
             gcloud_gcloud_alpine_python39:
               - 'gcloud/gcloud_alpine_python39/**'
-
-
-
             debian_stable_slim:
               - 'debian/stable-slim/**'
-
-
-
             python_python_3_12_slim_bookworm:
               - 'python/python_3.12_slim_bookworm/**'
-
             python_python_3_14_slim_bookworm:
               - 'python/python_3.14_slim_bookworm/**'
-
-
-
             redis_redis_7:
               - 'redis/redis_7/**'
-
             redis_redis_8:
               - 'redis/redis_8/**'
-
-
-
             upptime_upptime_monitor:
               - 'upptime/upptime_monitor/**'
-
-
-
             rust_typos:
               - 'rust/typos/**'
-
             rust_sccache:
               - 'rust/sccache/**'
-
             rust_python:
               - 'rust/python/**'
-
             rust_sccache_server:
               - 'rust/sccache-server/**'
-
             rust_cargo_audit:
               - 'rust/cargo-audit/**'
-
             rust_sccache_scheduler:
               - 'rust/sccache-scheduler/**'
-
             rust_athena:
               - 'rust/athena/**'
-
-
-
             bun_bun_latest:
               - 'bun/bun_latest/**'
-
             bun_bun_1_3:
               - 'bun/bun_1.3/**'
-
             bun_bun_1:
               - 'bun/bun_1/**'
-
-
-
             postgres_postgres_latest:
               - 'postgres/postgres_latest/**'
-
             postgres_postgres_17:
               - 'postgres/postgres_17/**'
-
             postgres_postgres_16:
               - 'postgres/postgres_16/**'
-
             postgres_postgres_14:
               - 'postgres/postgres_14/**'
-
             postgres_postgres_15:
               - 'postgres/postgres_15/**'
-
-
-
             clickhouse_server_clickhouse_24_11:
               - 'clickhouse-server/clickhouse_24.11/**'
-
             clickhouse_server_clickhouse_25_3:
               - 'clickhouse-server/clickhouse_25.3/**'
-
             clickhouse_server_clickhouse_25_4:
               - 'clickhouse-server/clickhouse_25.4/**'
-
             clickhouse_server_clickhouse_25_5:
               - 'clickhouse-server/clickhouse_25.5/**'
-
             clickhouse_server_clickhouse_24_10:
               - 'clickhouse-server/clickhouse_24.10/**'
-
             clickhouse_server_clickhouse_25_2:
               - 'clickhouse-server/clickhouse_25.2/**'
-
             clickhouse_server_clickhouse_24_9:
               - 'clickhouse-server/clickhouse_24.9/**'
-
             clickhouse_server_clickhouse_24_7:
               - 'clickhouse-server/clickhouse_24.7/**'
-
             clickhouse_server_clickhouse_24_6:
               - 'clickhouse-server/clickhouse_24.6/**'
-
             clickhouse_server_clickhouse_24_8:
               - 'clickhouse-server/clickhouse_24.8/**'
-
             clickhouse_server_clickhouse_25_7:
               - 'clickhouse-server/clickhouse_25.7/**'
-
             clickhouse_server_clickhouse_24_12:
               - 'clickhouse-server/clickhouse_24.12/**'
-
             clickhouse_server_clickhouse_25_8:
               - 'clickhouse-server/clickhouse_25.8/**'
-
             clickhouse_server_clickhouse_25_1:
               - 'clickhouse-server/clickhouse_25.1/**'
-
             clickhouse_server_clickhouse_25_6:
               - 'clickhouse-server/clickhouse_25.6/**'
-
             clickhouse_server_clickhouse_24_3:
               - 'clickhouse-server/clickhouse_24.3/**'
-
             clickhouse_server_clickhouse_24_5:
               - 'clickhouse-server/clickhouse_24.5/**'
-
-
-
             kubeconform_kubeconform_latest:
               - 'kubeconform/kubeconform_latest/**'
-
-
-
             node_node_20:
               - 'node/node_20/**'
-
             node_node_22_slim:
               - 'node/node_22-slim/**'
-
             node_node_24_slim:
               - 'node/node_24-slim/**'
-
             node_node_24:
               - 'node/node_24/**'
-
             node_node_22:
               - 'node/node_22/**'
-
             node_node_20_slim:
               - 'node/node_20-slim/**'
-
-
-
             debezium_debezium_2_0_0_Beta2:
               - 'debezium/debezium_2.0.0.Beta2/**'
-
             debezium_debezium_3_0_0_Final:
               - 'debezium/debezium_3.0.0.Final/**'
-
             debezium_debezium_2_0_0_Beta1:
               - 'debezium/debezium_2.0.0.Beta1/**'
-
             debezium_debezium_1_9_5_Final:
               - 'debezium/debezium_1.9.5.Final/**'
-
-
             ci_workflow:
               - '.github/workflows/ci.yaml'
           format: json
@@ -215,235 +139,159 @@ jobs:
         id: set-matrix
         run: |
           MATRIX='[]'
-
-
           if [ "${{ steps.changes.outputs.gcloud_gcloud_debian_python3 }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "gcloud" --arg image_tag "gcloud_debian_python3" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.gcloud_gcloud_alpine_python39 }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "gcloud" --arg image_tag "gcloud_alpine_python39" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
-
-
           if [ "${{ steps.changes.outputs.debian_stable_slim }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "debian" --arg image_tag "stable-slim" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
-
-
           if [ "${{ steps.changes.outputs.python_python_3_12_slim_bookworm }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "python" --arg image_tag "python_3.12_slim_bookworm" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.python_python_3_14_slim_bookworm }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "python" --arg image_tag "python_3.14_slim_bookworm" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
-
-
           if [ "${{ steps.changes.outputs.redis_redis_7 }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "redis" --arg image_tag "redis_7" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.redis_redis_8 }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "redis" --arg image_tag "redis_8" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
-
-
           if [ "${{ steps.changes.outputs.upptime_upptime_monitor }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "upptime" --arg image_tag "upptime_monitor" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
-
-
           if [ "${{ steps.changes.outputs.rust_typos }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "rust" --arg image_tag "typos" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.rust_sccache }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "rust" --arg image_tag "sccache" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.rust_python }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "rust" --arg image_tag "python" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.rust_sccache_server }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "rust" --arg image_tag "sccache-server" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.rust_cargo_audit }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "rust" --arg image_tag "cargo-audit" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.rust_sccache_scheduler }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "rust" --arg image_tag "sccache-scheduler" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.rust_athena }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "rust" --arg image_tag "athena" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
-
-
           if [ "${{ steps.changes.outputs.bun_bun_latest }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "bun" --arg image_tag "bun_latest" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.bun_bun_1_3 }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "bun" --arg image_tag "bun_1.3" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.bun_bun_1 }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "bun" --arg image_tag "bun_1" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
-
-
           if [ "${{ steps.changes.outputs.postgres_postgres_latest }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "postgres" --arg image_tag "postgres_latest" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.postgres_postgres_17 }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "postgres" --arg image_tag "postgres_17" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.postgres_postgres_16 }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "postgres" --arg image_tag "postgres_16" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.postgres_postgres_14 }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "postgres" --arg image_tag "postgres_14" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.postgres_postgres_15 }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "postgres" --arg image_tag "postgres_15" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
-
-
           if [ "${{ steps.changes.outputs.clickhouse_server_clickhouse_24_11 }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "clickhouse-server" --arg image_tag "clickhouse_24.11" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.clickhouse_server_clickhouse_25_3 }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "clickhouse-server" --arg image_tag "clickhouse_25.3" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.clickhouse_server_clickhouse_25_4 }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "clickhouse-server" --arg image_tag "clickhouse_25.4" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.clickhouse_server_clickhouse_25_5 }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "clickhouse-server" --arg image_tag "clickhouse_25.5" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.clickhouse_server_clickhouse_24_10 }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "clickhouse-server" --arg image_tag "clickhouse_24.10" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.clickhouse_server_clickhouse_25_2 }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "clickhouse-server" --arg image_tag "clickhouse_25.2" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.clickhouse_server_clickhouse_24_9 }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "clickhouse-server" --arg image_tag "clickhouse_24.9" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.clickhouse_server_clickhouse_24_7 }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "clickhouse-server" --arg image_tag "clickhouse_24.7" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.clickhouse_server_clickhouse_24_6 }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "clickhouse-server" --arg image_tag "clickhouse_24.6" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.clickhouse_server_clickhouse_24_8 }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "clickhouse-server" --arg image_tag "clickhouse_24.8" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.clickhouse_server_clickhouse_25_7 }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "clickhouse-server" --arg image_tag "clickhouse_25.7" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.clickhouse_server_clickhouse_24_12 }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "clickhouse-server" --arg image_tag "clickhouse_24.12" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.clickhouse_server_clickhouse_25_8 }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "clickhouse-server" --arg image_tag "clickhouse_25.8" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.clickhouse_server_clickhouse_25_1 }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "clickhouse-server" --arg image_tag "clickhouse_25.1" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.clickhouse_server_clickhouse_25_6 }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "clickhouse-server" --arg image_tag "clickhouse_25.6" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.clickhouse_server_clickhouse_24_3 }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "clickhouse-server" --arg image_tag "clickhouse_24.3" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.clickhouse_server_clickhouse_24_5 }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "clickhouse-server" --arg image_tag "clickhouse_24.5" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
-
-
           if [ "${{ steps.changes.outputs.kubeconform_kubeconform_latest }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "kubeconform" --arg image_tag "kubeconform_latest" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
-
-
           if [ "${{ steps.changes.outputs.node_node_20 }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "node" --arg image_tag "node_20" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.node_node_22_slim }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "node" --arg image_tag "node_22-slim" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.node_node_24_slim }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "node" --arg image_tag "node_24-slim" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.node_node_24 }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "node" --arg image_tag "node_24" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.node_node_22 }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "node" --arg image_tag "node_22" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.node_node_20_slim }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "node" --arg image_tag "node_20-slim" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
-
-
           if [ "${{ steps.changes.outputs.debezium_debezium_2_0_0_Beta2 }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "debezium" --arg image_tag "debezium_2.0.0.Beta2" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.debezium_debezium_3_0_0_Final }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "debezium" --arg image_tag "debezium_3.0.0.Final" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.debezium_debezium_2_0_0_Beta1 }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "debezium" --arg image_tag "debezium_2.0.0.Beta1" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
           if [ "${{ steps.changes.outputs.debezium_debezium_1_9_5_Final }}" == "true" ]; then
             MATRIX=$(echo "$MATRIX" | jq --arg image_name "debezium" --arg image_tag "debezium_1.9.5.Final" '. + [{image_name: $image_name, image_tag: $image_tag}]')
           fi
-
-
           echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
 
       - name: Build full matrix if workflow changed
@@ -452,109 +300,57 @@ jobs:
           MATRIX="${{ steps.set-matrix.outputs.matrix }}"
           if [ "${{ steps.changes.outputs.ci_workflow }}" == "true" ]; then
             MATRIX='[]'
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "gcloud" --arg tag "gcloud_debian_python3" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "gcloud" --arg tag "gcloud_alpine_python39" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "debian" --arg tag "stable-slim" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "python" --arg tag "python_3.12_slim_bookworm" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "python" --arg tag "python_3.14_slim_bookworm" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "redis" --arg tag "redis_7" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "redis" --arg tag "redis_8" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "upptime" --arg tag "upptime_monitor" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "rust" --arg tag "typos" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "rust" --arg tag "sccache" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "rust" --arg tag "python" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "rust" --arg tag "sccache-server" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "rust" --arg tag "cargo-audit" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "rust" --arg tag "sccache-scheduler" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "rust" --arg tag "athena" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "bun" --arg tag "bun_latest" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "bun" --arg tag "bun_1.3" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "bun" --arg tag "bun_1" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "postgres" --arg tag "postgres_latest" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "postgres" --arg tag "postgres_17" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "postgres" --arg tag "postgres_16" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "postgres" --arg tag "postgres_14" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "postgres" --arg tag "postgres_15" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "clickhouse-server" --arg tag "clickhouse_24.11" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "clickhouse-server" --arg tag "clickhouse_25.3" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "clickhouse-server" --arg tag "clickhouse_25.4" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "clickhouse-server" --arg tag "clickhouse_25.5" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "clickhouse-server" --arg tag "clickhouse_24.10" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "clickhouse-server" --arg tag "clickhouse_25.2" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "clickhouse-server" --arg tag "clickhouse_24.9" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "clickhouse-server" --arg tag "clickhouse_24.7" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "clickhouse-server" --arg tag "clickhouse_24.6" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "clickhouse-server" --arg tag "clickhouse_24.8" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "clickhouse-server" --arg tag "clickhouse_25.7" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "clickhouse-server" --arg tag "clickhouse_24.12" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "clickhouse-server" --arg tag "clickhouse_25.8" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "clickhouse-server" --arg tag "clickhouse_25.1" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "clickhouse-server" --arg tag "clickhouse_25.6" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "clickhouse-server" --arg tag "clickhouse_24.3" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "clickhouse-server" --arg tag "clickhouse_24.5" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "kubeconform" --arg tag "kubeconform_latest" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "node" --arg tag "node_20" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "node" --arg tag "node_22-slim" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "node" --arg tag "node_24-slim" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "node" --arg tag "node_24" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "node" --arg tag "node_22" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "node" --arg tag "node_20-slim" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "debezium" --arg tag "debezium_2.0.0.Beta2" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "debezium" --arg tag "debezium_3.0.0.Final" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "debezium" --arg tag "debezium_2.0.0.Beta1" '. + [{image_name: $name, image_tag: $tag}]')
-            
             MATRIX=$(echo "$MATRIX" | jq --arg name "debezium" --arg tag "debezium_1.9.5.Final" '. + [{image_name: $name, image_tag: $tag}]')
-            
           fi
           if [ "$MATRIX" == "[]" ]; then
             MATRIX='[{"image_name":"gcloud","image_tag":"gcloud_debian_python3"}]'
