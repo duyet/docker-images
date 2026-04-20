@@ -68,6 +68,8 @@ python3 gen.py
     - [`ghcr.io/duyet/docker-images:debezium_2.0.0.Beta1`](#debeziumdebezium_200beta1)
     - [`ghcr.io/duyet/docker-images:debezium_2.0.0.Beta2`](#debeziumdebezium_200beta2)
     - [`ghcr.io/duyet/docker-images:debezium_3.0.0.Final`](#debeziumdebezium_300final)
+- [`debian`](#debian)
+    - [`ghcr.io/duyet/docker-images:stable-slim`](#debianstable-slim)
 - [`gcloud`](#gcloud)
     - [`ghcr.io/duyet/docker-images:gcloud_alpine_python39`](#gcloudgcloud_alpine_python39)
     - [`ghcr.io/duyet/docker-images:gcloud_debian_python3`](#gcloudgcloud_debian_python3)
@@ -133,6 +135,23 @@ Use as base image in Dockerfile:
 
 ```Dockerfile
 FROM ghcr.io/duyet/docker-images:gcloud_alpine_python39
+```
+
+
+## `debian`
+
+### [`debian/stable-slim`](debian/stable-slim/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:stable-slim
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:stable-slim
 ```
 
 
