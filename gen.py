@@ -67,7 +67,7 @@ jobs:
     {%- raw %}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - uses: dorny/paths-filter@v3
         id: changes
@@ -79,7 +79,7 @@ jobs:
 
       - name: Log in to the Container registry
         if: steps.changes.outputs.src == 'true'
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
@@ -88,12 +88,12 @@ jobs:
       - name: Set up Docker Buildx
         if: steps.changes.outputs.src == 'true'
         id: buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v3
 
       - name: Extract metadata (tags, labels) for Docker
         if: steps.changes.outputs.src == 'true'
         id: meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.REPO }}
           tags: |
@@ -104,7 +104,7 @@ jobs:
       - name: Build and push
         if: steps.changes.outputs.src == 'true'
         id: docker_build
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64,linux/arm64
           context: ${{ github.workspace }}
