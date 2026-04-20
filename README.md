@@ -69,6 +69,32 @@ python3 gen.py
     - [`ghcr.io/duyet/docker-images:debezium_2.0.0.Beta2`](#debeziumdebezium_200beta2)
     - [`ghcr.io/duyet/docker-images:debezium_3.0.0.Final`](#debeziumdebezium_300final)
 - [`debian`](#debian)
+    - [`ghcr.io/duyet/docker-images:11`](#debian11)
+    - [`ghcr.io/duyet/docker-images:11-slim`](#debian11-slim)
+    - [`ghcr.io/duyet/docker-images:11.11`](#debian1111)
+    - [`ghcr.io/duyet/docker-images:11.11-slim`](#debian1111-slim)
+    - [`ghcr.io/duyet/docker-images:12`](#debian12)
+    - [`ghcr.io/duyet/docker-images:12-slim`](#debian12-slim)
+    - [`ghcr.io/duyet/docker-images:12.13`](#debian1213)
+    - [`ghcr.io/duyet/docker-images:12.13-slim`](#debian1213-slim)
+    - [`ghcr.io/duyet/docker-images:bookworm`](#debianbookworm)
+    - [`ghcr.io/duyet/docker-images:bookworm-20260406`](#debianbookworm-20260406)
+    - [`ghcr.io/duyet/docker-images:bookworm-20260406-slim`](#debianbookworm-20260406-slim)
+    - [`ghcr.io/duyet/docker-images:bookworm-backports`](#debianbookworm-backports)
+    - [`ghcr.io/duyet/docker-images:bookworm-slim`](#debianbookworm-slim)
+    - [`ghcr.io/duyet/docker-images:bullseye`](#debianbullseye)
+    - [`ghcr.io/duyet/docker-images:bullseye-20260406`](#debianbullseye-20260406)
+    - [`ghcr.io/duyet/docker-images:bullseye-20260406-slim`](#debianbullseye-20260406-slim)
+    - [`ghcr.io/duyet/docker-images:bullseye-slim`](#debianbullseye-slim)
+    - [`ghcr.io/duyet/docker-images:experimental`](#debianexperimental)
+    - [`ghcr.io/duyet/docker-images:experimental-20260406`](#debianexperimental-20260406)
+    - [`ghcr.io/duyet/docker-images:forky`](#debianforky)
+    - [`ghcr.io/duyet/docker-images:forky-20260406`](#debianforky-20260406)
+    - [`ghcr.io/duyet/docker-images:forky-20260406-slim`](#debianforky-20260406-slim)
+    - [`ghcr.io/duyet/docker-images:forky-backports`](#debianforky-backports)
+    - [`ghcr.io/duyet/docker-images:forky-slim`](#debianforky-slim)
+    - [`ghcr.io/duyet/docker-images:stable`](#debianstable)
+    - [`ghcr.io/duyet/docker-images:stable-20260406`](#debianstable-20260406)
     - [`ghcr.io/duyet/docker-images:stable-slim`](#debianstable-slim)
 - [`gcloud`](#gcloud)
     - [`ghcr.io/duyet/docker-images:gcloud_alpine_python39`](#gcloudgcloud_alpine_python39)
@@ -140,6 +166,216 @@ FROM ghcr.io/duyet/docker-images:gcloud_alpine_python39
 
 ## `debian`
 
+### [`debian/stable`](debian/stable/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:stable
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:stable
+```
+
+
+### [`debian/bullseye-20260406-slim`](debian/bullseye-20260406-slim/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:bullseye-20260406-slim
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:bullseye-20260406-slim
+```
+
+
+### [`debian/experimental`](debian/experimental/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:experimental
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:experimental
+```
+
+
+### [`debian/stable-20260406`](debian/stable-20260406/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:stable-20260406
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:stable-20260406
+```
+
+
+### [`debian/bookworm-20260406-slim`](debian/bookworm-20260406-slim/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:bookworm-20260406-slim
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:bookworm-20260406-slim
+```
+
+
+### [`debian/12.13`](debian/12.13/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:12.13
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:12.13
+```
+
+
+### [`debian/bookworm-20260406`](debian/bookworm-20260406/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:bookworm-20260406
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:bookworm-20260406
+```
+
+
+### [`debian/bookworm-backports`](debian/bookworm-backports/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:bookworm-backports
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:bookworm-backports
+```
+
+
+### [`debian/forky`](debian/forky/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:forky
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:forky
+```
+
+
+### [`debian/11-slim`](debian/11-slim/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:11-slim
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:11-slim
+```
+
+
+### [`debian/12.13-slim`](debian/12.13-slim/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:12.13-slim
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:12.13-slim
+```
+
+
+### [`debian/11.11`](debian/11.11/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:11.11
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:11.11
+```
+
+
+### [`debian/11`](debian/11/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:11
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:11
+```
+
+
+### [`debian/forky-20260406-slim`](debian/forky-20260406-slim/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:forky-20260406-slim
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:forky-20260406-slim
+```
+
+
 ### [`debian/stable-slim`](debian/stable-slim/Dockerfile)
 
 Install from the command line
@@ -152,6 +388,186 @@ Use as base image in Dockerfile:
 
 ```Dockerfile
 FROM ghcr.io/duyet/docker-images:stable-slim
+```
+
+
+### [`debian/bookworm-slim`](debian/bookworm-slim/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:bookworm-slim
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:bookworm-slim
+```
+
+
+### [`debian/forky-slim`](debian/forky-slim/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:forky-slim
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:forky-slim
+```
+
+
+### [`debian/bullseye`](debian/bullseye/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:bullseye
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:bullseye
+```
+
+
+### [`debian/11.11-slim`](debian/11.11-slim/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:11.11-slim
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:11.11-slim
+```
+
+
+### [`debian/experimental-20260406`](debian/experimental-20260406/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:experimental-20260406
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:experimental-20260406
+```
+
+
+### [`debian/bullseye-20260406`](debian/bullseye-20260406/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:bullseye-20260406
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:bullseye-20260406
+```
+
+
+### [`debian/forky-backports`](debian/forky-backports/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:forky-backports
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:forky-backports
+```
+
+
+### [`debian/12-slim`](debian/12-slim/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:12-slim
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:12-slim
+```
+
+
+### [`debian/forky-20260406`](debian/forky-20260406/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:forky-20260406
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:forky-20260406
+```
+
+
+### [`debian/bullseye-slim`](debian/bullseye-slim/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:bullseye-slim
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:bullseye-slim
+```
+
+
+### [`debian/12`](debian/12/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:12
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:12
+```
+
+
+### [`debian/bookworm`](debian/bookworm/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:bookworm
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:bookworm
 ```
 
 

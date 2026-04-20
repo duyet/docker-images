@@ -87,7 +87,33 @@ jobs:
     strategy:
       matrix:
         tags:
+          - stable
+          - bullseye-20260406-slim
+          - experimental
+          - stable-20260406
+          - bookworm-20260406-slim
+          - 12.13
+          - bookworm-20260406
+          - bookworm-backports
+          - forky
+          - 11-slim
+          - 12.13-slim
+          - 11.11
+          - 11
+          - forky-20260406-slim
           - stable-slim
+          - bookworm-slim
+          - forky-slim
+          - bullseye
+          - 11.11-slim
+          - experimental-20260406
+          - bullseye-20260406
+          - forky-backports
+          - 12-slim
+          - forky-20260406
+          - bullseye-slim
+          - 12
+          - bookworm
     env:
       IMAGE_NAME: debian
       IMAGE_TAG: '${{ matrix.tags }}'
