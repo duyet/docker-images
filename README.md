@@ -41,6 +41,8 @@ python3 gen.py
 # Image lists
 
 <!-- BEGIN IMAGE LIST -->
+- [`alpine`](#alpine)
+    - [`ghcr.io/duyet/docker-images:3.19`](#alpine319)
 - [`bun`](#bun)
     - [`ghcr.io/duyet/docker-images:bun_1`](#bunbun_1)
     - [`ghcr.io/duyet/docker-images:bun_1.3`](#bunbun_13)
@@ -135,6 +137,23 @@ Use as base image in Dockerfile:
 
 ```Dockerfile
 FROM ghcr.io/duyet/docker-images:gcloud_alpine_python39
+```
+
+
+## `alpine`
+
+### [`alpine/3.19`](alpine/3.19/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:3.19
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:3.19
 ```
 
 
