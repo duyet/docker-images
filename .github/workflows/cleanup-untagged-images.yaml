@@ -1,0 +1,22 @@
+name: Cleanup Untagged GHCR Images
+
+on:
+  schedule:
+    - cron: '15 2 * * *'
+  workflow_dispatch:
+
+permissions:
+  packages: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete untagged container versions
+        uses: actions/delete-package-versions@v5
+        with:
+          package-name: docker-images
+          package-type: container
+          owner: duyet
+          min-versions-to-keep: 30
+          delete-only-untagged-versions: true
