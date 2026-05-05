@@ -98,7 +98,6 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.REPO }}
           tags: |
             type=raw,value=${{ matrix.tags }}
-            type=raw,value=${{ matrix.tags }}-{{date 'YYYYMMDD'}}
             type=sha,format=short
 
       - name: Build and push
