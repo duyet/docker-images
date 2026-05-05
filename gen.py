@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
+import argparse
 import os
-import sys
+
 import jinja2
 
 
@@ -181,36 +182,42 @@ def build_readme(images):
     return template.render(images=images)
 
 
+def parse_args():
+    parser = argparse.ArgumentParser(description="Generate workflow and README image list.")
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Print the workflow YAML and skip writing files.",
+    )
+    return parser.parse_args()
+
+
 if __name__ == "__main__":
+    args = parse_args()
     images = scan_images()
     workflows = build_workflows(images)
 
-    # Dry run option
-    if "--dry-run" in sys.argv:
+    if args.dry_run:
         print(workflows)
-
-    # Help option
-    if "--help" in sys.argv or "-h" in sys.argv:
-        print("Usage:\n  gen.py [--dry-run | --help]")
-        sys.exit(0)
+        raise SystemExit(0)
 
     # Write the workflows to the github workflows directory
     target = ".github/workflows/ci.yaml"
     with open(target, "w", encoding="utf-8") as f:
         f.write(workflows)
-        print("Generated workflows to {}".format(target))
+        print(f"Generated workflows to {target}")
 
     # Generate the README.md
     # Replace content between <!-- BEGIN IMAGE LIST --> and <!-- END IMAGE LIST -->
     # with the list of images
     readme_content = build_readme(images)
     with open("README.md", "r", encoding="utf-8") as f:
-        begin = "<!-- BEGIN IMAGE LIST -->"
-        end = "<!-- END IMAGE LIST -->"
+        begin_marker = "<!-- BEGIN IMAGE LIST -->"
+        end_marker = "<!-- END IMAGE LIST -->"
         content = f.read()
-        start = content.find(begin)
-        end = content.find(end)
-        content = content[:start] + begin + readme_content + content[end:]
+        start = content.find(begin_marker)
+        end = content.find(end_marker)
+        content = content[:start] + begin_marker + readme_content + content[end:]
 
     with open("README.md", "w", encoding="utf-8") as f:
         f.write(content)
