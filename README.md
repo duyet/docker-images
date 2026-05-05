@@ -72,6 +72,9 @@ python3 gen.py
     - [`ghcr.io/duyet/docker-images:debezium_3.0.0.Final`](#debeziumdebezium_300final)
 - [`debian`](#debian)
     - [`ghcr.io/duyet/docker-images:stable-slim`](#debianstable-slim)
+- [`docker`](#docker)
+    - [`ghcr.io/duyet/docker-images:docker_27_cli`](#dockerdocker_27_cli)
+    - [`ghcr.io/duyet/docker-images:docker_27_dind`](#dockerdocker_27_dind)
 - [`gcloud`](#gcloud)
     - [`ghcr.io/duyet/docker-images:gcloud_alpine_python39`](#gcloudgcloud_alpine_python39)
     - [`ghcr.io/duyet/docker-images:gcloud_debian_python3`](#gcloudgcloud_debian_python3)
@@ -82,6 +85,7 @@ python3 gen.py
     - [`ghcr.io/duyet/docker-images:node_20-slim`](#nodenode_20-slim)
     - [`ghcr.io/duyet/docker-images:node_22`](#nodenode_22)
     - [`ghcr.io/duyet/docker-images:node_22-slim`](#nodenode_22-slim)
+    - [`ghcr.io/duyet/docker-images:node_22.14.0_alpine`](#nodenode_22140_alpine)
     - [`ghcr.io/duyet/docker-images:node_24`](#nodenode_24)
     - [`ghcr.io/duyet/docker-images:node_24-slim`](#nodenode_24-slim)
 - [`postgres`](#postgres)
@@ -154,6 +158,38 @@ Use as base image in Dockerfile:
 
 ```Dockerfile
 FROM ghcr.io/duyet/docker-images:3.19
+```
+
+
+## `docker`
+
+### [`docker/docker_27_dind`](docker/docker_27_dind/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:docker_27_dind
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:docker_27_dind
+```
+
+
+### [`docker/docker_27_cli`](docker/docker_27_cli/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:docker_27_cli
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:docker_27_cli
 ```
 
 
@@ -834,6 +870,21 @@ Use as base image in Dockerfile:
 
 ```Dockerfile
 FROM ghcr.io/duyet/docker-images:node_22
+```
+
+
+### [`node/node_22.14.0_alpine`](node/node_22.14.0_alpine/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:node_22.14.0_alpine
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:node_22.14.0_alpine
 ```
 
 
