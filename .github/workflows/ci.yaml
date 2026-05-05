@@ -86,7 +86,7 @@ jobs:
     strategy:
       matrix:
         tags:
-          - 3.19
+          - alpine_3.19
     env:
       IMAGE_NAME: alpine
       IMAGE_TAG: '${{ matrix.tags }}'
