@@ -6,6 +6,9 @@ from pathlib import Path
 
 import jinja2
 
+DEFAULT_PLATFORMS = "linux/amd64,linux/arm64"
+SINGLE_ARCH_IMAGES = {"debezium", "gcloud"}
+
 
 def scan_images(repo_root):
     """
@@ -66,6 +69,7 @@ jobs:
     env:
       IMAGE_NAME: {{ image_name }}
       IMAGE_TAG: '{% raw %}${{ matrix.tags }}{% endraw %}'
+      IMAGE_PLATFORMS: {{ image_platforms[image_name] }}
     {%- raw %}
     steps:
       - name: Checkout
@@ -107,7 +111,7 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v6
         with:
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ env.IMAGE_PLATFORMS }}
           context: ${{ github.workspace }}
           file: ./${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
@@ -168,7 +172,11 @@ def build_workflows(images):
     template = jinja2.Template(get_template_workflows())
 
     # Build the workflows
-    workflows = template.render(images=images)
+    image_platforms = {
+        name: "linux/amd64" if name in SINGLE_ARCH_IMAGES else DEFAULT_PLATFORMS
+        for name in images
+    }
+    workflows = template.render(images=images, image_platforms=image_platforms)
 
     return workflows
 

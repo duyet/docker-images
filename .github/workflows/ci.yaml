@@ -28,6 +28,7 @@ jobs:
     env:
       IMAGE_NAME: alpine
       IMAGE_TAG: '${{ matrix.tags }}'
+      IMAGE_PLATFORMS: linux/amd64,linux/arm64
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -68,7 +69,7 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v6
         with:
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ env.IMAGE_PLATFORMS }}
           context: ${{ github.workspace }}
           file: ./${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
@@ -91,6 +92,7 @@ jobs:
     env:
       IMAGE_NAME: bun
       IMAGE_TAG: '${{ matrix.tags }}'
+      IMAGE_PLATFORMS: linux/amd64,linux/arm64
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -131,7 +133,7 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v6
         with:
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ env.IMAGE_PLATFORMS }}
           context: ${{ github.workspace }}
           file: ./${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
@@ -168,6 +170,7 @@ jobs:
     env:
       IMAGE_NAME: clickhouse-server
       IMAGE_TAG: '${{ matrix.tags }}'
+      IMAGE_PLATFORMS: linux/amd64,linux/arm64
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -208,7 +211,7 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v6
         with:
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ env.IMAGE_PLATFORMS }}
           context: ${{ github.workspace }}
           file: ./${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
@@ -232,6 +235,7 @@ jobs:
     env:
       IMAGE_NAME: debezium
       IMAGE_TAG: '${{ matrix.tags }}'
+      IMAGE_PLATFORMS: linux/amd64
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -272,7 +276,7 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v6
         with:
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ env.IMAGE_PLATFORMS }}
           context: ${{ github.workspace }}
           file: ./${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
@@ -293,6 +297,7 @@ jobs:
     env:
       IMAGE_NAME: debian
       IMAGE_TAG: '${{ matrix.tags }}'
+      IMAGE_PLATFORMS: linux/amd64,linux/arm64
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -333,7 +338,7 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v6
         with:
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ env.IMAGE_PLATFORMS }}
           context: ${{ github.workspace }}
           file: ./${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
@@ -355,6 +360,7 @@ jobs:
     env:
       IMAGE_NAME: docker
       IMAGE_TAG: '${{ matrix.tags }}'
+      IMAGE_PLATFORMS: linux/amd64,linux/arm64
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -395,7 +401,7 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v6
         with:
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ env.IMAGE_PLATFORMS }}
           context: ${{ github.workspace }}
           file: ./${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
@@ -417,6 +423,7 @@ jobs:
     env:
       IMAGE_NAME: gcloud
       IMAGE_TAG: '${{ matrix.tags }}'
+      IMAGE_PLATFORMS: linux/amd64
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -457,7 +464,7 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v6
         with:
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ env.IMAGE_PLATFORMS }}
           context: ${{ github.workspace }}
           file: ./${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
@@ -478,6 +485,7 @@ jobs:
     env:
       IMAGE_NAME: kubeconform
       IMAGE_TAG: '${{ matrix.tags }}'
+      IMAGE_PLATFORMS: linux/amd64,linux/arm64
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -518,7 +526,7 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v6
         with:
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ env.IMAGE_PLATFORMS }}
           context: ${{ github.workspace }}
           file: ./${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
@@ -545,6 +553,7 @@ jobs:
     env:
       IMAGE_NAME: node
       IMAGE_TAG: '${{ matrix.tags }}'
+      IMAGE_PLATFORMS: linux/amd64,linux/arm64
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -585,7 +594,7 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v6
         with:
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ env.IMAGE_PLATFORMS }}
           context: ${{ github.workspace }}
           file: ./${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
@@ -610,6 +619,7 @@ jobs:
     env:
       IMAGE_NAME: postgres
       IMAGE_TAG: '${{ matrix.tags }}'
+      IMAGE_PLATFORMS: linux/amd64,linux/arm64
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -650,7 +660,7 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v6
         with:
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ env.IMAGE_PLATFORMS }}
           context: ${{ github.workspace }}
           file: ./${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
@@ -672,6 +682,7 @@ jobs:
     env:
       IMAGE_NAME: python
       IMAGE_TAG: '${{ matrix.tags }}'
+      IMAGE_PLATFORMS: linux/amd64,linux/arm64
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -712,7 +723,7 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v6
         with:
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ env.IMAGE_PLATFORMS }}
           context: ${{ github.workspace }}
           file: ./${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
@@ -734,6 +745,7 @@ jobs:
     env:
       IMAGE_NAME: redis
       IMAGE_TAG: '${{ matrix.tags }}'
+      IMAGE_PLATFORMS: linux/amd64,linux/arm64
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -774,7 +786,7 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v6
         with:
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ env.IMAGE_PLATFORMS }}
           context: ${{ github.workspace }}
           file: ./${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
@@ -801,6 +813,7 @@ jobs:
     env:
       IMAGE_NAME: rust
       IMAGE_TAG: '${{ matrix.tags }}'
+      IMAGE_PLATFORMS: linux/amd64,linux/arm64
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -841,7 +854,7 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v6
         with:
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ env.IMAGE_PLATFORMS }}
           context: ${{ github.workspace }}
           file: ./${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
@@ -862,6 +875,7 @@ jobs:
     env:
       IMAGE_NAME: upptime
       IMAGE_TAG: '${{ matrix.tags }}'
+      IMAGE_PLATFORMS: linux/amd64,linux/arm64
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -902,7 +916,7 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v6
         with:
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ env.IMAGE_PLATFORMS }}
           context: ${{ github.workspace }}
           file: ./${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
