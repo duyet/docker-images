@@ -56,6 +56,9 @@ uv run python gen.py --dry-run
 
 # Get help
 uv run python gen.py --help
+
+# Inspect recent image/workflow changes
+git log --since='7 days ago' --name-status --pretty='format:=== %H %ad %s' --date=iso
 ```
 
 ### CI/CD Pipeline
@@ -65,7 +68,6 @@ GitHub Actions automatically:
 - Supports multi-architecture builds (linux/amd64, linux/arm64)
 - Tags images with:
   - The image tag name
-  - Date-stamped version (`<tag>-YYYYMMDD`)
   - Git SHA
 - Publishes to `ghcr.io/duyet/docker-images:<tag>`
 

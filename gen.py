@@ -2,25 +2,26 @@
 
 import argparse
 import os
+from pathlib import Path
 
 import jinja2
 
 
-def scan_images():
+def scan_images(repo_root):
     """
     Scan a project for all the files and directories.
     """
-    current_dir = os.getcwd()
     projects = {}
 
     # Scan the image_name is the directory in top level
     # The image_tag is the directory in the image_name directory
-    for image_name in os.listdir(current_dir):
-        if os.path.isdir(image_name):
+    for image_name in os.listdir(repo_root):
+        image_dir = repo_root / image_name
+        if image_dir.is_dir():
             projects[image_name] = []
-            for image_tag in os.listdir(image_name):
-                check = os.path.join(image_name, image_tag, "Dockerfile")
-                if os.path.isfile(check):
+            for image_tag in os.listdir(image_dir):
+                check = image_dir / image_tag / "Dockerfile"
+                if check.is_file():
                     projects[image_name].append(image_tag)
 
     # Filter out the empty image_tags
@@ -194,7 +195,8 @@ def parse_args():
 
 if __name__ == "__main__":
     args = parse_args()
-    images = scan_images()
+    repo_root = Path(__file__).resolve().parent
+    images = scan_images(repo_root)
     workflows = build_workflows(images)
 
     if args.dry_run:
@@ -202,7 +204,7 @@ if __name__ == "__main__":
         raise SystemExit(0)
 
     # Write the workflows to the github workflows directory
-    target = ".github/workflows/ci.yaml"
+    target = repo_root / ".github/workflows/ci.yaml"
     with open(target, "w", encoding="utf-8") as f:
         f.write(workflows)
         print(f"Generated workflows to {target}")
@@ -211,14 +213,17 @@ if __name__ == "__main__":
     # Replace content between <!-- BEGIN IMAGE LIST --> and <!-- END IMAGE LIST -->
     # with the list of images
     readme_content = build_readme(images)
-    with open("README.md", "r", encoding="utf-8") as f:
+    readme_path = repo_root / "README.md"
+    with open(readme_path, "r", encoding="utf-8") as f:
         begin_marker = "<!-- BEGIN IMAGE LIST -->"
         end_marker = "<!-- END IMAGE LIST -->"
         content = f.read()
         start = content.find(begin_marker)
         end = content.find(end_marker)
+        if start == -1 or end == -1 or start >= end:
+            raise ValueError("README markers not found or invalid order")
         content = content[:start] + begin_marker + readme_content + content[end:]
 
-    with open("README.md", "w", encoding="utf-8") as f:
+    with open(readme_path, "w", encoding="utf-8") as f:
         f.write(content)
         print("Generated README.md")
