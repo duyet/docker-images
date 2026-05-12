@@ -65,6 +65,9 @@ git log --since='<last_run_iso>' --name-status --pretty='format:=== %H %ad %s' -
 
 # Dead-code evidence (exclude tests)
 rg -n "<symbol>" . --glob '!**/*test*' --glob '!**/*spec*'
+
+# Check whether a base image is multi-arch before enabling arm64
+docker buildx imagetools inspect <base-image:tag>
 ```
 
 ### CI/CD Pipeline
