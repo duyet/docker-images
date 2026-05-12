@@ -18,68 +18,6 @@ env:
 
 
 jobs:
-  gcloud:
-    name: Build gcloud
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        tags:
-          - gcloud_debian_python3
-          - gcloud_alpine_python39
-    env:
-      IMAGE_NAME: gcloud
-      IMAGE_TAG: '${{ matrix.tags }}'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - uses: dorny/paths-filter@v3
-        id: changes
-        with:
-          filters: |
-             src:
-              - '${{ env.IMAGE_NAME }}/${{ matrix.tags }}/**'
-              - '.github/workflows/ci.yaml'
-
-      - name: Log in to the Container registry
-        if: steps.changes.outputs.src == 'true'
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Set up Docker Buildx
-        if: steps.changes.outputs.src == 'true'
-        id: buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Extract metadata (tags, labels) for Docker
-        if: steps.changes.outputs.src == 'true'
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.REPO }}
-          tags: |
-            type=raw,value=${{ matrix.tags }}
-            type=sha,format=short
-
-      - name: Build and push
-        if: steps.changes.outputs.src == 'true'
-        id: docker_build
-        uses: docker/build-push-action@v6
-        with:
-          platforms: linux/amd64,linux/arm64
-          context: ${{ github.workspace }}
-          file: ./${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          push: ${{ github.event_name != 'pull_request' }}
-
-      - name: Image digest
-        if: steps.changes.outputs.src == 'true'
-        run: echo ${{ steps.docker_build.outputs.digest }}
-
   alpine:
     name: Build alpine
     runs-on: ubuntu-latest
@@ -141,16 +79,158 @@ jobs:
         if: steps.changes.outputs.src == 'true'
         run: echo ${{ steps.docker_build.outputs.digest }}
 
-  docker:
-    name: Build docker
+  bun:
+    name: Build bun
     runs-on: ubuntu-latest
     strategy:
       matrix:
         tags:
-          - docker_27_dind
-          - docker_27_cli
+          - bun_1
+          - bun_1.3
+          - bun_latest
     env:
-      IMAGE_NAME: docker
+      IMAGE_NAME: bun
+      IMAGE_TAG: '${{ matrix.tags }}'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+             src:
+              - '${{ env.IMAGE_NAME }}/${{ matrix.tags }}/**'
+              - '.github/workflows/ci.yaml'
+
+      - name: Log in to the Container registry
+        if: steps.changes.outputs.src == 'true'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        if: steps.changes.outputs.src == 'true'
+        id: buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Extract metadata (tags, labels) for Docker
+        if: steps.changes.outputs.src == 'true'
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.REPO }}
+          tags: |
+            type=raw,value=${{ matrix.tags }}
+            type=sha,format=short
+
+      - name: Build and push
+        if: steps.changes.outputs.src == 'true'
+        id: docker_build
+        uses: docker/build-push-action@v6
+        with:
+          platforms: linux/amd64,linux/arm64
+          context: ${{ github.workspace }}
+          file: ./${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          push: ${{ github.event_name != 'pull_request' }}
+
+      - name: Image digest
+        if: steps.changes.outputs.src == 'true'
+        run: echo ${{ steps.docker_build.outputs.digest }}
+
+  clickhouse-server:
+    name: Build clickhouse-server
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        tags:
+          - clickhouse_24.10
+          - clickhouse_24.11
+          - clickhouse_24.12
+          - clickhouse_24.3
+          - clickhouse_24.5
+          - clickhouse_24.6
+          - clickhouse_24.7
+          - clickhouse_24.8
+          - clickhouse_24.9
+          - clickhouse_25.1
+          - clickhouse_25.2
+          - clickhouse_25.3
+          - clickhouse_25.4
+          - clickhouse_25.5
+          - clickhouse_25.6
+          - clickhouse_25.7
+          - clickhouse_25.8
+    env:
+      IMAGE_NAME: clickhouse-server
+      IMAGE_TAG: '${{ matrix.tags }}'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+             src:
+              - '${{ env.IMAGE_NAME }}/${{ matrix.tags }}/**'
+              - '.github/workflows/ci.yaml'
+
+      - name: Log in to the Container registry
+        if: steps.changes.outputs.src == 'true'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        if: steps.changes.outputs.src == 'true'
+        id: buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Extract metadata (tags, labels) for Docker
+        if: steps.changes.outputs.src == 'true'
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.REPO }}
+          tags: |
+            type=raw,value=${{ matrix.tags }}
+            type=sha,format=short
+
+      - name: Build and push
+        if: steps.changes.outputs.src == 'true'
+        id: docker_build
+        uses: docker/build-push-action@v6
+        with:
+          platforms: linux/amd64,linux/arm64
+          context: ${{ github.workspace }}
+          file: ./${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          push: ${{ github.event_name != 'pull_request' }}
+
+      - name: Image digest
+        if: steps.changes.outputs.src == 'true'
+        run: echo ${{ steps.docker_build.outputs.digest }}
+
+  debezium:
+    name: Build debezium
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        tags:
+          - debezium_1.9.5.Final
+          - debezium_2.0.0.Beta1
+          - debezium_2.0.0.Beta2
+          - debezium_3.0.0.Final
+    env:
+      IMAGE_NAME: debezium
       IMAGE_TAG: '${{ matrix.tags }}'
     steps:
       - name: Checkout
@@ -212,6 +292,323 @@ jobs:
           - stable-slim
     env:
       IMAGE_NAME: debian
+      IMAGE_TAG: '${{ matrix.tags }}'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+             src:
+              - '${{ env.IMAGE_NAME }}/${{ matrix.tags }}/**'
+              - '.github/workflows/ci.yaml'
+
+      - name: Log in to the Container registry
+        if: steps.changes.outputs.src == 'true'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        if: steps.changes.outputs.src == 'true'
+        id: buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Extract metadata (tags, labels) for Docker
+        if: steps.changes.outputs.src == 'true'
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.REPO }}
+          tags: |
+            type=raw,value=${{ matrix.tags }}
+            type=sha,format=short
+
+      - name: Build and push
+        if: steps.changes.outputs.src == 'true'
+        id: docker_build
+        uses: docker/build-push-action@v6
+        with:
+          platforms: linux/amd64,linux/arm64
+          context: ${{ github.workspace }}
+          file: ./${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          push: ${{ github.event_name != 'pull_request' }}
+
+      - name: Image digest
+        if: steps.changes.outputs.src == 'true'
+        run: echo ${{ steps.docker_build.outputs.digest }}
+
+  docker:
+    name: Build docker
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        tags:
+          - docker_27_cli
+          - docker_27_dind
+    env:
+      IMAGE_NAME: docker
+      IMAGE_TAG: '${{ matrix.tags }}'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+             src:
+              - '${{ env.IMAGE_NAME }}/${{ matrix.tags }}/**'
+              - '.github/workflows/ci.yaml'
+
+      - name: Log in to the Container registry
+        if: steps.changes.outputs.src == 'true'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        if: steps.changes.outputs.src == 'true'
+        id: buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Extract metadata (tags, labels) for Docker
+        if: steps.changes.outputs.src == 'true'
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.REPO }}
+          tags: |
+            type=raw,value=${{ matrix.tags }}
+            type=sha,format=short
+
+      - name: Build and push
+        if: steps.changes.outputs.src == 'true'
+        id: docker_build
+        uses: docker/build-push-action@v6
+        with:
+          platforms: linux/amd64,linux/arm64
+          context: ${{ github.workspace }}
+          file: ./${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          push: ${{ github.event_name != 'pull_request' }}
+
+      - name: Image digest
+        if: steps.changes.outputs.src == 'true'
+        run: echo ${{ steps.docker_build.outputs.digest }}
+
+  gcloud:
+    name: Build gcloud
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        tags:
+          - gcloud_alpine_python39
+          - gcloud_debian_python3
+    env:
+      IMAGE_NAME: gcloud
+      IMAGE_TAG: '${{ matrix.tags }}'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+             src:
+              - '${{ env.IMAGE_NAME }}/${{ matrix.tags }}/**'
+              - '.github/workflows/ci.yaml'
+
+      - name: Log in to the Container registry
+        if: steps.changes.outputs.src == 'true'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        if: steps.changes.outputs.src == 'true'
+        id: buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Extract metadata (tags, labels) for Docker
+        if: steps.changes.outputs.src == 'true'
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.REPO }}
+          tags: |
+            type=raw,value=${{ matrix.tags }}
+            type=sha,format=short
+
+      - name: Build and push
+        if: steps.changes.outputs.src == 'true'
+        id: docker_build
+        uses: docker/build-push-action@v6
+        with:
+          platforms: linux/amd64,linux/arm64
+          context: ${{ github.workspace }}
+          file: ./${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          push: ${{ github.event_name != 'pull_request' }}
+
+      - name: Image digest
+        if: steps.changes.outputs.src == 'true'
+        run: echo ${{ steps.docker_build.outputs.digest }}
+
+  kubeconform:
+    name: Build kubeconform
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        tags:
+          - kubeconform_latest
+    env:
+      IMAGE_NAME: kubeconform
+      IMAGE_TAG: '${{ matrix.tags }}'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+             src:
+              - '${{ env.IMAGE_NAME }}/${{ matrix.tags }}/**'
+              - '.github/workflows/ci.yaml'
+
+      - name: Log in to the Container registry
+        if: steps.changes.outputs.src == 'true'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        if: steps.changes.outputs.src == 'true'
+        id: buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Extract metadata (tags, labels) for Docker
+        if: steps.changes.outputs.src == 'true'
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.REPO }}
+          tags: |
+            type=raw,value=${{ matrix.tags }}
+            type=sha,format=short
+
+      - name: Build and push
+        if: steps.changes.outputs.src == 'true'
+        id: docker_build
+        uses: docker/build-push-action@v6
+        with:
+          platforms: linux/amd64,linux/arm64
+          context: ${{ github.workspace }}
+          file: ./${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          push: ${{ github.event_name != 'pull_request' }}
+
+      - name: Image digest
+        if: steps.changes.outputs.src == 'true'
+        run: echo ${{ steps.docker_build.outputs.digest }}
+
+  node:
+    name: Build node
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        tags:
+          - node_20
+          - node_20-slim
+          - node_22
+          - node_22-slim
+          - node_22.14.0_alpine
+          - node_24
+          - node_24-slim
+    env:
+      IMAGE_NAME: node
+      IMAGE_TAG: '${{ matrix.tags }}'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+             src:
+              - '${{ env.IMAGE_NAME }}/${{ matrix.tags }}/**'
+              - '.github/workflows/ci.yaml'
+
+      - name: Log in to the Container registry
+        if: steps.changes.outputs.src == 'true'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        if: steps.changes.outputs.src == 'true'
+        id: buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Extract metadata (tags, labels) for Docker
+        if: steps.changes.outputs.src == 'true'
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.REPO }}
+          tags: |
+            type=raw,value=${{ matrix.tags }}
+            type=sha,format=short
+
+      - name: Build and push
+        if: steps.changes.outputs.src == 'true'
+        id: docker_build
+        uses: docker/build-push-action@v6
+        with:
+          platforms: linux/amd64,linux/arm64
+          context: ${{ github.workspace }}
+          file: ./${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          push: ${{ github.event_name != 'pull_request' }}
+
+      - name: Image digest
+        if: steps.changes.outputs.src == 'true'
+        run: echo ${{ steps.docker_build.outputs.digest }}
+
+  postgres:
+    name: Build postgres
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        tags:
+          - postgres_14
+          - postgres_15
+          - postgres_16
+          - postgres_17
+          - postgres_latest
+    env:
+      IMAGE_NAME: postgres
       IMAGE_TAG: '${{ matrix.tags }}'
     steps:
       - name: Checkout
@@ -388,80 +785,19 @@ jobs:
         if: steps.changes.outputs.src == 'true'
         run: echo ${{ steps.docker_build.outputs.digest }}
 
-  upptime:
-    name: Build upptime
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        tags:
-          - upptime_monitor
-    env:
-      IMAGE_NAME: upptime
-      IMAGE_TAG: '${{ matrix.tags }}'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - uses: dorny/paths-filter@v3
-        id: changes
-        with:
-          filters: |
-             src:
-              - '${{ env.IMAGE_NAME }}/${{ matrix.tags }}/**'
-              - '.github/workflows/ci.yaml'
-
-      - name: Log in to the Container registry
-        if: steps.changes.outputs.src == 'true'
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Set up Docker Buildx
-        if: steps.changes.outputs.src == 'true'
-        id: buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Extract metadata (tags, labels) for Docker
-        if: steps.changes.outputs.src == 'true'
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.REPO }}
-          tags: |
-            type=raw,value=${{ matrix.tags }}
-            type=sha,format=short
-
-      - name: Build and push
-        if: steps.changes.outputs.src == 'true'
-        id: docker_build
-        uses: docker/build-push-action@v6
-        with:
-          platforms: linux/amd64,linux/arm64
-          context: ${{ github.workspace }}
-          file: ./${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          push: ${{ github.event_name != 'pull_request' }}
-
-      - name: Image digest
-        if: steps.changes.outputs.src == 'true'
-        run: echo ${{ steps.docker_build.outputs.digest }}
-
   rust:
     name: Build rust
     runs-on: ubuntu-latest
     strategy:
       matrix:
         tags:
-          - typos
-          - sccache
-          - python
-          - sccache-server
-          - cargo-audit
-          - sccache-scheduler
           - athena
+          - cargo-audit
+          - python
+          - sccache
+          - sccache-scheduler
+          - sccache-server
+          - typos
     env:
       IMAGE_NAME: rust
       IMAGE_TAG: '${{ matrix.tags }}'
@@ -516,351 +852,15 @@ jobs:
         if: steps.changes.outputs.src == 'true'
         run: echo ${{ steps.docker_build.outputs.digest }}
 
-  bun:
-    name: Build bun
+  upptime:
+    name: Build upptime
     runs-on: ubuntu-latest
     strategy:
       matrix:
         tags:
-          - bun_latest
-          - bun_1.3
-          - bun_1
+          - upptime_monitor
     env:
-      IMAGE_NAME: bun
-      IMAGE_TAG: '${{ matrix.tags }}'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - uses: dorny/paths-filter@v3
-        id: changes
-        with:
-          filters: |
-             src:
-              - '${{ env.IMAGE_NAME }}/${{ matrix.tags }}/**'
-              - '.github/workflows/ci.yaml'
-
-      - name: Log in to the Container registry
-        if: steps.changes.outputs.src == 'true'
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Set up Docker Buildx
-        if: steps.changes.outputs.src == 'true'
-        id: buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Extract metadata (tags, labels) for Docker
-        if: steps.changes.outputs.src == 'true'
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.REPO }}
-          tags: |
-            type=raw,value=${{ matrix.tags }}
-            type=sha,format=short
-
-      - name: Build and push
-        if: steps.changes.outputs.src == 'true'
-        id: docker_build
-        uses: docker/build-push-action@v6
-        with:
-          platforms: linux/amd64,linux/arm64
-          context: ${{ github.workspace }}
-          file: ./${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          push: ${{ github.event_name != 'pull_request' }}
-
-      - name: Image digest
-        if: steps.changes.outputs.src == 'true'
-        run: echo ${{ steps.docker_build.outputs.digest }}
-
-  postgres:
-    name: Build postgres
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        tags:
-          - postgres_latest
-          - postgres_17
-          - postgres_16
-          - postgres_14
-          - postgres_15
-    env:
-      IMAGE_NAME: postgres
-      IMAGE_TAG: '${{ matrix.tags }}'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - uses: dorny/paths-filter@v3
-        id: changes
-        with:
-          filters: |
-             src:
-              - '${{ env.IMAGE_NAME }}/${{ matrix.tags }}/**'
-              - '.github/workflows/ci.yaml'
-
-      - name: Log in to the Container registry
-        if: steps.changes.outputs.src == 'true'
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Set up Docker Buildx
-        if: steps.changes.outputs.src == 'true'
-        id: buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Extract metadata (tags, labels) for Docker
-        if: steps.changes.outputs.src == 'true'
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.REPO }}
-          tags: |
-            type=raw,value=${{ matrix.tags }}
-            type=sha,format=short
-
-      - name: Build and push
-        if: steps.changes.outputs.src == 'true'
-        id: docker_build
-        uses: docker/build-push-action@v6
-        with:
-          platforms: linux/amd64,linux/arm64
-          context: ${{ github.workspace }}
-          file: ./${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          push: ${{ github.event_name != 'pull_request' }}
-
-      - name: Image digest
-        if: steps.changes.outputs.src == 'true'
-        run: echo ${{ steps.docker_build.outputs.digest }}
-
-  clickhouse-server:
-    name: Build clickhouse-server
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        tags:
-          - clickhouse_24.11
-          - clickhouse_25.3
-          - clickhouse_25.4
-          - clickhouse_25.5
-          - clickhouse_24.10
-          - clickhouse_25.2
-          - clickhouse_24.9
-          - clickhouse_24.7
-          - clickhouse_24.6
-          - clickhouse_24.8
-          - clickhouse_25.7
-          - clickhouse_24.12
-          - clickhouse_25.8
-          - clickhouse_25.1
-          - clickhouse_25.6
-          - clickhouse_24.3
-          - clickhouse_24.5
-    env:
-      IMAGE_NAME: clickhouse-server
-      IMAGE_TAG: '${{ matrix.tags }}'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - uses: dorny/paths-filter@v3
-        id: changes
-        with:
-          filters: |
-             src:
-              - '${{ env.IMAGE_NAME }}/${{ matrix.tags }}/**'
-              - '.github/workflows/ci.yaml'
-
-      - name: Log in to the Container registry
-        if: steps.changes.outputs.src == 'true'
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Set up Docker Buildx
-        if: steps.changes.outputs.src == 'true'
-        id: buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Extract metadata (tags, labels) for Docker
-        if: steps.changes.outputs.src == 'true'
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.REPO }}
-          tags: |
-            type=raw,value=${{ matrix.tags }}
-            type=sha,format=short
-
-      - name: Build and push
-        if: steps.changes.outputs.src == 'true'
-        id: docker_build
-        uses: docker/build-push-action@v6
-        with:
-          platforms: linux/amd64,linux/arm64
-          context: ${{ github.workspace }}
-          file: ./${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          push: ${{ github.event_name != 'pull_request' }}
-
-      - name: Image digest
-        if: steps.changes.outputs.src == 'true'
-        run: echo ${{ steps.docker_build.outputs.digest }}
-
-  kubeconform:
-    name: Build kubeconform
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        tags:
-          - kubeconform_latest
-    env:
-      IMAGE_NAME: kubeconform
-      IMAGE_TAG: '${{ matrix.tags }}'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - uses: dorny/paths-filter@v3
-        id: changes
-        with:
-          filters: |
-             src:
-              - '${{ env.IMAGE_NAME }}/${{ matrix.tags }}/**'
-              - '.github/workflows/ci.yaml'
-
-      - name: Log in to the Container registry
-        if: steps.changes.outputs.src == 'true'
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Set up Docker Buildx
-        if: steps.changes.outputs.src == 'true'
-        id: buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Extract metadata (tags, labels) for Docker
-        if: steps.changes.outputs.src == 'true'
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.REPO }}
-          tags: |
-            type=raw,value=${{ matrix.tags }}
-            type=sha,format=short
-
-      - name: Build and push
-        if: steps.changes.outputs.src == 'true'
-        id: docker_build
-        uses: docker/build-push-action@v6
-        with:
-          platforms: linux/amd64,linux/arm64
-          context: ${{ github.workspace }}
-          file: ./${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          push: ${{ github.event_name != 'pull_request' }}
-
-      - name: Image digest
-        if: steps.changes.outputs.src == 'true'
-        run: echo ${{ steps.docker_build.outputs.digest }}
-
-  node:
-    name: Build node
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        tags:
-          - node_20
-          - node_22-slim
-          - node_24-slim
-          - node_24
-          - node_22
-          - node_22.14.0_alpine
-          - node_20-slim
-    env:
-      IMAGE_NAME: node
-      IMAGE_TAG: '${{ matrix.tags }}'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - uses: dorny/paths-filter@v3
-        id: changes
-        with:
-          filters: |
-             src:
-              - '${{ env.IMAGE_NAME }}/${{ matrix.tags }}/**'
-              - '.github/workflows/ci.yaml'
-
-      - name: Log in to the Container registry
-        if: steps.changes.outputs.src == 'true'
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Set up Docker Buildx
-        if: steps.changes.outputs.src == 'true'
-        id: buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Extract metadata (tags, labels) for Docker
-        if: steps.changes.outputs.src == 'true'
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.REPO }}
-          tags: |
-            type=raw,value=${{ matrix.tags }}
-            type=sha,format=short
-
-      - name: Build and push
-        if: steps.changes.outputs.src == 'true'
-        id: docker_build
-        uses: docker/build-push-action@v6
-        with:
-          platforms: linux/amd64,linux/arm64
-          context: ${{ github.workspace }}
-          file: ./${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          push: ${{ github.event_name != 'pull_request' }}
-
-      - name: Image digest
-        if: steps.changes.outputs.src == 'true'
-        run: echo ${{ steps.docker_build.outputs.digest }}
-
-  debezium:
-    name: Build debezium
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        tags:
-          - debezium_2.0.0.Beta2
-          - debezium_3.0.0.Final
-          - debezium_2.0.0.Beta1
-          - debezium_1.9.5.Final
-    env:
-      IMAGE_NAME: debezium
+      IMAGE_NAME: upptime
       IMAGE_TAG: '${{ matrix.tags }}'
     steps:
       - name: Checkout
