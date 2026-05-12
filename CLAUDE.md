@@ -59,6 +59,12 @@ uv run python gen.py --help
 
 # Inspect recent image/workflow changes
 git log --since='7 days ago' --name-status --pretty='format:=== %H %ad %s' --date=iso
+
+# Inspect commits since a specific automation run
+git log --since='<last_run_iso>' --name-status --pretty='format:=== %H %ad %s' --date=iso-strict master
+
+# Dead-code evidence (exclude tests)
+rg -n "<symbol>" . --glob '!**/*test*' --glob '!**/*spec*'
 ```
 
 ### CI/CD Pipeline
@@ -110,6 +116,12 @@ CI only builds images when their specific directories change, using GitHub Actio
 - Monitor `<image_name>/<image_tag>/**` paths
 - Trigger builds only for modified images
 - Include workflow file changes as build triggers
+
+## Maintenance Memory
+
+- Keep durable maintenance notes in `docs/knowledge/core-memory.md`.
+- Keep the memory index in `docs/INDEX.md`.
+- Do not create dated review docs like `docs/reviews/code-smell-dead-code-YYYY-MM-DD.md`.
 
 ## Development Dependencies
 

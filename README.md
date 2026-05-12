@@ -112,38 +112,6 @@ python3 gen.py
     - [`ghcr.io/duyet/docker-images:upptime_monitor`](#upptimeupptime_monitor)
 
 
-## `gcloud`
-
-### [`gcloud/gcloud_debian_python3`](gcloud/gcloud_debian_python3/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:gcloud_debian_python3
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:gcloud_debian_python3
-```
-
-
-### [`gcloud/gcloud_alpine_python39`](gcloud/gcloud_alpine_python39/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:gcloud_alpine_python39
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:gcloud_alpine_python39
-```
-
-
 ## `alpine`
 
 ### [`alpine/alpine_3.19`](alpine/alpine_3.19/Dockerfile)
@@ -161,35 +129,369 @@ FROM ghcr.io/duyet/docker-images:alpine_3.19
 ```
 
 
-## `docker`
+## `bun`
 
-### [`docker/docker_27_dind`](docker/docker_27_dind/Dockerfile)
+### [`bun/bun_1`](bun/bun_1/Dockerfile)
 
 Install from the command line
 
 ```bash
-docker pull ghcr.io/duyet/docker-images:docker_27_dind
+docker pull ghcr.io/duyet/docker-images:bun_1
 ```
 
 Use as base image in Dockerfile:
 
 ```Dockerfile
-FROM ghcr.io/duyet/docker-images:docker_27_dind
+FROM ghcr.io/duyet/docker-images:bun_1
 ```
 
 
-### [`docker/docker_27_cli`](docker/docker_27_cli/Dockerfile)
+### [`bun/bun_1.3`](bun/bun_1.3/Dockerfile)
 
 Install from the command line
 
 ```bash
-docker pull ghcr.io/duyet/docker-images:docker_27_cli
+docker pull ghcr.io/duyet/docker-images:bun_1.3
 ```
 
 Use as base image in Dockerfile:
 
 ```Dockerfile
-FROM ghcr.io/duyet/docker-images:docker_27_cli
+FROM ghcr.io/duyet/docker-images:bun_1.3
+```
+
+
+### [`bun/bun_latest`](bun/bun_latest/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:bun_latest
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:bun_latest
+```
+
+
+## `clickhouse-server`
+
+### [`clickhouse-server/clickhouse_24.10`](clickhouse-server/clickhouse_24.10/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:clickhouse_24.10
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:clickhouse_24.10
+```
+
+
+### [`clickhouse-server/clickhouse_24.11`](clickhouse-server/clickhouse_24.11/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:clickhouse_24.11
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:clickhouse_24.11
+```
+
+
+### [`clickhouse-server/clickhouse_24.12`](clickhouse-server/clickhouse_24.12/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:clickhouse_24.12
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:clickhouse_24.12
+```
+
+
+### [`clickhouse-server/clickhouse_24.3`](clickhouse-server/clickhouse_24.3/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:clickhouse_24.3
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:clickhouse_24.3
+```
+
+
+### [`clickhouse-server/clickhouse_24.5`](clickhouse-server/clickhouse_24.5/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:clickhouse_24.5
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:clickhouse_24.5
+```
+
+
+### [`clickhouse-server/clickhouse_24.6`](clickhouse-server/clickhouse_24.6/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:clickhouse_24.6
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:clickhouse_24.6
+```
+
+
+### [`clickhouse-server/clickhouse_24.7`](clickhouse-server/clickhouse_24.7/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:clickhouse_24.7
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:clickhouse_24.7
+```
+
+
+### [`clickhouse-server/clickhouse_24.8`](clickhouse-server/clickhouse_24.8/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:clickhouse_24.8
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:clickhouse_24.8
+```
+
+
+### [`clickhouse-server/clickhouse_24.9`](clickhouse-server/clickhouse_24.9/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:clickhouse_24.9
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:clickhouse_24.9
+```
+
+
+### [`clickhouse-server/clickhouse_25.1`](clickhouse-server/clickhouse_25.1/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:clickhouse_25.1
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:clickhouse_25.1
+```
+
+
+### [`clickhouse-server/clickhouse_25.2`](clickhouse-server/clickhouse_25.2/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:clickhouse_25.2
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:clickhouse_25.2
+```
+
+
+### [`clickhouse-server/clickhouse_25.3`](clickhouse-server/clickhouse_25.3/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:clickhouse_25.3
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:clickhouse_25.3
+```
+
+
+### [`clickhouse-server/clickhouse_25.4`](clickhouse-server/clickhouse_25.4/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:clickhouse_25.4
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:clickhouse_25.4
+```
+
+
+### [`clickhouse-server/clickhouse_25.5`](clickhouse-server/clickhouse_25.5/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:clickhouse_25.5
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:clickhouse_25.5
+```
+
+
+### [`clickhouse-server/clickhouse_25.6`](clickhouse-server/clickhouse_25.6/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:clickhouse_25.6
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:clickhouse_25.6
+```
+
+
+### [`clickhouse-server/clickhouse_25.7`](clickhouse-server/clickhouse_25.7/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:clickhouse_25.7
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:clickhouse_25.7
+```
+
+
+### [`clickhouse-server/clickhouse_25.8`](clickhouse-server/clickhouse_25.8/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:clickhouse_25.8
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:clickhouse_25.8
+```
+
+
+## `debezium`
+
+### [`debezium/debezium_1.9.5.Final`](debezium/debezium_1.9.5.Final/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:debezium_1.9.5.Final
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:debezium_1.9.5.Final
+```
+
+
+### [`debezium/debezium_2.0.0.Beta1`](debezium/debezium_2.0.0.Beta1/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:debezium_2.0.0.Beta1
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:debezium_2.0.0.Beta1
+```
+
+
+### [`debezium/debezium_2.0.0.Beta2`](debezium/debezium_2.0.0.Beta2/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:debezium_2.0.0.Beta2
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:debezium_2.0.0.Beta2
+```
+
+
+### [`debezium/debezium_3.0.0.Final`](debezium/debezium_3.0.0.Final/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:debezium_3.0.0.Final
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:debezium_3.0.0.Final
 ```
 
 
@@ -207,6 +509,271 @@ Use as base image in Dockerfile:
 
 ```Dockerfile
 FROM ghcr.io/duyet/docker-images:stable-slim
+```
+
+
+## `docker`
+
+### [`docker/docker_27_cli`](docker/docker_27_cli/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:docker_27_cli
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:docker_27_cli
+```
+
+
+### [`docker/docker_27_dind`](docker/docker_27_dind/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:docker_27_dind
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:docker_27_dind
+```
+
+
+## `gcloud`
+
+### [`gcloud/gcloud_alpine_python39`](gcloud/gcloud_alpine_python39/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:gcloud_alpine_python39
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:gcloud_alpine_python39
+```
+
+
+### [`gcloud/gcloud_debian_python3`](gcloud/gcloud_debian_python3/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:gcloud_debian_python3
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:gcloud_debian_python3
+```
+
+
+## `kubeconform`
+
+### [`kubeconform/kubeconform_latest`](kubeconform/kubeconform_latest/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:kubeconform_latest
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:kubeconform_latest
+```
+
+
+## `node`
+
+### [`node/node_20`](node/node_20/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:node_20
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:node_20
+```
+
+
+### [`node/node_20-slim`](node/node_20-slim/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:node_20-slim
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:node_20-slim
+```
+
+
+### [`node/node_22`](node/node_22/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:node_22
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:node_22
+```
+
+
+### [`node/node_22-slim`](node/node_22-slim/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:node_22-slim
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:node_22-slim
+```
+
+
+### [`node/node_22.14.0_alpine`](node/node_22.14.0_alpine/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:node_22.14.0_alpine
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:node_22.14.0_alpine
+```
+
+
+### [`node/node_24`](node/node_24/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:node_24
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:node_24
+```
+
+
+### [`node/node_24-slim`](node/node_24-slim/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:node_24-slim
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:node_24-slim
+```
+
+
+## `postgres`
+
+### [`postgres/postgres_14`](postgres/postgres_14/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:postgres_14
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:postgres_14
+```
+
+
+### [`postgres/postgres_15`](postgres/postgres_15/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:postgres_15
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:postgres_15
+```
+
+
+### [`postgres/postgres_16`](postgres/postgres_16/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:postgres_16
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:postgres_16
+```
+
+
+### [`postgres/postgres_17`](postgres/postgres_17/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:postgres_17
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:postgres_17
+```
+
+
+### [`postgres/postgres_latest`](postgres/postgres_latest/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:postgres_latest
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:postgres_latest
 ```
 
 
@@ -274,82 +841,20 @@ FROM ghcr.io/duyet/docker-images:redis_8
 ```
 
 
-## `upptime`
-
-### [`upptime/upptime_monitor`](upptime/upptime_monitor/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:upptime_monitor
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:upptime_monitor
-```
-
-
 ## `rust`
 
-### [`rust/typos`](rust/typos/Dockerfile)
+### [`rust/athena`](rust/athena/Dockerfile)
 
 Install from the command line
 
 ```bash
-docker pull ghcr.io/duyet/docker-images:typos
+docker pull ghcr.io/duyet/docker-images:athena
 ```
 
 Use as base image in Dockerfile:
 
 ```Dockerfile
-FROM ghcr.io/duyet/docker-images:typos
-```
-
-
-### [`rust/sccache`](rust/sccache/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:sccache
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:sccache
-```
-
-
-### [`rust/python`](rust/python/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:python
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:python
-```
-
-
-### [`rust/sccache-server`](rust/sccache-server/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:sccache-server
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:sccache-server
+FROM ghcr.io/duyet/docker-images:athena
 ```
 
 
@@ -368,6 +873,36 @@ FROM ghcr.io/duyet/docker-images:cargo-audit
 ```
 
 
+### [`rust/python`](rust/python/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:python
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:python
+```
+
+
+### [`rust/sccache`](rust/sccache/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:sccache
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:sccache
+```
+
+
 ### [`rust/sccache-scheduler`](rust/sccache-scheduler/Dockerfile)
 
 Install from the command line
@@ -383,585 +918,50 @@ FROM ghcr.io/duyet/docker-images:sccache-scheduler
 ```
 
 
-### [`rust/athena`](rust/athena/Dockerfile)
+### [`rust/sccache-server`](rust/sccache-server/Dockerfile)
 
 Install from the command line
 
 ```bash
-docker pull ghcr.io/duyet/docker-images:athena
+docker pull ghcr.io/duyet/docker-images:sccache-server
 ```
 
 Use as base image in Dockerfile:
 
 ```Dockerfile
-FROM ghcr.io/duyet/docker-images:athena
+FROM ghcr.io/duyet/docker-images:sccache-server
 ```
 
 
-## `bun`
-
-### [`bun/bun_latest`](bun/bun_latest/Dockerfile)
+### [`rust/typos`](rust/typos/Dockerfile)
 
 Install from the command line
 
 ```bash
-docker pull ghcr.io/duyet/docker-images:bun_latest
+docker pull ghcr.io/duyet/docker-images:typos
 ```
 
 Use as base image in Dockerfile:
 
 ```Dockerfile
-FROM ghcr.io/duyet/docker-images:bun_latest
+FROM ghcr.io/duyet/docker-images:typos
 ```
 
 
-### [`bun/bun_1.3`](bun/bun_1.3/Dockerfile)
+## `upptime`
+
+### [`upptime/upptime_monitor`](upptime/upptime_monitor/Dockerfile)
 
 Install from the command line
 
 ```bash
-docker pull ghcr.io/duyet/docker-images:bun_1.3
+docker pull ghcr.io/duyet/docker-images:upptime_monitor
 ```
 
 Use as base image in Dockerfile:
 
 ```Dockerfile
-FROM ghcr.io/duyet/docker-images:bun_1.3
-```
-
-
-### [`bun/bun_1`](bun/bun_1/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:bun_1
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:bun_1
-```
-
-
-## `postgres`
-
-### [`postgres/postgres_latest`](postgres/postgres_latest/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:postgres_latest
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:postgres_latest
-```
-
-
-### [`postgres/postgres_17`](postgres/postgres_17/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:postgres_17
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:postgres_17
-```
-
-
-### [`postgres/postgres_16`](postgres/postgres_16/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:postgres_16
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:postgres_16
-```
-
-
-### [`postgres/postgres_14`](postgres/postgres_14/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:postgres_14
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:postgres_14
-```
-
-
-### [`postgres/postgres_15`](postgres/postgres_15/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:postgres_15
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:postgres_15
-```
-
-
-## `clickhouse-server`
-
-### [`clickhouse-server/clickhouse_24.11`](clickhouse-server/clickhouse_24.11/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:clickhouse_24.11
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:clickhouse_24.11
-```
-
-
-### [`clickhouse-server/clickhouse_25.3`](clickhouse-server/clickhouse_25.3/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:clickhouse_25.3
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:clickhouse_25.3
-```
-
-
-### [`clickhouse-server/clickhouse_25.4`](clickhouse-server/clickhouse_25.4/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:clickhouse_25.4
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:clickhouse_25.4
-```
-
-
-### [`clickhouse-server/clickhouse_25.5`](clickhouse-server/clickhouse_25.5/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:clickhouse_25.5
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:clickhouse_25.5
-```
-
-
-### [`clickhouse-server/clickhouse_24.10`](clickhouse-server/clickhouse_24.10/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:clickhouse_24.10
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:clickhouse_24.10
-```
-
-
-### [`clickhouse-server/clickhouse_25.2`](clickhouse-server/clickhouse_25.2/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:clickhouse_25.2
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:clickhouse_25.2
-```
-
-
-### [`clickhouse-server/clickhouse_24.9`](clickhouse-server/clickhouse_24.9/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:clickhouse_24.9
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:clickhouse_24.9
-```
-
-
-### [`clickhouse-server/clickhouse_24.7`](clickhouse-server/clickhouse_24.7/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:clickhouse_24.7
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:clickhouse_24.7
-```
-
-
-### [`clickhouse-server/clickhouse_24.6`](clickhouse-server/clickhouse_24.6/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:clickhouse_24.6
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:clickhouse_24.6
-```
-
-
-### [`clickhouse-server/clickhouse_24.8`](clickhouse-server/clickhouse_24.8/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:clickhouse_24.8
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:clickhouse_24.8
-```
-
-
-### [`clickhouse-server/clickhouse_25.7`](clickhouse-server/clickhouse_25.7/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:clickhouse_25.7
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:clickhouse_25.7
-```
-
-
-### [`clickhouse-server/clickhouse_24.12`](clickhouse-server/clickhouse_24.12/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:clickhouse_24.12
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:clickhouse_24.12
-```
-
-
-### [`clickhouse-server/clickhouse_25.8`](clickhouse-server/clickhouse_25.8/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:clickhouse_25.8
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:clickhouse_25.8
-```
-
-
-### [`clickhouse-server/clickhouse_25.1`](clickhouse-server/clickhouse_25.1/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:clickhouse_25.1
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:clickhouse_25.1
-```
-
-
-### [`clickhouse-server/clickhouse_25.6`](clickhouse-server/clickhouse_25.6/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:clickhouse_25.6
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:clickhouse_25.6
-```
-
-
-### [`clickhouse-server/clickhouse_24.3`](clickhouse-server/clickhouse_24.3/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:clickhouse_24.3
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:clickhouse_24.3
-```
-
-
-### [`clickhouse-server/clickhouse_24.5`](clickhouse-server/clickhouse_24.5/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:clickhouse_24.5
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:clickhouse_24.5
-```
-
-
-## `kubeconform`
-
-### [`kubeconform/kubeconform_latest`](kubeconform/kubeconform_latest/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:kubeconform_latest
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:kubeconform_latest
-```
-
-
-## `node`
-
-### [`node/node_20`](node/node_20/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:node_20
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:node_20
-```
-
-
-### [`node/node_22-slim`](node/node_22-slim/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:node_22-slim
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:node_22-slim
-```
-
-
-### [`node/node_24-slim`](node/node_24-slim/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:node_24-slim
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:node_24-slim
-```
-
-
-### [`node/node_24`](node/node_24/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:node_24
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:node_24
-```
-
-
-### [`node/node_22`](node/node_22/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:node_22
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:node_22
-```
-
-
-### [`node/node_22.14.0_alpine`](node/node_22.14.0_alpine/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:node_22.14.0_alpine
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:node_22.14.0_alpine
-```
-
-
-### [`node/node_20-slim`](node/node_20-slim/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:node_20-slim
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:node_20-slim
-```
-
-
-## `debezium`
-
-### [`debezium/debezium_2.0.0.Beta2`](debezium/debezium_2.0.0.Beta2/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:debezium_2.0.0.Beta2
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:debezium_2.0.0.Beta2
-```
-
-
-### [`debezium/debezium_3.0.0.Final`](debezium/debezium_3.0.0.Final/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:debezium_3.0.0.Final
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:debezium_3.0.0.Final
-```
-
-
-### [`debezium/debezium_2.0.0.Beta1`](debezium/debezium_2.0.0.Beta1/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:debezium_2.0.0.Beta1
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:debezium_2.0.0.Beta1
-```
-
-
-### [`debezium/debezium_1.9.5.Final`](debezium/debezium_1.9.5.Final/Dockerfile)
-
-Install from the command line
-
-```bash
-docker pull ghcr.io/duyet/docker-images:debezium_1.9.5.Final
-```
-
-Use as base image in Dockerfile:
-
-```Dockerfile
-FROM ghcr.io/duyet/docker-images:debezium_1.9.5.Final
+FROM ghcr.io/duyet/docker-images:upptime_monitor
 ```
 
 <!-- END IMAGE LIST -->

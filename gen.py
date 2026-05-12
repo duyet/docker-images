@@ -15,11 +15,11 @@ def scan_images(repo_root):
 
     # Scan the image_name is the directory in top level
     # The image_tag is the directory in the image_name directory
-    for image_name in os.listdir(repo_root):
+    for image_name in sorted(os.listdir(repo_root)):
         image_dir = repo_root / image_name
         if image_dir.is_dir():
             projects[image_name] = []
-            for image_tag in os.listdir(image_dir):
+            for image_tag in sorted(os.listdir(image_dir)):
                 check = image_dir / image_tag / "Dockerfile"
                 if check.is_file():
                     projects[image_name].append(image_tag)
