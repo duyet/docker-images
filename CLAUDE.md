@@ -51,6 +51,9 @@ uv sync
 # Generate workflows and README
 uv run python gen.py
 
+# Generate when default uv cache path is not writable
+UV_CACHE_DIR=$PWD/.uv-cache uv run python gen.py
+
 # Preview changes (dry run)
 uv run python gen.py --dry-run
 
@@ -74,7 +77,7 @@ docker buildx imagetools inspect <base-image:tag>
 
 GitHub Actions automatically:
 - Builds images for modified directories only (using path filters)
-- Supports multi-architecture builds (linux/amd64, linux/arm64)
+- Uses linux/amd64 + linux/arm64 by default, with per-image/per-tag amd64 overrides when upstream or build features are arch-limited (`gcloud/*`, `debezium/*`, `rust/sccache`)
 - Tags images with:
   - The image tag name
   - Git SHA

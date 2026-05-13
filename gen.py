@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+import json
 import os
 from pathlib import Path
 
@@ -8,6 +9,9 @@ import jinja2
 
 DEFAULT_PLATFORMS = "linux/amd64,linux/arm64"
 SINGLE_ARCH_IMAGES = {"debezium", "gcloud"}
+SINGLE_ARCH_TAGS = {
+    "rust": {"sccache"},
+}
 
 
 def scan_images(repo_root):
@@ -31,6 +35,23 @@ def scan_images(repo_root):
     projects = {k: v for k, v in projects.items() if v}
 
     return projects
+
+
+def resolve_platform_expression(image_name, image_tags):
+    """Resolve workflow expression for job-level IMAGE_PLATFORMS."""
+    if image_name in SINGLE_ARCH_IMAGES:
+        return "linux/amd64"
+
+    single_arch_tags = sorted(SINGLE_ARCH_TAGS.get(image_name, set()))
+    if not single_arch_tags:
+        return DEFAULT_PLATFORMS
+
+    overrides = json.dumps(single_arch_tags)
+    return (
+        "${{ contains(fromJSON('"
+        + overrides
+        + "'), matrix.tags) && 'linux/amd64' || 'linux/amd64,linux/arm64' }}"
+    )
 
 
 def get_template_workflows():
@@ -173,8 +194,8 @@ def build_workflows(images):
 
     # Build the workflows
     image_platforms = {
-        name: "linux/amd64" if name in SINGLE_ARCH_IMAGES else DEFAULT_PLATFORMS
-        for name in images
+        name: resolve_platform_expression(name, image_tags)
+        for name, image_tags in images.items()
     }
     workflows = template.render(images=images, image_platforms=image_platforms)
 
