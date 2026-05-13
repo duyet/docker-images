@@ -77,7 +77,7 @@ docker buildx imagetools inspect <base-image:tag>
 
 GitHub Actions automatically:
 - Builds images for modified directories only (using path filters)
-- Uses linux/amd64 + linux/arm64 by default, with per-image/per-tag amd64 overrides when upstream or build features are arch-limited (`gcloud/*`, `debezium/*`, `rust/sccache`)
+- Uses linux/amd64 + linux/arm64 by default, with per-image/per-tag amd64 overrides when upstream or build features are arch-limited (`gcloud/*`, `debezium/*`, `rust/sccache*`)
 - Tags images with:
   - The image tag name
   - Git SHA

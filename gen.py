@@ -10,7 +10,7 @@ import jinja2
 DEFAULT_PLATFORMS = "linux/amd64,linux/arm64"
 SINGLE_ARCH_IMAGES = {"debezium", "gcloud"}
 SINGLE_ARCH_TAGS = {
-    "rust": {"sccache"},
+    "rust": {"sccache", "sccache-scheduler", "sccache-server"},
 }
 
 
