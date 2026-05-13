@@ -813,7 +813,7 @@ jobs:
     env:
       IMAGE_NAME: rust
       IMAGE_TAG: '${{ matrix.tags }}'
-      IMAGE_PLATFORMS: linux/amd64,linux/arm64
+      IMAGE_PLATFORMS: ${{ contains(fromJSON('["sccache", "sccache-scheduler", "sccache-server"]'), matrix.tags) && 'linux/amd64' || 'linux/amd64,linux/arm64' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4

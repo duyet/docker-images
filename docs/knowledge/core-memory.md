@@ -19,6 +19,9 @@ This file stores durable maintenance notes for automation and contributors.
 - Check whether a base image tag is multi-arch before enabling `linux/arm64`:
   - `docker buildx imagetools inspect <base-image:tag>`
 - Keep `gcloud/*` and `debezium/*` on `linux/amd64` in generated CI while their upstream base tags publish single-arch manifests.
+- Keep `rust/sccache*` tags (`sccache`, `sccache-server`, `sccache-scheduler`) on `linux/amd64` by tag override because `sccache-dist` fails to compile on arm64 (`Distributed compilation is only supported on Linux/x86_64 and FreeBSD`).
+- If default uv cache path is not writable in sandbox/worktree runs, use:
+  - `UV_CACHE_DIR=$PWD/.uv-cache uv run python gen.py`
 
 ## Repo notes
 
