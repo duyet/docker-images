@@ -37,7 +37,7 @@ def scan_images(repo_root):
     return projects
 
 
-def resolve_platform_expression(image_name, image_tags):
+def resolve_platform_expression(image_name):
     """Resolve workflow expression for job-level IMAGE_PLATFORMS."""
     if image_name in SINGLE_ARCH_IMAGES:
         return "linux/amd64"
@@ -50,7 +50,9 @@ def resolve_platform_expression(image_name, image_tags):
     return (
         "${{ contains(fromJSON('"
         + overrides
-        + "'), matrix.tags) && 'linux/amd64' || 'linux/amd64,linux/arm64' }}"
+        + "'), matrix.tags) && 'linux/amd64' || '"
+        + DEFAULT_PLATFORMS
+        + "' }}"
     )
 
 
@@ -194,8 +196,7 @@ def build_workflows(images):
 
     # Build the workflows
     image_platforms = {
-        name: resolve_platform_expression(name, image_tags)
-        for name, image_tags in images.items()
+        name: resolve_platform_expression(name) for name in images
     }
     workflows = template.render(images=images, image_platforms=image_platforms)
 

@@ -66,6 +66,9 @@ git log --since='7 days ago' --name-status --pretty='format:=== %H %ad %s' --dat
 # Inspect commits since a specific automation run
 git log --since='<last_run_iso>' --name-status --pretty='format:=== %H %ad %s' --date=iso-strict master
 
+# Inspect minimal diffs for one commit and selected files
+git show --unified=0 --pretty=format:'=== %H %s' <commit_sha> -- <path...>
+
 # Dead-code evidence (exclude tests)
 rg -n "<symbol>" . --glob '!**/*test*' --glob '!**/*spec*'
 
@@ -128,6 +131,7 @@ CI only builds images when their specific directories change, using GitHub Actio
 - Keep durable maintenance notes in `docs/knowledge/core-memory.md`.
 - Keep the memory index in `docs/INDEX.md`.
 - Do not create dated review docs like `docs/reviews/code-smell-dead-code-YYYY-MM-DD.md`.
+- If worktree git metadata locks block writes (for example `.git/worktrees/.../HEAD.lock`), rerun git-write steps from the canonical checkout.
 
 ## Development Dependencies
 
