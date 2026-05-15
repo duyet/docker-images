@@ -8,5 +8,5 @@ dependencies = [
     "jinja2",
 ]
 
-[tool.uv]
-dev-dependencies = []
+[dependency-groups]
+dev = []

@@ -69,6 +69,9 @@ git log --since='<last_run_iso>' --name-status --pretty='format:=== %H %ad %s' -
 # Inspect minimal diffs for one commit and selected files
 git show --unified=0 --pretty=format:'=== %H %s' <commit_sha> -- <path...>
 
+# Verify post-merge CI for a specific commit on master
+gh run list --branch master --commit "<merge_sha>" --json databaseId,displayTitle,status,conclusion,url --limit 20
+
 # Dead-code evidence (exclude tests)
 rg -n "<symbol>" . --glob '!**/*test*' --glob '!**/*spec*'
 
@@ -132,6 +135,7 @@ CI only builds images when their specific directories change, using GitHub Actio
 - Keep the memory index in `docs/INDEX.md`.
 - Do not create dated review docs like `docs/reviews/code-smell-dead-code-YYYY-MM-DD.md`.
 - If worktree git metadata locks block writes (for example `.git/worktrees/.../HEAD.lock`), rerun git-write steps from the canonical checkout.
+- If a linked worktree opens in detached `HEAD`, create a branch from `master` before edits.
 
 ## Development Dependencies
 

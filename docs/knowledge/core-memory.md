@@ -10,6 +10,8 @@ This file stores durable maintenance notes for automation and contributors.
   - `git log --since='7 days ago' --name-status --pretty='format:=== %H %ad %s' --date=iso master`
 - Inspect a single commit with minimal context for evidence-first triage:
   - `git show --unified=0 --pretty=format:'=== %H %s' <commit_sha> -- <path...>`
+- Verify post-merge CI for a merge commit on `master`:
+  - `gh run list --branch master --commit "<merge_sha>" --json databaseId,displayTitle,status,conclusion,url --limit 20`
 
 ## Dead-code evidence workflow
 
@@ -30,3 +32,4 @@ This file stores durable maintenance notes for automation and contributors.
 - `AGENTS.md` is a symlink to `CLAUDE.md`; update `CLAUDE.md` for shared instructions.
 - Keep maintenance knowledge in this file and avoid dated review artifacts.
 - If `.git/worktrees/.../*.lock` blocks git writes in a linked worktree, continue from the canonical checkout and keep the same branch.
+- If a linked worktree opens in detached `HEAD`, create a branch from `master` before editing.
