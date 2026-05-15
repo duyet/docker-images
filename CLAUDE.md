@@ -66,6 +66,9 @@ git log --since='7 days ago' --name-status --pretty='format:=== %H %ad %s' --dat
 # Inspect commits since a specific automation run
 git log --since='<last_run_iso>' --name-status --pretty='format:=== %H %ad %s' --date=iso-strict master
 
+# Inspect commits from a short fallback window when no new commits since last run
+git log --since='24 hours ago' --name-status --pretty='format:=== %H %ad %s' --date=iso-strict master
+
 # Inspect minimal diffs for one commit and selected files
 git show --unified=0 --pretty=format:'=== %H %s' <commit_sha> -- <path...>
 

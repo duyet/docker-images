@@ -6,6 +6,8 @@ This file stores durable maintenance notes for automation and contributors.
 
 - Scan recent commits by date window:
   - `git log --since='<last_run_iso>' --name-status --pretty='format:=== %H %ad %s' --date=iso-strict master`
+- Scan a short fallback window when no commits appear since the last run:
+  - `git log --since='24 hours ago' --name-status --pretty='format:=== %H %ad %s' --date=iso-strict master`
 - Scan fallback window when no new commits are found:
   - `git log --since='7 days ago' --name-status --pretty='format:=== %H %ad %s' --date=iso master`
 - Inspect a single commit with minimal context for evidence-first triage:
