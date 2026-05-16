@@ -69,8 +69,8 @@ git log --since='<last_run_iso>' --name-status --pretty='format:=== %H %ad %s' -
 # Inspect commits from a short fallback window when no new commits since last run
 git log --since='24 hours ago' --name-status --pretty='format:=== %H %ad %s' --date=iso-strict master
 
-# Confirm detached HEAD state and whether a branch is held by another linked worktree
-git branch -a --contains HEAD
+# Confirm detached HEAD state and branch ownership across linked worktrees
+git worktree list --porcelain
 
 # Inspect minimal diffs for one commit and selected files
 git show --unified=0 --pretty=format:'=== %H %s' <commit_sha> -- <path...>
