@@ -34,6 +34,9 @@ This file stores durable maintenance notes for automation and contributors.
 - `AGENTS.md` is a symlink to `CLAUDE.md`; update `CLAUDE.md` for shared instructions.
 - Keep maintenance knowledge in this file and avoid dated review artifacts.
 - If `.git/worktrees/.../*.lock` blocks git writes in a linked worktree, continue from the canonical checkout and keep the same branch.
+- If linked-worktree git metadata blocks fetch writes (`.../FETCH_HEAD: Operation not permitted`), rerun fetch from the canonical checkout.
 - If a linked worktree opens in detached `HEAD`, create a branch from `master` before editing.
 - To confirm detached `HEAD` state and branch ownership across linked worktrees:
   - `git worktree list --porcelain`
+- To fetch safely from the canonical checkout when linked-worktree metadata writes fail:
+  - `git -C <canonical_checkout_path> fetch origin --prune`
