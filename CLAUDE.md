@@ -72,6 +72,9 @@ git log --since='24 hours ago' --name-status --pretty='format:=== %H %ad %s' --d
 # Confirm detached HEAD state and branch ownership across linked worktrees
 git worktree list --porcelain
 
+# Fetch from canonical checkout when linked-worktree metadata writes fail
+git -C <canonical_checkout_path> fetch origin --prune
+
 # Inspect minimal diffs for one commit and selected files
 git show --unified=0 --pretty=format:'=== %H %s' <commit_sha> -- <path...>
 
@@ -141,6 +144,7 @@ CI only builds images when their specific directories change, using GitHub Actio
 - Keep the memory index in `docs/INDEX.md`.
 - Do not create dated review docs like `docs/reviews/code-smell-dead-code-YYYY-MM-DD.md`.
 - If worktree git metadata locks block writes (for example `.git/worktrees/.../HEAD.lock`), rerun git-write steps from the canonical checkout.
+- If linked-worktree git metadata blocks fetch writes (`.../FETCH_HEAD: Operation not permitted`), rerun fetch from the canonical checkout.
 - If a linked worktree opens in detached `HEAD`, create a branch from `master` before edits.
 
 ## Development Dependencies
