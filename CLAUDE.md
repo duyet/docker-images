@@ -75,6 +75,9 @@ git worktree list --porcelain
 # Fetch from canonical checkout when linked-worktree metadata writes fail
 git -C <canonical_checkout_path> fetch origin --prune
 
+# Create/switch feature branch from canonical checkout when linked-worktree HEAD writes fail
+git -C <canonical_checkout_path> switch -c <branch_name>
+
 # Inspect minimal diffs for one commit and selected files
 git show --unified=0 --pretty=format:'=== %H %s' <commit_sha> -- <path...>
 
@@ -146,6 +149,7 @@ CI only builds images when their specific directories change, using GitHub Actio
 - If worktree git metadata locks block writes (for example `.git/worktrees/.../HEAD.lock`), rerun git-write steps from the canonical checkout.
 - If linked-worktree git metadata blocks fetch writes (`.../FETCH_HEAD: Operation not permitted`), rerun fetch from the canonical checkout.
 - If a linked worktree opens in detached `HEAD`, create a branch from `master` before edits.
+- If the since-last-run commit window only changes docs/knowledge files, report no functional bug/perf regression findings and skip code fixes.
 
 ## Development Dependencies
 
