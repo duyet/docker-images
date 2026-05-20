@@ -4,7 +4,7 @@ FROM golang:1.24-alpine AS builder
 ARG MINIO_REF=RELEASE.2025-10-15T17-29-55Z
 
 # Build dependencies required by MinIO's Makefile.
-RUN apk add --no-cache bash gcc git make musl-dev
+RUN apk add --no-cache bash gcc git make musl-dev perl
 
 WORKDIR /src
 RUN git clone --depth 1 --branch "${MINIO_REF}" https://github.com/minio/minio.git .
