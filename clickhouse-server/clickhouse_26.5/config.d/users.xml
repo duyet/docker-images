@@ -1,0 +1,15 @@
+<clickhouse>
+    <users>
+        <default>
+            <password></password>
+            <access_management>1</access_management>
+            <profile>default</profile>
+            <networks>
+                <ip>::/0</ip>
+            </networks>
+            <grants>
+                <query>GRANT ALL ON *.*</query>
+            </grants>
+        </default>
+    </users>
+</clickhouse>

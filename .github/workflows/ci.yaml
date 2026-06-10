@@ -275,6 +275,10 @@ jobs:
           - clickhouse_25.6
           - clickhouse_25.7
           - clickhouse_25.8
+          - clickhouse_26.2
+          - clickhouse_26.3
+          - clickhouse_26.4
+          - clickhouse_26.5
     env:
       IMAGE_NAME: clickhouse-server
       IMAGE_TAG: '${{ matrix.tags }}'
@@ -1098,6 +1102,8 @@ jobs:
           - node_22.14.0_alpine
           - node_24
           - node_24-slim
+          - node_26
+          - node_26-slim
     env:
       IMAGE_NAME: node
       IMAGE_TAG: '${{ matrix.tags }}'
