@@ -43,3 +43,10 @@ This file stores durable maintenance notes for automation and contributors.
   - `git -C <canonical_checkout_path> fetch origin --prune`
 - To create/switch feature branches from canonical checkout when linked-worktree HEAD writes fail:
   - `git -C <canonical_checkout_path> switch -c <branch_name>`
+
+## Supply Chain Security: GitHub Actions Pinning (2026-06-10)
+
+- **Incident:** In March 2026, `aquasecurity/trivy-action` had tags force-pushed with malicious code across 75 versions.
+- **Mitigation:** Always pin actions to specific version tags (e.g., `@v0.36.0`). Prefer commit SHAs for critical pipelines.
+- **Pattern:** Two-phase Trivy scan — first run generates report (exit-code: 0, always succeeds), second run fails on HIGH/CRITICAL with `skip-setup-trivy: true` to avoid re-downloading.
+- **Current version:** `aquasecurity/trivy-action@v0.36.0`

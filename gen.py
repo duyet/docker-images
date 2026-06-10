@@ -145,18 +145,53 @@ jobs:
         if: steps.changes.outputs.src == 'true'
         run: echo ${{ steps.docker_build.outputs.digest }}
 
-      - name: Run Trivy vulnerability scan
+      - name: Generate Trivy vulnerability report
         if: steps.changes.outputs.src == 'true' && github.event_name != 'pull_request'
-        uses: aquasecurity/trivy-action@0.30.0
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: '${{ env.REGISTRY }}/${{ env.REPO }}:${{ matrix.tags }}'
+          format: 'json'
+          output: 'trivy-report.json'
+          exit-code: '0'
+
+      - name: Upload Trivy scan results artifact
+        if: steps.changes.outputs.src == 'true' && github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'trivy-report-${{ matrix.tags }}'
+          path: 'trivy-report.json'
+          retention-days: 30
+
+      - name: Run Trivy vulnerability scan (sarif)
+        if: steps.changes.outputs.src == 'true' && github.event_name != 'pull_request'
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: '${{ env.REGISTRY }}/${{ env.REPO }}:${{ matrix.tags }}'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        if: steps.changes.outputs.src == 'true' && github.event_name != 'pull_request'
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-results.sarif'
+          category: '${{ matrix.tags }}'
+
+      - name: Fail build on HIGH/CRITICAL vulnerabilities
+        if: steps.changes.outputs.src == 'true' && github.event_name != 'pull_request'
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: '${{ env.REGISTRY }}/${{ env.REPO }}:${{ matrix.tags }}'
           format: 'table'
-          severity: 'CRITICAL,HIGH'
-          exit-code: '0'
+          severity: 'HIGH,CRITICAL'
+          ignore-unfixed: true
+          exit-code: '1'
+          skip-setup-trivy: true
 
       - name: Run Trivy config scan
         if: steps.changes.outputs.src == 'true'
-        uses: aquasecurity/trivy-action@0.30.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           scan-type: 'config'
           scan-ref: './${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile'
