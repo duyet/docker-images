@@ -8,7 +8,7 @@ ENV CLIENT_AUTH_TOKEN="duet"
 ENV SERVER_AUTH_TOKEN="duet"
 ENV SCHEDULER_AUTH_TOKEN="duet"
 
-RUN apt update && apt install -y bubblewrap && \
+RUN apt update && apt upgrade -y && apt install -y bubblewrap && \
   cargo install sccache --features="dist-client,dist-server,s3,redis" && \
   which sccache && which sccache-dist && sccache --version
 

@@ -1,6 +1,6 @@
 FROM google/cloud-sdk:alpine
 
-RUN apk --update add \
+RUN apk upgrade --no-cache && apk --update add \
   python3 \
   py3-pip \
   py3-wheel \

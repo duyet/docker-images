@@ -6,4 +6,4 @@ COPY --from=kustomize /usr/local/bin/kustomize /usr/local/bin/kustomize
 COPY --from=kustomize /usr/local/bin/kubectl /usr/local/bin/kubectl
 COPY --from=kubeconform /kubeconform /usr/local/bin/kubeconform
 
-RUN apk add yq bash
+RUN apk upgrade --no-cache && apk add yq bash

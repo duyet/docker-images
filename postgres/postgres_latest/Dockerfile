@@ -1,4 +1,5 @@
 FROM postgres:latest
+RUN apt-get update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/*
 
 # Set default environment variables (can be overridden)
 ENV POSTGRES_DB=postgres
