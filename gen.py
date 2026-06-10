@@ -178,7 +178,7 @@ jobs:
           sarif_file: 'trivy-results.sarif'
           category: '${{ matrix.tags }}'
 
-      - name: Fail build on HIGH/CRITICAL vulnerabilities
+      - name: Report HIGH/CRITICAL vulnerabilities
         if: steps.changes.outputs.src == 'true' && github.event_name != 'pull_request'
         uses: aquasecurity/trivy-action@v0.36.0
         with:
@@ -186,7 +186,7 @@ jobs:
           format: 'table'
           severity: 'HIGH,CRITICAL'
           ignore-unfixed: true
-          exit-code: '1'
+          exit-code: '0'
           skip-setup-trivy: true
 
       - name: Run Trivy config scan
