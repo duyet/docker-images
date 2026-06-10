@@ -144,6 +144,25 @@ jobs:
       - name: Image digest
         if: steps.changes.outputs.src == 'true'
         run: echo ${{ steps.docker_build.outputs.digest }}
+
+      - name: Run Trivy vulnerability scan
+        if: steps.changes.outputs.src == 'true' && github.event_name != 'pull_request'
+        uses: aquasecurity/trivy-action@0.30.0
+        with:
+          image-ref: '${{ env.REGISTRY }}/${{ env.REPO }}:${{ matrix.tags }}'
+          format: 'table'
+          severity: 'CRITICAL,HIGH'
+          exit-code: '0'
+
+      - name: Run Trivy config scan
+        if: steps.changes.outputs.src == 'true'
+        uses: aquasecurity/trivy-action@0.30.0
+        with:
+          scan-type: 'config'
+          scan-ref: './${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile'
+          format: 'table'
+          severity: 'CRITICAL,HIGH,MEDIUM'
+          exit-code: '0'
     {%- endraw %}
 {% endfor -%}
     """
