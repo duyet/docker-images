@@ -72,7 +72,18 @@ on:
     branches:
       - master
 
+  workflow_dispatch:
+
 {% raw %}
+concurrency:
+  # Serialize runs per ref. cancel-in-progress is intentionally false:
+  # cancelling a run mid `docker buildx push` writes a multi-arch manifest
+  # index that points at a child manifest that never landed (the published
+  # node_22.14.0_alpine amd64 manifest was orphaned this way by overlapping
+  # pushes on 2026-06-10). At most one run + one pending run per ref.
+  group: ci-${{ github.ref }}
+  cancel-in-progress: false
+
 env:
   REGISTRY: ghcr.io
   REPO: ${{ github.repository }}
@@ -84,6 +95,10 @@ jobs:
     name: Build {{ image_name }}
     runs-on: ubuntu-latest
     strategy:
+      # A single job failing (or being cancelled) must not abort a sibling
+      # mid `docker buildx push`, which orphans manifest children. Each tag
+      # is independent; let them all run to completion.
+      fail-fast: false
       matrix:
         tags:
           {%- for image_tag in image_tags %}
