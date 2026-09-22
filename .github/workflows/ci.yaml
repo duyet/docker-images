@@ -1399,6 +1399,7 @@ jobs:
       matrix:
         tags:
           - python_3.12_slim_bookworm
+          - python_3.12_slim_bookworm_cairo
           - python_3.12_slim_bookworm_runtime
           - python_3.14_slim_bookworm
     env:

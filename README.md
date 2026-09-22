@@ -104,6 +104,7 @@ python3 gen.py
     - [`ghcr.io/duyet/docker-images:postgres_latest`](#postgrespostgres_latest)
 - [`python`](#python)
     - [`ghcr.io/duyet/docker-images:python_3.12_slim_bookworm`](#pythonpython_312_slim_bookworm)
+    - [`ghcr.io/duyet/docker-images:python_3.12_slim_bookworm_cairo`](#pythonpython_312_slim_bookworm_cairo)
     - [`ghcr.io/duyet/docker-images:python_3.12_slim_bookworm_runtime`](#pythonpython_312_slim_bookworm_runtime)
     - [`ghcr.io/duyet/docker-images:python_3.14_slim_bookworm`](#pythonpython_314_slim_bookworm)
 - [`redis`](#redis)
@@ -913,6 +914,23 @@ Use as base image in Dockerfile:
 
 ```Dockerfile
 FROM ghcr.io/duyet/docker-images:python_3.12_slim_bookworm
+```
+
+
+### [`python/python_3.12_slim_bookworm_cairo`](python/python_3.12_slim_bookworm_cairo/Dockerfile)
+
+General runtime base: Python 3.12 slim Bookworm runtime, plus Pango, Cairo, gdk-pixbuf, and shared-mime-info. Child Dockerfiles can `FROM` this tag and skip that install.
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:python_3.12_slim_bookworm_cairo
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:python_3.12_slim_bookworm_cairo
 ```
 
 
