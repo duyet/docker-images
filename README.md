@@ -747,7 +747,7 @@ FROM ghcr.io/duyet/docker-images:node_22-slim
 
 ### [`node/node_22.14.0_alpine`](node/node_22.14.0_alpine/Dockerfile)
 
-General CI and runtime base: Node.js 22.14.0 on Alpine, plus python3 and zstd. Child Dockerfiles can `FROM` this tag and skip that install, so rebuilds stay cached on the base.
+General CI and runtime base: Node.js 22.14.0 on Alpine, plus python3, zstd, and uv 0.6.10. Child Dockerfiles can `FROM` this tag and skip that install, so rebuilds stay cached on the base.
 
 Install from the command line
 
