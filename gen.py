@@ -239,6 +239,10 @@ def get_template_readme():
 
 ### [`{{ image_name }}/{{ image_tag }}`]({{ image_name }}/{{ image_tag }}/Dockerfile)
 
+{% if blurbs.get(image_name, {}).get(image_tag) -%}
+{{ blurbs[image_name][image_tag] }}
+
+{% endif -%}
 Install from the command line
 
 ```bash
@@ -272,14 +276,26 @@ def build_workflows(images):
     return workflows
 
 
-def build_readme(images):
+def load_blurbs(repo_root, images):
+    """Optional blurb.md next to a Dockerfile is copied into the README."""
+    blurbs = {}
+    for image_name, image_tags in images.items():
+        blurbs[image_name] = {}
+        for image_tag in image_tags:
+            path = repo_root / image_name / image_tag / "blurb.md"
+            if path.is_file():
+                blurbs[image_name][image_tag] = path.read_text(encoding="utf-8").strip()
+    return blurbs
+
+
+def build_readme(images, blurbs=None):
     """Build the README.md for the images."""
 
     # Get the jinja2 template
     template = jinja2.Template(get_template_readme())
 
     # Build the workflows
-    return template.render(images=images)
+    return template.render(images=images, blurbs=blurbs or {})
 
 
 def parse_args():
@@ -311,7 +327,7 @@ if __name__ == "__main__":
     # Generate the README.md
     # Replace content between <!-- BEGIN IMAGE LIST --> and <!-- END IMAGE LIST -->
     # with the list of images
-    readme_content = build_readme(images)
+    readme_content = build_readme(images, load_blurbs(repo_root, images))
     readme_path = repo_root / "README.md"
     with open(readme_path, "r", encoding="utf-8") as f:
         begin_marker = "<!-- BEGIN IMAGE LIST -->"
