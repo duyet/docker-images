@@ -1,0 +1,1 @@
+General CI and runtime base: the same Python 3.12 slim Bookworm interpreter, plus curl, libgcc (`libgcc-s1`), and libstdc++ (`libstdc++6`). Child Dockerfiles can `FROM` this tag and skip that install, so rebuilds stay cached on the base.

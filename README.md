@@ -104,6 +104,7 @@ python3 gen.py
     - [`ghcr.io/duyet/docker-images:postgres_latest`](#postgrespostgres_latest)
 - [`python`](#python)
     - [`ghcr.io/duyet/docker-images:python_3.12_slim_bookworm`](#pythonpython_312_slim_bookworm)
+    - [`ghcr.io/duyet/docker-images:python_3.12_slim_bookworm_runtime`](#pythonpython_312_slim_bookworm_runtime)
     - [`ghcr.io/duyet/docker-images:python_3.14_slim_bookworm`](#pythonpython_314_slim_bookworm)
 - [`redis`](#redis)
     - [`ghcr.io/duyet/docker-images:redis_7`](#redisredis_7)
@@ -567,6 +568,8 @@ FROM ghcr.io/duyet/docker-images:debezium_3.0.0.Final
 
 ### [`debian/stable-slim`](debian/stable-slim/Dockerfile)
 
+General CI and runtime base: Debian stable slim, plus curl, python3, and zstd. Child Dockerfiles can `FROM` this tag and skip that install, so rebuilds stay cached on the base.
+
 Install from the command line
 
 ```bash
@@ -583,6 +586,8 @@ FROM ghcr.io/duyet/docker-images:stable-slim
 ## `docker`
 
 ### [`docker/docker_27_cli`](docker/docker_27_cli/Dockerfile)
+
+General CI and runtime base: Docker 27 CLI, plus python3 and zstd. Child Dockerfiles can `FROM` this tag and skip that install, so rebuilds stay cached on the base.
 
 Install from the command line
 
@@ -741,6 +746,8 @@ FROM ghcr.io/duyet/docker-images:node_22-slim
 
 
 ### [`node/node_22.14.0_alpine`](node/node_22.14.0_alpine/Dockerfile)
+
+General CI and runtime base: Node.js 22.14.0 on Alpine, plus python3 and zstd. Child Dockerfiles can `FROM` this tag and skip that install, so rebuilds stay cached on the base.
 
 Install from the command line
 
@@ -906,6 +913,23 @@ Use as base image in Dockerfile:
 
 ```Dockerfile
 FROM ghcr.io/duyet/docker-images:python_3.12_slim_bookworm
+```
+
+
+### [`python/python_3.12_slim_bookworm_runtime`](python/python_3.12_slim_bookworm_runtime/Dockerfile)
+
+General CI and runtime base: the same Python 3.12 slim Bookworm interpreter, plus curl, libgcc (`libgcc-s1`), and libstdc++ (`libstdc++6`). Child Dockerfiles can `FROM` this tag and skip that install, so rebuilds stay cached on the base.
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:python_3.12_slim_bookworm_runtime
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:python_3.12_slim_bookworm_runtime
 ```
 
 
