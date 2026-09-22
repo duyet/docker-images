@@ -1,0 +1,36 @@
+name: python_3.12_slim_bookworm_cairo smoke
+
+on:
+  pull_request:
+    paths:
+      - python/python_3.12_slim_bookworm_cairo/**
+      - .github/workflows/python-cairo-smoke.yaml
+  push:
+    branches:
+      - master
+    paths:
+      - python/python_3.12_slim_bookworm_cairo/**
+      - .github/workflows/python-cairo-smoke.yaml
+
+jobs:
+  smoke:
+    name: python_3.12_slim_bookworm_cairo smoke
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Reject a full apt upgrade in the Dockerfile
+        run: |
+          set -eu
+          file=python/python_3.12_slim_bookworm_cairo/Dockerfile
+          if grep -E -q 'apt(-get)?[[:space:]]+upgrade' "$file"; then
+            echo "Dockerfile runs apt upgrade" >&2
+            exit 1
+          fi
+
+      - name: Build
+        run: docker build -t python_3.12_slim_bookworm_cairo -f python/python_3.12_slim_bookworm_cairo/Dockerfile .
+
+      - name: Check runtime
+        run: docker run --rm -v "$PWD/python/python_3.12_slim_bookworm_cairo/smoke.sh:/smoke.sh:ro" python_3.12_slim_bookworm_cairo /bin/sh /smoke.sh
