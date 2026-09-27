@@ -1,4 +1,4 @@
-FROM debezium/connect:2.0.0.Beta1
+FROM debezium/connect:2.0.0.Beta2
 
 USER root
 RUN microdnf install -y perl openssl wget && microdnf clean all
