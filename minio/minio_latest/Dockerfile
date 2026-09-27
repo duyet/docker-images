@@ -1,5 +1,5 @@
 # Build stage
-FROM golang:1.24-alpine AS builder
+FROM golang:1.26-alpine AS builder
 
 ARG MINIO_REF=RELEASE.2025-10-15T17-29-55Z
 
