@@ -1,4 +1,4 @@
-FROM python:3.14-rc-slim
+FROM python:3.14-slim-bookworm
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
@@ -7,8 +7,8 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # Set working directory
 WORKDIR /app
 
-# Update package list and install basic tools
-RUN apt-get update && apt-get install -y --no-install-recommends \
+# Update package list
+RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # Upgrade pip
