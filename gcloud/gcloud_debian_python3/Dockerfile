@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 
 # Install dependencies and Google Cloud SDK
 RUN apt-get update && apt-get install -y \
