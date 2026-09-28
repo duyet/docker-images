@@ -1,0 +1,6 @@
+# Run identity and scratch state (fixtures, fallback uv cache)
+.run/
+scratch/
+# Live drive captures — rewritten every run; a green drive exit is the proof
+evidence/**
+!evidence/README.md
