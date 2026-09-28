@@ -106,7 +106,11 @@ python3 gen.py
     - [`ghcr.io/duyet/docker-images:python_3.12_slim_bookworm`](#pythonpython_312_slim_bookworm)
     - [`ghcr.io/duyet/docker-images:python_3.12_slim_bookworm_cairo`](#pythonpython_312_slim_bookworm_cairo)
     - [`ghcr.io/duyet/docker-images:python_3.12_slim_bookworm_runtime`](#pythonpython_312_slim_bookworm_runtime)
+    - [`ghcr.io/duyet/docker-images:python_3.12_slim_trixie`](#pythonpython_312_slim_trixie)
+    - [`ghcr.io/duyet/docker-images:python_3.12_slim_trixie_cairo`](#pythonpython_312_slim_trixie_cairo)
+    - [`ghcr.io/duyet/docker-images:python_3.12_slim_trixie_runtime`](#pythonpython_312_slim_trixie_runtime)
     - [`ghcr.io/duyet/docker-images:python_3.14_slim_bookworm`](#pythonpython_314_slim_bookworm)
+    - [`ghcr.io/duyet/docker-images:python_3.14_slim_trixie`](#pythonpython_314_slim_trixie)
 - [`redis`](#redis)
     - [`ghcr.io/duyet/docker-images:redis_7`](#redisredis_7)
     - [`ghcr.io/duyet/docker-images:redis_8`](#redisredis_8)
@@ -951,6 +955,55 @@ FROM ghcr.io/duyet/docker-images:python_3.12_slim_bookworm_runtime
 ```
 
 
+### [`python/python_3.12_slim_trixie`](python/python_3.12_slim_trixie/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:python_3.12_slim_trixie
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:python_3.12_slim_trixie
+```
+
+
+### [`python/python_3.12_slim_trixie_cairo`](python/python_3.12_slim_trixie_cairo/Dockerfile)
+
+General runtime base: Python 3.12 slim Trixie runtime, plus Pango, Cairo, gdk-pixbuf, and shared-mime-info. Child Dockerfiles can `FROM` this tag and skip that install.
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:python_3.12_slim_trixie_cairo
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:python_3.12_slim_trixie_cairo
+```
+
+
+### [`python/python_3.12_slim_trixie_runtime`](python/python_3.12_slim_trixie_runtime/Dockerfile)
+
+General CI and runtime base: the same Python 3.12 slim Trixie interpreter, plus curl, libgcc (`libgcc-s1`), and libstdc++ (`libstdc++6`). Child Dockerfiles can `FROM` this tag and skip that install, so rebuilds stay cached on the base.
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:python_3.12_slim_trixie_runtime
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:python_3.12_slim_trixie_runtime
+```
+
+
 ### [`python/python_3.14_slim_bookworm`](python/python_3.14_slim_bookworm/Dockerfile)
 
 Install from the command line
@@ -963,6 +1016,21 @@ Use as base image in Dockerfile:
 
 ```Dockerfile
 FROM ghcr.io/duyet/docker-images:python_3.14_slim_bookworm
+```
+
+
+### [`python/python_3.14_slim_trixie`](python/python_3.14_slim_trixie/Dockerfile)
+
+Install from the command line
+
+```bash
+docker pull ghcr.io/duyet/docker-images:python_3.14_slim_trixie
+```
+
+Use as base image in Dockerfile:
+
+```Dockerfile
+FROM ghcr.io/duyet/docker-images:python_3.14_slim_trixie
 ```
 
 
