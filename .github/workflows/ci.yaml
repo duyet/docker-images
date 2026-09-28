@@ -19,9 +19,28 @@ concurrency:
   # cancelling a run mid `docker buildx push` writes a multi-arch manifest
   # index that points at a child manifest that never landed (the published
   # node_22.14.0_alpine amd64 manifest was orphaned this way by overlapping
-  # pushes on 2026-06-10). At most one run + one pending run per ref.
+  # pushes on 2026-06-10). At most one *running* run per ref.
+  #
+  # `queue` is the other half of that decision, and the default is lossy.
+  # With `single`, GitHub keeps one running run and one pending run, and
+  # cancels the pending one when a third arrives. Four merges inside 24
+  # minutes on 2026-09-28 dropped three of the four master runs before any
+  # of them started a job, and the one that survived did not cover for
+  # them: the matrix is gated by dorny/paths-filter, so it only rebuilt
+  # the paths its own commit touched. Because that survivor was the
+  # *oldest* of the four, `minio_latest` and `gcloud_debian_python3` were
+  # left published from an older commit than the one already on master,
+  # and a whole python tag family 404'd. Every check stayed green
+  # throughout, because nothing asserts that the registry agrees with
+  # master (issue #97).
+  #
+  # `queue: max` holds up to 100 pending runs instead of replacing them, so
+  # a burst of merges drains in order rather than evaporating. It is only
+  # valid alongside cancel-in-progress: false, which is what the orphaned
+  # manifest above requires anyway.
   group: ci-${{ github.ref }}
   cancel-in-progress: false
+  queue: max
 
 env:
   REGISTRY: ghcr.io
