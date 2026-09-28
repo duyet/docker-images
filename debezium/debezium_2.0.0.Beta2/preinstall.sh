@@ -17,7 +17,7 @@ truststore=$javahome/lib/security/cacerts
 
 storepassword=changeit
 
-curl -sS "https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem" > ${mydir}/rds-combined-ca-bundle.pem
+curl -fsSL "https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem" > ${mydir}/rds-combined-ca-bundle.pem
 awk 'split_after == 1 {n++;split_after=0} /-----END CERTIFICATE-----/ {split_after=1}{print > "rds-ca-" n ".pem"}' < ${mydir}/rds-combined-ca-bundle.pem
 
 for CERT in rds-ca-*; do
@@ -37,5 +37,5 @@ do
    echo " Certificate ${alias} expires in '$expiry'" 
 done
 
-wget -O plugin.zip https://repo1.maven.org/maven2/io/debezium/debezium-connector-mongodb/2.0.0.Beta1/debezium-connector-mongodb-2.0.0.Beta1-plugin.zip
+wget -O plugin.zip https://repo1.maven.org/maven2/io/debezium/debezium-connector-mongodb/2.0.0.Beta2/debezium-connector-mongodb-2.0.0.Beta2-plugin.zip
 unzip plugin.zip -d /usr/share/plugins
