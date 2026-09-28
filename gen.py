@@ -3,6 +3,7 @@
 import argparse
 import json
 import os
+import sys
 from pathlib import Path
 
 import jinja2
@@ -315,7 +316,11 @@ if __name__ == "__main__":
     workflows = build_workflows(images)
 
     if args.dry_run:
-        print(workflows)
+        # Write, do not print: print() appends a newline that f.write() below
+        # does not, so a preview would never be byte-identical to the file a
+        # real run produces. That phantom trailing blank line is the diff every
+        # caller must learn to ignore.
+        sys.stdout.write(workflows)
         raise SystemExit(0)
 
     # Write the workflows to the github workflows directory

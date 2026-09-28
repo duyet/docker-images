@@ -1,0 +1,837 @@
+#!/usr/bin/env bash
+# verify-docker-images — launch / doctor / drive / cleanup / evidence
+# Invoke from the repo root. See ../SKILL.md.
+set -euo pipefail
+
+SKILL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# Skill lives at .cursor/skills/verify-docker-images — three-up is the repo root.
+REPO_ROOT="$(cd "$SKILL_DIR/../../.." && pwd)"
+cd "$REPO_ROOT"
+
+RUN_DIR="$SKILL_DIR/.run"
+SCRATCH_DIR="$SKILL_DIR/scratch"
+EVIDENCE_ROOT="${VERIFY_EVIDENCE:-$SKILL_DIR/evidence}"
+INSTANCE="$RUN_DIR/instance.json"
+RESULTS="$SCRATCH_DIR/results.tsv"
+
+CI_YAML=".github/workflows/ci.yaml"
+README_BASENAME="README.md"
+BEGIN_MARKER="<!-- BEGIN IMAGE LIST -->"
+END_MARKER="<!-- END IMAGE LIST -->"
+
+# Synthetic image used by every fixture. Not a real image; it exists so the
+# generator has exactly one family to render.
+FIXTURE_IMAGE="verifytool"
+FIXTURE_TAG="v1"
+
+mkdir -p "$RUN_DIR" "$SCRATCH_DIR" "$EVIDENCE_ROOT"
+
+die() {
+  echo "verify-docker-images: $*" >&2
+  exit 1
+}
+
+need_cmd() {
+  command -v "$1" >/dev/null 2>&1 || die "missing command: $1"
+}
+
+now_iso() {
+  date -u +"%Y-%m-%dT%H:%M:%SZ"
+}
+
+# ---------------------------------------------------------------- uv plumbing
+
+# gen.py needs jinja2, so every invocation goes through the repo's uv project.
+# The default uv cache is not writable on every host; resolve once per run and
+# fall back to a scratch-local cache instead of writing into the repo.
+UV_CACHE=""
+resolve_uv_cache() {
+  [[ -n "${VERIFY_UV_CACHE_DIR:-}" ]] && { UV_CACHE="$VERIFY_UV_CACHE_DIR"; return; }
+  local d
+  d="$(uv cache dir 2>/dev/null || true)"
+  if [[ -n "$d" && -d "$d" && -w "$d" ]]; then
+    UV_CACHE=""
+  else
+    UV_CACHE="$SCRATCH_DIR/uv-cache"
+  fi
+}
+
+uv_python() {
+  if [[ -n "$UV_CACHE" ]]; then
+    UV_CACHE_DIR="$UV_CACHE" uv run --project "$REPO_ROOT" "$@"
+  else
+    uv run --project "$REPO_ROOT" "$@"
+  fi
+}
+
+# gen_repo <args...> — run this checkout's gen.py, cwd = repo root.
+gen_repo() {
+  uv_python python "$REPO_ROOT/gen.py" "$@"
+}
+
+# gen_fixture <fixture_dir> <args...> — run a *copy* of gen.py. gen.py derives
+# repo_root from __file__, so the copy's own directory is the whole world: the
+# real README.md and ci.yaml cannot be reached from here.
+gen_fixture() {
+  local dir="$1"
+  shift
+  ( cd "$dir" && uv_python python "$dir/gen.py" "$@" )
+}
+
+# gen_lib - <args...> <<'PY' — python with gen.py importable as a module, so
+# the doctor can ask the generator itself instead of re-implementing the scan.
+gen_lib() {
+  uv_python python "$@"
+}
+
+# ---------------------------------------------------------------- identity
+
+require_launch() {
+  if [[ ! -f "$INSTANCE" ]]; then
+    echo "verify-docker-images: launch has not succeeded ($INSTANCE missing)" >&2
+    echo "verify-docker-images: run: $SKILL_DIR/bin/verify-docker-images launch" >&2
+    exit 1
+  fi
+}
+
+identity_field() {
+  python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))[sys.argv[2]])' \
+    "$INSTANCE" "$1"
+}
+
+# ---------------------------------------------------------------- fixtures
+
+sha256_of() {
+  sha256sum "$1" | cut -d' ' -f1
+}
+
+# make_fixture <name> <readme-variant>
+# A throwaway repo: a copy of gen.py, one synthetic image family, an empty
+# .github/workflows for the generator to write into, and one README variant.
+make_fixture() {
+  local name="$1" variant="$2"
+  local dir="$SCRATCH_DIR/fixtures/$name"
+  rm -rf "$dir"
+  mkdir -p "$dir/.github/workflows" "$dir/$FIXTURE_IMAGE/$FIXTURE_TAG"
+  cp "$REPO_ROOT/gen.py" "$dir/gen.py"
+  printf 'FROM scratch\n' >"$dir/$FIXTURE_IMAGE/$FIXTURE_TAG/Dockerfile"
+
+  local header footer stale
+  header="# VerifyTool fixture
+
+Prose above the markers that the generator must preserve byte-for-byte."
+  footer="## Footer
+
+Prose below the markers. A correct run leaves this byte-identical."
+  stale="- [\`stale-family\`](#stale-family)"
+
+  {
+    printf '%s\n\n' "$header"
+    case "$variant" in
+      healthy)
+        printf '%s\n%s\n%s\n\n%s\n' "$BEGIN_MARKER" "$stale" "$END_MARKER" "$footer" ;;
+      missing-begin)
+        printf '%s\n%s\n\n%s\n' "$stale" "$END_MARKER" "$footer" ;;
+      inverted)
+        printf '%s\n%s\n' "$END_MARKER" "$BEGIN_MARKER" ;;
+      only-begin)
+        printf '%s\n%s\n\n%s\n' "$BEGIN_MARKER" "$stale" "$footer" ;;
+      *)
+        die "unknown README variant '$variant'" ;;
+    esac
+  } >"$dir/$README_BASENAME"
+
+  printf '%s' "$dir"
+}
+
+# ---------------------------------------------------------------- results
+
+record() {
+  # record <name> <ok|fail> <detail>
+  printf '%s\t%s\t%s\n' "$1" "$2" "$3" >>"$RESULTS"
+}
+
+emit_results_json() {
+  # Turn results.tsv into the report the drive wrote, and echo it under --json.
+  local out="$1"
+  python3 - "$RESULTS" "$out" "${2:-}" <<'PY'
+import json, sys
+from pathlib import Path
+
+tsv, out, feature = sys.argv[1], sys.argv[2], sys.argv[3]
+cases = []
+p = Path(tsv)
+if p.exists():
+    for line in p.read_text().splitlines():
+        if not line.strip():
+            continue
+        name, status, detail = line.split("\t", 2)
+        cases.append({"case": name, "status": status, "detail": detail})
+report = {
+    "feature": feature or "all",
+    "verdict": "PASS" if cases and all(c["status"] == "ok" for c in cases) else "FAIL",
+    "case_count": len(cases),
+    "cases": cases,
+}
+body = json.dumps(report, indent=2)
+if out:
+    Path(out).write_text(body + "\n", encoding="utf-8")
+print(body)
+PY
+}
+
+# ---------------------------------------------------------------- launch
+
+cmd_launch() {
+  local json=0
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --json) json=1 ;;
+      -h|--help) usage; exit 0 ;;
+      *) die "launch: unknown argument '$1'" ;;
+    esac
+    shift
+  done
+
+  need_cmd uv
+  need_cmd python3
+  need_cmd git
+  [[ -f "$REPO_ROOT/gen.py" ]] || die "gen.py not found at $REPO_ROOT/gen.py"
+
+  resolve_uv_cache
+  echo "verify-docker-images launch: syncing uv project (deps for jinja2)"
+  uv_python python -c 'import jinja2' || die "uv project is not usable"
+
+  local head sha
+  head="$(git rev-parse HEAD)"
+  sha="$(sha256_of "$REPO_ROOT/gen.py")"
+
+  python3 - "$INSTANCE" "$head" "$sha" "$REPO_ROOT" "$SCRATCH_DIR" "$(now_iso)" <<'PY'
+import json, os, sys
+instance, head, sha, repo, scratch, when = sys.argv[1:]
+os.makedirs(os.path.dirname(instance), exist_ok=True)
+json.dump(
+    {
+        "repo_root": repo,
+        "git_head": head,
+        "gen_sha256": sha,
+        "uv_cache": os.environ.get("VERIFY_UV_CACHE_DIR", ""),
+        "scratch": scratch,
+        "created": when,
+    },
+    open(instance, "w"),
+    indent=2,
+)
+PY
+
+  echo "ok    repo_root            $REPO_ROOT"
+  echo "ok    git_head             $head"
+  echo "ok    gen_sha256           $sha"
+  echo "ok    uv_cache             ${UV_CACHE:-<default>}"
+  echo "ok    evidence             $EVIDENCE_ROOT"
+  echo "verify-docker-images launch: no server — gen.py is a one-shot generator"
+}
+
+# ---------------------------------------------------------------- doctor
+
+# The read-only pre-flight. Everything here answers one of two questions:
+#   "is the toolchain the one this skill expects?"  and
+#   "are the generated files still in sync with the directory tree?"
+# It never writes a generated file and never needs a Docker daemon.
+cmd_doctor() {
+  local json=0 build=0 target=""
+  # Each branch owns its own shift: a bare `--build` may be followed by an
+  # optional target, and an unconditional trailing `shift` would run against an
+  # empty list and abort under `set -e`.
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --json) json=1; shift ;;
+      --build)
+        build=1
+        shift
+        if [[ $# -gt 0 && "$1" != -* ]]; then
+          target="$1"
+          shift
+        fi
+        ;;
+      --build=*) build=1; target="${1#--build=}"; shift ;;
+      -h|--help) usage; exit 0 ;;
+      *) die "doctor: unknown argument '$1'" ;;
+    esac
+  done
+
+  require_launch
+  resolve_uv_cache
+
+  local out=""
+  [[ "$json" -eq 1 ]] && out="$SCRATCH_DIR/doctor.json"
+
+  local rc=0
+  gen_lib - "$REPO_ROOT" "$CI_YAML" "$README_BASENAME" "$out" "$json" <<'PY' || rc=$?
+import hashlib
+import importlib.util
+import json
+import re
+import subprocess
+import sys
+from pathlib import Path
+
+REPO = Path(sys.argv[1])
+CI_YAML = sys.argv[2]
+README = sys.argv[3]
+JSON_OUT = sys.argv[4]
+WANT_JSON = sys.argv[5] == "1"
+
+results = []
+
+# With --json, stdout carries the report and nothing else: the human lines go
+# to stderr so `doctor --json | jq` works.
+def say(line):
+    print(line, file=sys.stderr if WANT_JSON else sys.stdout)
+
+
+def check(name, ok, detail, hard=True):
+    results.append({"check": name, "ok": bool(ok), "detail": detail, "hard": hard})
+    mark = "ok  " if ok else ("FAIL" if hard else "info")
+    say(f"{mark}  {name:<24} {detail}")
+    return ok
+
+
+# ---- load the generator itself (no re-implementation of the scan) ----------
+# dont_write_bytecode keeps this read-only in the strict sense: importing
+# gen.py must not drop a __pycache__/ into the repo it is inspecting.
+sys.dont_write_bytecode = True
+spec = importlib.util.spec_from_file_location("gen", REPO / "gen.py")
+gen = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(gen)
+
+images = gen.scan_images(REPO)
+families = sorted(images)
+tag_count = sum(len(v) for v in images.values())
+
+check("generator", (REPO / "gen.py").is_file(), f"gen.py loaded, {len(families)} families")
+check("image_families", len(families) > 0, f"families={len(families)} tags={tag_count}")
+
+# ---- the two-level rule ---------------------------------------------------
+# scan_images hard-codes <family>/<tag>/Dockerfile. A Dockerfile one level
+# deeper is invisible to the generator: no CI job, no README entry, no error.
+SKIP = {".git", ".cursor", ".venv", "scratch", "evidence", ".run", "__pycache__"}
+strays = []
+for dirpath, dirnames, filenames in __import__("os").walk(REPO):
+    dirnames[:] = [d for d in dirnames if d not in SKIP]
+    if "Dockerfile" in filenames:
+        rel = Path(dirpath, "Dockerfile").relative_to(REPO)
+        if len(rel.parts) != 3:
+            strays.append(str(rel))
+check(
+    "dockerfile_depth",
+    not strays,
+    f"{tag_count} Dockerfiles, all <family>/<tag>/Dockerfile"
+    if not strays
+    else f"{len(strays)} outside the 2-level rule: {strays[:5]}",
+)
+
+# ---- blurbs ---------------------------------------------------------------
+blurbs = gen.load_blurbs(REPO, images)
+blurb_pairs = sorted((f, t) for f, tags in blurbs.items() for t in tags)
+check("blurbs", True, f"blurb.md files={len(blurb_pairs)} pairs={['/'.join(p) for p in blurb_pairs]}")
+
+# ---- platforms, cross-checked against the committed workflow ---------------
+committed = REPO / CI_YAML
+committed_text = committed.read_text(encoding="utf-8") if committed.is_file() else ""
+found = {}
+cur = None
+for line in committed_text.splitlines():
+    m = re.match(r"^  ([A-Za-z0-9._-]+):\s*$", line)
+    if m:
+        cur = m.group(1)
+        found.setdefault(cur, None)
+        continue
+    m2 = re.match(r"^ +IMAGE_PLATFORMS: (.*)$", line)
+    if m2 and cur and found.get(cur) is None:
+        found[cur] = m2.group(1).strip()
+
+mismatch = []
+for name in families:
+    want = gen.resolve_platform_expression(name)
+    got = found.get(name)
+    if got is None:
+        mismatch.append(f"{name}: absent from ci.yaml (no CI job for this family)")
+    elif got != want:
+        mismatch.append(f"{name}: gen.py={want!r} ci.yaml={got!r}")
+multi = sum(1 for n in families if gen.resolve_platform_expression(n) == gen.DEFAULT_PLATFORMS)
+single = sum(1 for n in families if gen.resolve_platform_expression(n) == "linux/amd64")
+cond = len(families) - multi - single
+check(
+    "platforms",
+    not mismatch,
+    f"multi-arch={multi} single-arch={single} conditional={cond} "
+    f"(gen.py == ci.yaml for all {len(families)} families)"
+    if not mismatch
+    else f"{len(mismatch)} mismatch(es): {mismatch[:3]}",
+)
+
+# ---- CLI contract: --help exits 0 ----------------------------------------
+help_run = subprocess.run(
+    [sys.executable, str(REPO / "gen.py"), "--help"],
+    capture_output=True,
+    text=True,
+    cwd=str(REPO),
+)
+check(
+    "cli_help",
+    help_run.returncode == 0 and "--dry-run" in help_run.stdout,
+    f"--help exit={help_run.returncode}",
+)
+
+# ---- THE invariant: generated files are in sync with the tree -------------
+# Compare the bytes --dry-run actually prints against the committed file.
+# `cmp` is the assertion: any drift, including a trailing newline, fails.
+dry = subprocess.run(
+    [sys.executable, str(REPO / "gen.py"), "--dry-run"],
+    capture_output=True,
+    cwd=str(REPO),
+)
+committed_bytes = committed.read_bytes() if committed.is_file() else b""
+in_sync = dry.returncode == 0 and dry.stdout == committed_bytes
+if in_sync:
+    detail = f"byte-identical ({len(committed_bytes)} bytes)"
+else:
+    detail = (
+        f"OUT OF SYNC: dry-run rc={dry.returncode} "
+        f"dry={len(dry.stdout)}B committed={len(committed_bytes)}B — "
+        f"run 'uv run python gen.py' and commit the result"
+    )
+check("workflow_in_sync", in_sync, detail)
+
+# ---- README markers -------------------------------------------------------
+readme_text = (REPO / README).read_text(encoding="utf-8") if (REPO / README).is_file() else ""
+b = readme_text.find("<!-- BEGIN IMAGE LIST -->")
+e = readme_text.find("<!-- END IMAGE LIST -->")
+check(
+    "readme_markers",
+    b != -1 and e != -1 and b < e,
+    f"begin={b} end={e}" if b != -1 and e != -1 and b < e else f"begin={b} end={e} (need both, ordered)",
+)
+
+# ---- the generator is not transactional -----------------------------------
+# gen.py writes ci.yaml BEFORE it validates the README markers. A failing run
+# therefore leaves ci.yaml rewritten and README.md untouched. Not a doctor
+# failure — a fact the drive asserts on purpose.
+print()
+say(
+    f"info  write_order            ci.yaml is written before README markers are validated "
+    f"(gen.py validates at the end, so a marker failure keeps README.md byte-identical)"
+)
+
+hard_fail = [r for r in results if r["hard"] and not r["ok"]]
+report = {
+    "repo_root": str(REPO),
+    "verdict": "PASS" if not hard_fail else "FAIL",
+    "failed": [r["check"] for r in hard_fail],
+    "families": len(families),
+    "tags": tag_count,
+    "blurbs": len(blurb_pairs),
+    "platforms": {"multi_arch": multi, "single_arch": single, "conditional": cond},
+    "checks": results,
+}
+if JSON_OUT:
+    Path(JSON_OUT).write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+if WANT_JSON:
+    print(json.dumps(report, indent=2))
+sys.exit(1 if hard_fail else 0)
+PY
+
+  if [[ "$build" -eq 1 ]]; then
+    # Build diagnostics go to stderr so `doctor --json` stdout stays parseable.
+    run_build "$target" >&2 || rc=$?
+  fi
+
+  return "$rc"
+}
+
+# The opt-in escape hatch: a genuine `docker buildx build`. Never part of the
+# default doctor — a build takes minutes and needs a daemon.
+run_build() {
+  local target="$1"
+  echo "verify-docker-images: --build is the opt-in escape hatch; it needs a running Docker daemon"
+
+  if ! docker info >/dev/null 2>&1; then
+    echo "FAIL  docker_daemon          docker info failed — start the daemon or drop --build" >&2
+    return 1
+  fi
+  echo "ok    docker_daemon          reachable"
+
+  if [[ -z "$target" ]]; then
+    target="$(find . -mindepth 3 -maxdepth 3 -name Dockerfile -not -path './.git/*' -printf '%h\n' \
+      | sort | head -1)"
+  fi
+  local dockerfile="$target/Dockerfile"
+  [[ -f "$dockerfile" ]] || { echo "FAIL  build_target          no Dockerfile at $dockerfile" >&2; return 1; }
+
+  echo "info  build_target           $dockerfile"
+  docker buildx build --load -f "$dockerfile" "$target"
+}
+
+# ---------------------------------------------------------------- drive
+
+# The four proven cases. Each returns 0 only when every assertion inside it holds.
+drive_cli_help() {
+  local ev="$EVIDENCE_ROOT/cli-help"
+  mkdir -p "$ev"
+  local rc=0
+  uv_python python "$REPO_ROOT/gen.py" --help >"$ev/stdout.txt" 2>"$ev/stderr.txt" || rc=$?
+
+  if [[ "$rc" -eq 0 ]] \
+    && grep -q -- '--dry-run' "$ev/stdout.txt" \
+    && grep -q 'usage:' "$ev/stdout.txt" \
+    && [[ ! -s "$ev/stderr.txt" ]]; then
+    record "cli-help" "ok" "gen.py --help exit 0, documents --dry-run, stderr empty"
+  else
+    record "cli-help" "fail" "exit=$rc (want 0); usage=$([ -s "$ev/stdout.txt" ] && echo yes || echo no)"
+  fi
+}
+
+drive_dry_run_sync() {
+  local ev="$EVIDENCE_ROOT/dry-run-sync"
+  mkdir -p "$ev"
+  local rc=0
+  uv_python python "$REPO_ROOT/gen.py" --dry-run >"$ev/dry-run.yaml" 2>"$ev/stderr.txt" || rc=$?
+
+  if [[ "$rc" -ne 0 ]]; then
+    record "dry-run-sync" "fail" "gen.py --dry-run exited $rc"
+    return 0
+  fi
+
+  if cmp -s "$ev/dry-run.yaml" "$REPO_ROOT/$CI_YAML"; then
+    record "dry-run-sync" "ok" \
+      "byte-identical to $CI_YAML ($(wc -c <"$ev/dry-run.yaml" | tr -d ' ') bytes, sha256 $(sha256_of "$ev/dry-run.yaml"))"
+  else
+    local before after
+    before="$(sha256_of "$REPO_ROOT/$CI_YAML")"
+    after="$(sha256_of "$ev/dry-run.yaml")"
+    diff -u "$REPO_ROOT/$CI_YAML" "$ev/dry-run.yaml" >"$ev/diff.txt" 2>&1 || true
+    record "dry-run-sync" "fail" \
+      "OUT OF SYNC committed=$before dry-run=$after (see $ev/diff.txt) — run 'uv run python gen.py' and commit"
+  fi
+}
+
+# Three README marker failure modes. gen.py must exit non-zero AND leave
+# README.md byte-identical. Each runs in its own throwaway repo.
+expect_readme_rejected() {
+  # expect_readme_rejected <variant> <human label>
+  local variant="$1" label="$2"
+  local ev="$EVIDENCE_ROOT/readme-marker-failures"
+  mkdir -p "$ev"
+  local dir rc
+  dir="$(make_fixture "$variant" "$variant")"
+
+  local sha_before
+  sha_before="$(sha256_of "$dir/$README_BASENAME")"
+  printf '%s' "$sha_before" >"$ev/$variant.readme.sha256-before"
+
+  rc=0
+  gen_fixture "$dir" >"$ev/$variant.stdout.txt" 2>"$ev/$variant.stderr.txt" || rc=$?
+
+  local sha_after
+  sha_after="$(sha256_of "$dir/$README_BASENAME")"
+  printf '%s' "$sha_after" >"$ev/$variant.readme.sha256-after"
+
+  local problems=()
+  [[ "$rc" -eq 0 ]] && problems+=("exit 0, expected non-zero")
+  [[ "$sha_before" == "$sha_after" ]] || problems+=("README.md was modified")
+  grep -q 'README markers not found or invalid order' "$ev/$variant.stderr.txt" \
+    || problems+=("stderr lacks the marker error")
+
+  if [[ "${#problems[@]}" -eq 0 ]]; then
+    record "readme-marker-failures/$variant" "ok" \
+      "$label: exit $rc, README.md byte-unchanged (sha256 ${sha_after:0:12}…)"
+  else
+    record "readme-marker-failures/$variant" "fail" \
+      "$label: ${problems[*]}"
+  fi
+}
+
+drive_readme_marker_failures() {
+  expect_readme_rejected missing-begin "missing BEGIN marker"
+  expect_readme_rejected inverted "inverted markers"
+  expect_readme_rejected only-begin "only BEGIN marker"
+}
+
+# A healthy README regenerates in place: prose outside the markers survives, the
+# stale entry is replaced, the synthetic image appears, and a second run is a
+# no-op. This is the only case that proves the write path actually writes.
+drive_readme_regen() {
+  local ev="$EVIDENCE_ROOT/readme-regen"
+  mkdir -p "$ev"
+  local dir
+  dir="$(make_fixture healthy healthy)"
+
+  local footer_before
+  footer_before="$(sed -n '/<!-- END IMAGE LIST -->/,$p' "$dir/$README_BASENAME")"
+  printf '%s' "$footer_before" >"$ev/footer-before.txt"
+
+  local rc=0
+  gen_fixture "$dir" >"$ev/stdout.txt" 2>"$ev/stderr.txt" || rc=$?
+  cp "$dir/$README_BASENAME" "$ev/README.after.md"
+  cp "$dir/$CI_YAML" "$ev/ci.yaml.after"
+
+  local problems=()
+  [[ "$rc" -eq 0 ]] || problems+=("exit $rc, expected 0")
+
+  local footer_after
+  footer_after="$(sed -n '/<!-- END IMAGE LIST -->/,$p' "$dir/$README_BASENAME")"
+  [[ "$footer_after" == "$footer_before" ]] || problems+=("footer below END marker changed")
+
+  grep -q 'stale-family' "$dir/$README_BASENAME" && problems+=("stale entry survived regeneration")
+  grep -qF "## \`$FIXTURE_IMAGE\`" "$dir/$README_BASENAME" \
+    || problems+=("generated section missing $FIXTURE_IMAGE heading")
+  grep -qF "### [\`$FIXTURE_IMAGE/$FIXTURE_TAG\`]($FIXTURE_IMAGE/$FIXTURE_TAG/Dockerfile)" "$dir/$README_BASENAME" \
+    || problems+=("generated section missing the $FIXTURE_IMAGE/$FIXTURE_TAG entry")
+  grep -q '^Prose above the markers' "$dir/$README_BASENAME" \
+    || problems+=("prose above BEGIN marker was lost")
+  grep -qi 'generated by gen.py' "$dir/$CI_YAML" \
+    || problems+=("ci.yaml was not written")
+
+  # Idempotence: a second identical run must not move a single byte.
+  local first_second
+  first_second="$(sha256_of "$dir/$README_BASENAME")"
+  rc=0
+  gen_fixture "$dir" >"$ev/stdout-run2.txt" 2>"$ev/stderr-run2.txt" || rc=$?
+  local second_second
+  second_second="$(sha256_of "$dir/$README_BASENAME")"
+  [[ "$rc" -eq 0 ]] || problems+=("second run exit $rc")
+  [[ "$first_second" == "$second_second" ]] || problems+=("second run changed README.md (not idempotent)")
+
+  if [[ "${#problems[@]}" -eq 0 ]]; then
+    record "readme-regen" "ok" \
+      "exit 0, footer + header preserved, stale entry replaced, $FIXTURE_IMAGE/$FIXTURE_TAG rendered, idempotent on rerun"
+  else
+    record "readme-regen" "fail" "${problems[*]}"
+  fi
+}
+
+cmd_drive() {
+  local recipe="${1:-}"
+  [[ -n "$recipe" ]] || { usage; exit 2; }
+  shift || true
+  local json=0
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --json) json=1 ;;
+      -h|--help) usage; exit 0 ;;
+      *) die "drive: unknown argument '$1'" ;;
+    esac
+    shift
+  done
+
+  require_launch
+  resolve_uv_cache
+
+  : >"$RESULTS"
+
+  local -a recipes
+  case "$recipe" in
+    all) recipes=(cli-help dry-run-sync readme-marker-failures readme-regen) ;;
+    cli-help|dry-run-sync|readme-marker-failures|readme-regen) recipes=("$recipe") ;;
+    -h|--help) usage; exit 0 ;;
+    *) die "drive: unknown recipe '$recipe' (try: ${recipe}, all)" ;;
+  esac
+
+  local out="" feature="$recipe"
+  mkdir -p "$EVIDENCE_ROOT"
+  if [[ "$json" -eq 1 || "$feature" == "all" ]]; then
+    out="$EVIDENCE_ROOT/$feature/report.json"
+    mkdir -p "$(dirname "$out")"
+  fi
+
+  # Explicit dispatch: recipe names carry hyphens, so `drive_$recipe` is not a
+  # valid shell function name. Every case records its own verdict into
+  # $RESULTS; the run's pass/fail is read back from there, never from a
+  # function's exit code (a case that records a failure still returns 0 so the
+  # remaining sub-cases can report too).
+  run_recipe() {
+    case "$1" in
+      cli-help) drive_cli_help ;;
+      dry-run-sync) drive_dry_run_sync ;;
+      readme-marker-failures) drive_readme_marker_failures ;;
+      readme-regen) drive_readme_regen ;;
+      *) return 1 ;;
+    esac
+  }
+
+  local stop=0 name
+  for name in "${recipes[@]}"; do
+    # Progress goes to stderr under --json so stdout stays a single JSON doc.
+    if [[ "$json" -eq 1 ]]; then
+      echo "--- drive $name ---" >&2
+    else
+      echo "--- drive $name ---"
+    fi
+    if ! run_recipe "$name"; then
+      stop=1
+      echo "verify-docker-images drive: case '$name' could not run — stopping" >&2
+      break
+    fi
+    # Fail fast: stop once any recorded case has failed, so the next run has
+    # one known cause. Run `cleanup` after a failed drive.
+    if grep -qP '\tfail\t' "$RESULTS"; then
+      stop=1
+      echo "verify-docker-images drive: a case failed — stopping" >&2
+      break
+    fi
+  done
+
+  local verdict
+  verdict="$(awk -F'\t' '$2 != "ok" { print "FAIL"; exit } END { }' "$RESULTS")"
+  [[ -n "$verdict" ]] || verdict=PASS
+  [[ -s "$RESULTS" ]] || verdict=FAIL
+
+  emit_results_json "$out" "$feature"
+  cp -f "$RESULTS" "$SCRATCH_DIR/results.$feature.tsv" 2>/dev/null || true
+  printf 'feature=%s\nverdict=%s\nwhen=%s\nhead=%s\n' \
+    "$feature" "$verdict" \
+    "$(now_iso)" "$(identity_field git_head)" >"$EVIDENCE_ROOT/LAST_RUN.txt"
+
+  if [[ "$verdict" != "PASS" || "$stop" -eq 1 ]]; then
+    echo "verify-docker-images drive: FAIL — evidence in $EVIDENCE_ROOT" >&2
+    return 1
+  fi
+  if [[ "$json" -eq 1 ]]; then
+    echo "verify-docker-images drive: PASS — evidence in $EVIDENCE_ROOT" >&2
+  else
+    echo "verify-docker-images drive: PASS — evidence in $EVIDENCE_ROOT"
+  fi
+}
+
+# ---------------------------------------------------------------- cleanup
+
+cmd_cleanup() {
+  local dry=0 json=0
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --dry-run) dry=1 ;;
+      --json) json=1 ;;
+      -h|--help) usage; exit 0 ;;
+      *) die "cleanup: unknown argument '$1'" ;;
+    esac
+    shift
+  done
+
+  # Evidence is never removed. Only the run identity, the scratch tree
+  # (fixtures + any fallback uv cache) and the uv cache dir go.
+  local targets=()
+  [[ -e "$RUN_DIR" ]] && targets+=("$RUN_DIR")
+  [[ -e "$SCRATCH_DIR" ]] && targets+=("$SCRATCH_DIR")
+  local cache="${VERIFY_UV_CACHE_DIR:-$SCRATCH_DIR/uv-cache}"
+  [[ -e "$cache" && "$cache" != "$SCRATCH_DIR" ]] && targets+=("$cache")
+
+  if [[ ${#targets[@]} -eq 0 ]]; then
+    echo "verify-docker-images cleanup: nothing to remove"
+  else
+    local t
+    for t in "${targets[@]}"; do
+      if [[ "$dry" -eq 1 ]]; then
+        echo "would remove $t"
+      else
+        rm -rf "$t"
+        echo "removed    $t"
+      fi
+    done
+  fi
+
+  if [[ "$dry" -eq 0 ]]; then
+    echo "kept       $EVIDENCE_ROOT"
+  fi
+
+  if [[ "$json" -eq 1 ]]; then
+    python3 -c 'import json,sys; print(json.dumps({"dry_run": sys.argv[1] == "1", "targets": sys.argv[2:], "evidence_kept": sys.argv[-1]}, indent=2))' \
+      "$dry" "${targets[@]:-}" "$EVIDENCE_ROOT"
+  fi
+}
+
+# ---------------------------------------------------------------- evidence
+
+cmd_evidence() {
+  if [[ ! -d "$EVIDENCE_ROOT" ]]; then
+    echo "verify-docker-images evidence: nothing recorded yet at $EVIDENCE_ROOT"
+    return 0
+  fi
+  echo "evidence root: $EVIDENCE_ROOT"
+  if [[ -f "$EVIDENCE_ROOT/LAST_RUN.txt" ]]; then
+    echo "--- LAST_RUN.txt ---"
+    cat "$EVIDENCE_ROOT/LAST_RUN.txt"
+  fi
+  echo "--- recorded cases ---"
+  find "$EVIDENCE_ROOT" -name '*.tsv' -o -name 'report.json' | sort | sed 's/^/  /'
+  echo
+  echo "These captures are gitignored. A green drive exit is the proof; do not git add them."
+}
+
+# ---------------------------------------------------------------- usage
+
+usage() {
+  cat <<'VERIFY_USAGE'
+verify-docker-images — prove the generated workflow and README are in sync
+                      with the image directory tree.
+
+USAGE
+  verify-docker-images <command> [options]
+
+COMMANDS
+  launch                 Install the uv project and record the run identity
+                         (.run/instance.json). No server: gen.py is one-shot.
+  doctor                 Read-only pre-flight. Identity, the two-level
+                         Dockerfile rule, blurbs, platform expressions,
+                         README markers, and THE invariant: --dry-run is
+                         byte-identical to the committed ci.yaml.
+  drive <recipe>         Run one proven case (or `all`) and record evidence.
+  cleanup                Drop .run/ and scratch/. Never drops evidence/.
+  evidence               Show the last recorded run.
+  help                   This text.
+
+DRIVE RECIPES
+  cli-help               gen.py --help exits 0 and documents --dry-run.
+  dry-run-sync           gen.py --dry-run is byte-identical to ci.yaml.
+  readme-marker-failures Three broken-marker READMEs each exit non-zero and
+                         leave README.md byte-unchanged, in throwaway fixtures.
+  readme-regen           A healthy README regenerates in place, keeps the
+                         footer, and is idempotent on a second run.
+  all                    All four, in order. Stops at the first failure.
+
+OPTIONS
+  --json                 Machine-readable report on stdout (doctor, drive,
+                         cleanup). `drive all` always writes report.json.
+  --build[=<fam>/<tag>]  doctor only, OPT-IN: run a real `docker buildx build`.
+                         Needs a running daemon; the default doctor never does.
+  --dry-run              cleanup only: list what would be removed, remove nothing.
+
+ENVIRONMENT
+  VERIFY_EVIDENCE        Evidence root (default <skill>/evidence).
+  VERIFY_UV_CACHE_DIR    Force a uv cache dir. When unset, the helper probes
+                         the default cache and falls back to scratch/uv-cache
+                         when it is not writable.
+
+EXIT CODES
+  0  all assertions held     1  an assertion failed     2  usage error
+
+The load-bearing invariant: a generated file that is not regenerated is a CI
+job that never runs. doctor is the fast answer; `drive all` is the proof.
+VERIFY_USAGE
+}
+
+main() {
+  local cmd="${1:-help}"
+  shift || true
+  case "$cmd" in
+    launch) cmd_launch "$@" ;;
+    doctor) cmd_doctor "$@" ;;
+    drive) cmd_drive "$@" ;;
+    cleanup) cmd_cleanup "$@" ;;
+    evidence) cmd_evidence "$@" ;;
+    help|-h|--help) usage ;;
+    *) echo "verify-docker-images: unknown command '$cmd'" >&2; usage; exit 2 ;;
+  esac
+}
+
+main "$@"
