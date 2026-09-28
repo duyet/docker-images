@@ -111,9 +111,9 @@ jobs:
     {%- raw %}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
-      - uses: dorny/paths-filter@v3
+      - uses: dorny/paths-filter@0e4a8c6effa4802afeda77dc8d303f8176d7dfad # v3
         id: changes
         with:
           filters: |
@@ -123,7 +123,7 @@ jobs:
 
       - name: Log in to the Container registry
         if: steps.changes.outputs.src == 'true'
-        uses: docker/login-action@v3
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
@@ -132,12 +132,12 @@ jobs:
       - name: Set up Docker Buildx
         if: steps.changes.outputs.src == 'true'
         id: buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3
 
       - name: Extract metadata (tags, labels) for Docker
         if: steps.changes.outputs.src == 'true'
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.REPO }}
           tags: |
@@ -147,7 +147,7 @@ jobs:
       - name: Build and push
         if: steps.changes.outputs.src == 'true'
         id: docker_build
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
         with:
           platforms: ${{ env.IMAGE_PLATFORMS }}
           context: ${{ github.workspace }}
@@ -162,7 +162,7 @@ jobs:
 
       - name: Generate Trivy vulnerability report
         if: steps.changes.outputs.src == 'true' && github.event_name != 'pull_request'
-        uses: aquasecurity/trivy-action@v0.36.0
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           image-ref: '${{ env.REGISTRY }}/${{ env.REPO }}:${{ matrix.tags }}'
           format: 'json'
@@ -171,7 +171,7 @@ jobs:
 
       - name: Upload Trivy scan results artifact
         if: steps.changes.outputs.src == 'true' && github.event_name != 'pull_request'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: 'trivy-report-${{ matrix.tags }}'
           path: 'trivy-report.json'
@@ -179,7 +179,7 @@ jobs:
 
       - name: Run Trivy vulnerability scan (sarif)
         if: steps.changes.outputs.src == 'true' && github.event_name != 'pull_request'
-        uses: aquasecurity/trivy-action@v0.36.0
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           image-ref: '${{ env.REGISTRY }}/${{ env.REPO }}:${{ matrix.tags }}'
           format: 'sarif'
@@ -188,14 +188,14 @@ jobs:
 
       - name: Upload Trivy scan results to GitHub Security tab
         if: steps.changes.outputs.src == 'true' && github.event_name != 'pull_request'
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@1190a975f95ce23525efb6a3fc21ea29567c1b52 # v3
         with:
           sarif_file: 'trivy-results.sarif'
           category: '${{ matrix.tags }}'
 
       - name: Report HIGH/CRITICAL vulnerabilities
         if: steps.changes.outputs.src == 'true' && github.event_name != 'pull_request'
-        uses: aquasecurity/trivy-action@v0.36.0
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           image-ref: '${{ env.REGISTRY }}/${{ env.REPO }}:${{ matrix.tags }}'
           format: 'table'
@@ -206,7 +206,7 @@ jobs:
 
       - name: Run Trivy config scan
         if: steps.changes.outputs.src == 'true'
-        uses: aquasecurity/trivy-action@v0.36.0
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           scan-type: 'config'
           scan-ref: './${{ env.IMAGE_NAME }}/${{ env.IMAGE_TAG }}/Dockerfile'
