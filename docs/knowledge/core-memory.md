@@ -29,6 +29,18 @@ This file stores durable maintenance notes for automation and contributors.
 - If default uv cache path is not writable in sandbox/worktree runs, use:
   - `UV_CACHE_DIR=$PWD/.uv-cache uv run python gen.py`
 
+## Published-vs-master gate (`published` job, issue #97)
+
+- Nothing else compares the registry to the tree, so a run that starts before a commit lands and finishes after it publishes the older tree while every check stays green. The `published` job closes that hole.
+- Check the registry against master locally before trusting a green run:
+  - `./tools/collect_commit_shas.sh && python3 tools/verify_published.py --tree tree.txt --commits commit-shas.txt`
+- Failure classes: `MISSING` (tag absent), `STALE` (built from a commit older than the one that last touched its directory), `UNKNOWN` (unreadable, or no revision label — fails closed). Exit 1 for any, exit 2 for bad input or unreachable registry.
+- Staleness is decided with `git merge-base --is-ancestor`, never by SHA equality or timestamps. Equality is wrong because a commit that regenerates `ci.yaml` is in every family's paths filter and stamps all 68 images; timestamps are wrong because an overlapping run stamps images *newer* than a commit while building the *older* tree.
+- The comparison uses the OCI `org.opencontainers.image.revision` label in the amd64 config blob, so it costs no extra round trip and works with anonymous ghcr.io pulls.
+- The job runs `if: always()` so a failed build still gets caught, and skips on `pull_request`. It needs a full clone (`fetch-depth: 0`) and `ref: ${{ github.event.after }}`.
+- Self-test the gate before trusting it: `./tools/test_verify_published.sh` (offline) and `--live` (hits ghcr.io). Offline cases stub the registry and git probes, so they are deterministic and CI-safe.
+- `collect_commit_shas.sh` writes `tree.txt`, `dirs.txt`, and `commit-shas.txt` into the repo root (gitignored) because `$TMPDIR` is not always writable in Actions.
+
 ## Repo notes
 
 - `AGENTS.md` is a symlink to `CLAUDE.md`; update `CLAUDE.md` for shared instructions.
