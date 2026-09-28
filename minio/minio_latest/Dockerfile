@@ -11,7 +11,7 @@ RUN git clone --depth 1 --branch "${MINIO_REF}" https://github.com/minio/minio.g
 RUN make build
 
 # Runtime stage
-FROM alpine:3.20
+FROM alpine:3.24
 
 RUN apk add --no-cache ca-certificates
 RUN addgroup -S minio && adduser -S -G minio minio
