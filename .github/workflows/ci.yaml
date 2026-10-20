@@ -26,13 +26,14 @@ concurrency:
   # cancels the pending one when a third arrives. Four merges inside 24
   # minutes on 2026-09-28 dropped three of the four master runs before any
   # of them started a job, and the one that survived did not cover for
-  # them: the matrix is gated by dorny/paths-filter, so it only rebuilt
-  # the paths its own commit touched. Because that survivor was the
-  # *oldest* of the four, `minio_latest` and `gcloud_debian_python3` were
-  # left published from an older commit than the one already on master,
-  # and a whole python tag family 404'd. Every check stayed green
-  # throughout, because nothing asserts that the registry agrees with
-  # master (issue #97).
+  # them. The paths filter is not the saving grace it looks like: every
+  # family's filter also matches `.github/workflows/ci.yaml`, so a commit
+  # that regenerates the workflow rebuilds all 68 images. That survivor
+  # was the *oldest* of the four, so it published the oldest tree of them
+  # all: `minio_latest` and `gcloud_debian_python3` were left published
+  # from a commit behind master, and a whole python tag family 404'd.
+  # Every check stayed green throughout, because nothing asserted that the
+  # registry agreed with master (issue #97) — the `published` job does.
   #
   # `queue: max` holds up to 100 pending runs instead of replacing them, so
   # a burst of merges drains in order rather than evaporating. It is only
@@ -1900,3 +1901,46 @@ jobs:
           format: 'table'
           severity: 'CRITICAL,HIGH,MEDIUM'
           exit-code: '0'
+
+  published:
+    name: Assert published matches master
+    runs-on: ubuntu-latest
+    # Runs after every build, and runs even if one failed: a failed build leaves
+    # its tag unpublished, which is exactly the state this gate exists to catch.
+    needs: [alpine, bun, clickhouse-server, debezium, debian, docker, gcloud, kubeconform, minio, node, postgres, python, redis, rust, upptime]
+    if: always() && github.event_name != 'pull_request'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          # The gate compares the registry against master's tree, so it must see
+          # the merge commit that triggered this run, not the branch tip.
+          ref: ${{ github.event.after }}
+          # Full history, not a shallow clone: the gate decides staleness with
+          # `git log -1 -- <image dir>` and `git merge-base --is-ancestor`, and
+          # neither means anything without the ancestry between commits.
+          fetch-depth: 0
+
+      - name: Collect the last commit that touched each image
+        run: ./tools/collect_commit_shas.sh
+
+      - name: Assert every tag is published from a commit at or after master
+        run: |
+          set -euo pipefail
+          python3 tools/verify_published.py --tree tree.txt --commits commit-shas.txt
+
+      - name: Publish state on failure
+        if: failure()
+        run: |
+          {
+            echo '## Registry does not match master'
+            echo
+            echo 'A tag is missing, could not be read, or was published from a'
+            echo 'commit older than the one that last touched its directory.'
+            echo '`master` and the registry disagree, so no tag can be trusted'
+            echo 'until this is resolved. See issue #97.'
+            echo
+            echo '```'
+            python3 tools/verify_published.py --tree tree.txt --commits commit-shas.txt || true
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

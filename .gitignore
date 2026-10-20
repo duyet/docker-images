@@ -1,2 +1,14 @@
 .DS_Store
 .cache/
+
+# Scratch output of tools/collect_commit_shas.sh, written in the repo root so the
+# published-vs-master gate can run without a writable $TMPDIR.
+tree.txt
+tags.txt
+dirs.txt
+commit-shas.txt
+
+# tools/test_verify_published.sh imports verify_published.py as a module, which
+# leaves a bytecode cache next to it.
+__pycache__/
+*.pyc
